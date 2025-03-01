@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw30exc5aa45u"]
+
+[ext_resource type="Script" path="res://master_audio.gd" id="1_qpiu6"]
+[ext_resource type="AudioStream" uid="uid://cg143r0dihujv" path="res://assets/Sounds/Gameplay/place.wav" id="1_yc5ua"]
+[ext_resource type="Script" path="res://audio.gd" id="2_e0wh2"]
+
+[node name="Audio" type="Node2D"]
+script = ExtResource("1_qpiu6")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_yc5ua")
+max_polyphony = 32
+script = ExtResource("2_e0wh2")
+
+[connection signal="finished" from="AudioStreamPlayer" to="AudioStreamPlayer" method="_on_finished"]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://crs80oppmnox6"]
+
+[ext_resource type="Texture2D" uid="uid://bwyicvm668xlr" path="res://assets/Images/UI/empty.png" id="1_74ec7"]
+[ext_resource type="Script" path="res://background_tile.gd" id="2_8t21g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vr0e"]
+size = Vector2(50, 50)
+
+[node name="background_tile" type="Sprite2D"]
+visible = false
+texture = ExtResource("1_74ec7")
+centered = false
+script = ExtResource("2_8t21g")
+metadata/original = true
+metadata/x = 0
+metadata/y = 0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(25, 25)
+shape = SubResource("RectangleShape2D_2vr0e")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

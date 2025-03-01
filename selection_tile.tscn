@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8a8bfgs7mrvs"]
+
+[ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://tool_background_tile.tscn" id="1_2so26"]
+
+[node name="selection_tile" instance=ExtResource("1_2so26")]
