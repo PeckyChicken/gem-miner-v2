@@ -8,7 +8,7 @@ func _ready() -> void:
 func _get_directional_line(location:Vector2,delta:Vector2,color):
 	var line = []
 	var cur_location = location
-	while Board.within_board(cur_location) and Board.get_square(cur_location) == color:
+	while $"../Board".within_board(cur_location) and $"../Board".get_square(cur_location) == color:
 		if cur_location not in line:
 			line.append(cur_location)
 		cur_location += delta
@@ -27,7 +27,7 @@ func remove_duplicates(list:Array):
 func detect_lines(location:Vector2):
 	var vertical_matches = []
 	var horizontal_matches = []
-	var line_color = Board.get_square(location)
+	var line_color = $"../Board".get_square(location)
 	
 	vertical_matches += _get_directional_line(location,Vector2(0,-1),line_color)
 	vertical_matches += _get_directional_line(location,Vector2(0,1),line_color)
@@ -42,13 +42,13 @@ func detect_lines(location:Vector2):
 
 func animate_line_clear(location:Vector2,matches: Array,disappear=true):
 	var tween = get_tree().create_tween().set_parallel()
-	var square_width = Board.width/Board.COLUMNS
-	#var square_height = Board.height/Board.ROWS
+	var square_width = $"../Board".width/$"../Board".COLUMNS
+	#var square_height = $"../Board".height/$"../Board".ROWS
 	
 	for item in matches:
 		var delta = (location-item)*square_width
 		
-		var object = Board._get_foreground_square(item)
+		var object = $"../Board"._get_foreground_square(item)
 		tween.tween_property(object,"position",object.position+delta,0.2)
 	
 	await tween.finished
@@ -58,10 +58,10 @@ func animate_line_clear(location:Vector2,matches: Array,disappear=true):
 	remove_duplicates(matches)
 	
 	for item in matches.slice(1):
-		Board._get_foreground_square(item).hide()
+		$"../Board"._get_foreground_square(item).hide()
 	
 	var item = matches[0]
-	var shrink_object: Sprite2D = Board._get_foreground_square(item)
+	var shrink_object: Sprite2D = $"../Board"._get_foreground_square(item)
 	shrink_object.align_for_animation()
 	shrink_object.animation_player.play("vanish")
 	

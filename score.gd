@@ -7,21 +7,21 @@ func _ready() -> void:
 	_update()
 
 func evaluate_next_level():
-	if Board.score >= Board.goal:
-		Board.next_level()
+	if $"../../Board".score >= $"../../Board".goal:
+		$"../../Board".next_level()
 
 func add_score(score):
-	var score_to_add = score*Board.level
+	var score_to_add = score*$"../../Board".level
 	
-	var final_score = score_to_add + Board.score
+	var final_score = score_to_add + $"../../Board".score
 	const SCORE_TIME = 0.5
 	var STEP = 3
 	var sleep_time = SCORE_TIME/(float(score_to_add)/STEP)
 	
 	self_modulate = Color(300,300,300)
-	while Board.score < final_score:
-		Board.score += STEP
-		Board.score = min(Board.score,final_score)
+	while $"../../Board".score < final_score:
+		$"../../Board".score += STEP
+		$"../../Board".score = min($"../../Board".score,final_score)
 		_update()
 		await get_tree().create_timer(sleep_time).timeout
 	_update()
@@ -30,17 +30,17 @@ func add_score(score):
 	evaluate_next_level()
 	
 func _update():
-	add_theme_font_size_override("normal_font_size", _calculate_font_size(Board.score))
-	text = "[center]%s" % [Board.score]
+	add_theme_font_size_override("normal_font_size", _calculate_font_size($"../../Board".score))
+	text = "[center]%s" % [$"../../Board".score]
 	
-	$"../Level".add_theme_font_size_override("normal_font_size", _calculate_font_size(Board.level))
-	$"../Level".text = "[center]%s" % [Board.level]
+	$"../Level".add_theme_font_size_override("normal_font_size", _calculate_font_size($"../../Board".level))
+	$"../Level".text = "[center]%s" % [$"../../Board".level]
 	
-	$"../Goal".add_theme_font_size_override("normal_font_size", _calculate_font_size(Board.goal))
-	$"../Goal".text = "[center]%s" % [Board.goal]
+	$"../Goal".add_theme_font_size_override("normal_font_size", _calculate_font_size($"../../Board".goal))
+	$"../Goal".text = "[center]%s" % [$"../../Board".goal]
 	
-	$"../Moves".add_theme_font_size_override("normal_font_size", _calculate_font_size(Board.moves))
-	$"../Moves".text = "[center]%s" % [Board.moves]
+	$"../Moves".add_theme_font_size_override("normal_font_size", _calculate_font_size($"../../Board".moves))
+	$"../Moves".text = "[center]%s" % [$"../../Board".moves]
 
 func _calculate_font_size(score) -> int:
 	var font_size = 50

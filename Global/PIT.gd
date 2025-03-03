@@ -12,12 +12,12 @@ func draw_background(background_tile):
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()
-	var square_width = Board.width/Board.COLUMNS
-	var square_height = Board.height/Board.ROWS
+	var square_width = $"../Board".width / $"../Board".COLUMNS
+	var square_height = $"../Board".height / $"../Board".ROWS
 	
-	var cur_x = Board.start_x
-	var y = Board.start_y + Board.height + (board_padding*square_height)
-	var x_margin = (Board.width-square_width) / float(SQUARES)
+	var cur_x = $"../Board".start_x
+	var y = $"../Board".start_y + $"../Board".height + (board_padding*square_height)
+	var x_margin = ($"../Board".width-square_width) / float(SQUARES)
 	
 	for x in range(SQUARES):
 		var new_tile = background_tile.duplicate()

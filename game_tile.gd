@@ -18,7 +18,7 @@ func delete(tiles):
 
 func align_for_animation():
 	centered = true
-	position = Vector2.ZERO + (Vector2(Board.width/Board.COLUMNS,Board.height/Board.ROWS)/2)
+	position = Vector2.ZERO + (self.get_rect().size/2)
 
 func dealign_from_animation():
 	centered = false

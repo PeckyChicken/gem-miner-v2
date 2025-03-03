@@ -1,5 +1,5 @@
 extends Node
-class_name brd
+class_name Board
 
 const ROWS = 7
 const COLUMNS = 7
@@ -74,7 +74,7 @@ func _get_background_square(location:Vector2):
 	return background_tiles[location.x*COLUMNS+location.y]
 
 func clear_board():
-	Board.board.clear()
+	board.clear()
 	for __ in range(ROWS*COLUMNS):
 		board.append(0)
 
@@ -142,7 +142,7 @@ func remove_square(location:Vector2):
 	if tile.animation_player.is_playing():
 		await tile.animation_player.animation_finished
 	tile.animation_player.play("vanish")
-	Board.set_square(location,0)
+	set_square(location,0)
 	await tile.animation_player.animation_finished
 
 func evaluate_game_over():
@@ -151,8 +151,8 @@ func evaluate_game_over():
 		if moves <= 0:
 			game_over = true
 	
-	if 0 not in Board.board:
-		if not Board.board.any(func (x): return x in Pit.TOOLS):
+	if 0 not in board:
+		if not board.any(func (x): return x in $"../Pit".TOOLS):
 			game_over = true
 	
 	return game_over

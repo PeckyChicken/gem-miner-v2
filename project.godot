@@ -19,10 +19,6 @@ config/icon="res://icon.svg"
 
 config="*res://Global/CONFIG.gd"
 Events="*res://Global/EVENTS.gd"
-Board="*res://Global/BOARD.gd"
-Pit="*res://Global/PIT.gd"
-Line="*res://Global/LINE.gd"
-Brick="*res://Global/BRICK.gd"
 
 [debug]
 
@@ -44,3 +40,5 @@ rendering_device/driver="d3d12"
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
