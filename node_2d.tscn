@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=26 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" path="res://node_2d.gd" id="1_3e5tt"]
 [ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://game_tile.tscn" id="1_ed5m1"]
@@ -16,6 +16,10 @@
 [ext_resource type="Script" path="res://score.gd" id="9_s05xj"]
 [ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://lightning.tscn" id="10_rj7my"]
 [ext_resource type="Script" path="res://lightning.gd" id="12_ihpgp"]
+[ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="17_5t1t6"]
+[ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_25puq"]
+[ext_resource type="Script" path="res://replay.gd" id="19_vg7a3"]
+[ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://fade.tscn" id="20_57qfn"]
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
 length = 0.001
@@ -100,6 +104,14 @@ tracks/2/keys = {
 _data = {
 "RESET": SubResource("Animation_jt4qq"),
 "vanish": SubResource("Animation_2vajw")
+}
+
+[sub_resource type="Animation" id="Animation_6tgx4"]
+resource_name = "pop_in"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b0tnt"]
+_data = {
+"pop_in": SubResource("Animation_6tgx4")
 }
 
 [node name="Node2D" type="Node2D"]
@@ -267,3 +279,58 @@ visible = false
 z_index = 6
 position = Vector2(0, 2)
 script = ExtResource("12_ihpgp")
+
+[node name="Game over UI" type="MarginContainer" parent="."]
+visible = false
+z_index = 11
+offset_right = 300.0
+offset_bottom = 181.0
+
+[node name="Background" type="TextureRect" parent="Game over UI"]
+layout_mode = 2
+texture = ExtResource("17_5t1t6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game over UI"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Game over UI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Game over UI/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]Game Over"
+fit_content = true
+scroll_active = false
+
+[node name="Replay" type="Button" parent="Game over UI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Play again"
+icon = ExtResource("18_25puq")
+flat = true
+icon_alignment = 1
+script = ExtResource("19_vg7a3")
+
+[node name="MarginContainer" type="MarginContainer" parent="Game over UI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 10
+
+[node name="Switch" type="Button" parent="Game over UI/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Switch mode"
+icon = ExtResource("18_25puq")
+flat = true
+icon_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI"]
+libraries = {
+"": SubResource("AnimationLibrary_b0tnt")
+}
+
+[node name="Fade" parent="." instance=ExtResource("20_57qfn")]
+
+[connection signal="pressed" from="Game over UI/VBoxContainer/Replay" to="Game over UI/VBoxContainer/Replay" method="_on_pressed"]

@@ -3,6 +3,7 @@ extends Node2D
 var PRESSED_KEYS = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$Fade.fade_out(0.5)
 	setup.call_deferred()
 
 func setup():
@@ -448,7 +449,11 @@ func tile_clicked(tile):
 				await place(location,$"background/Board".selected)
 				handle_lines(location)
 				if $"background/Board".evaluate_game_over():
-					get_tree().quit()
+					var game_over_ui: MarginContainer = $"Game over UI"
+					config.game_over = true
+					game_over_ui.position = Vector2(config.WINDOW_WIDTH/2,config.WINDOW_HEIGHT/2) - game_over_ui.size * 0.5
+					game_over_ui.set_anchors_preset(Control.PRESET_CENTER)
+					game_over_ui.show()
 
 			else:
 				Events.PlaySound.emit("Gameplay/nomatch")
