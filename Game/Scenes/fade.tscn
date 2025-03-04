@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dap1kb7ujraeq"]
 
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="1_gfpno"]
-[ext_resource type="Script" path="res://fade.gd" id="2_22bh6"]
+[ext_resource type="Script" uid="uid://dismv6bu7h6hu" path="res://Game/Scripts/fade.gd" id="2_22bh6"]
 
 [node name="Fade" type="Sprite2D"]
 visible = false

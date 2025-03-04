@@ -57,8 +57,8 @@ max = 2.0
 code = "shader_type canvas_item;
 render_mode blend_add;
 
-uniform float Glow : hint_range(1, 2) = 1;
-uniform float Vanish : hint_range(0, 1);
+uniform float Glow : hint_range(1.0, 2.0) = 1.0;
+uniform float Vanish : hint_range(0.0, 1.0);
 uniform float Speed;
 uniform sampler2D basic_texture : source_color, repeat_enable;
 

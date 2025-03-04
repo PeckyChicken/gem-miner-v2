@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bd2m28ykh7qwe"]
 
-[ext_resource type="Shader" uid="uid://ctu47x2syhjrh" path="res://lightning.tres" id="1_eub60"]
+[ext_resource type="Shader" uid="uid://ctu47x2syhjrh" path="res://Game/Shaders/lightning.tres" id="1_eub60"]
 [ext_resource type="Texture2D" uid="uid://rwr4pticc58r" path="res://assets/Images/Tools/lightning.png" id="2_p2mpv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qqmu1"]
@@ -91,8 +91,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fqfb0"]
 _data = {
-"RESET": SubResource("Animation_2432h"),
-"energized": SubResource("Animation_bw54t")
+&"RESET": SubResource("Animation_2432h"),
+&"energized": SubResource("Animation_bw54t")
 }
 
 [node name="Lightning" type="Node2D"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://8y3t7elpug68"]
 
 [ext_resource type="Texture2D" uid="uid://b50b8w56qjfbt" path="res://assets/Images/UI/tools_bg.png" id="1_yhipk"]
-[ext_resource type="Script" path="res://background_tile.gd" id="2_1ilkl"]
+[ext_resource type="Script" uid="uid://i4egn8qbcufn" path="res://Game/Scripts/background_tile.gd" id="2_1ilkl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v3tjd"]
 size = Vector2(65, 65)

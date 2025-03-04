@@ -1,25 +1,25 @@
 [gd_scene load_steps=26 format=3 uid="uid://bo82chpiopg54"]
 
-[ext_resource type="Script" path="res://node_2d.gd" id="1_3e5tt"]
-[ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://game_tile.tscn" id="1_ed5m1"]
+[ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/node_2d.gd" id="1_3e5tt"]
+[ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://Game/Scenes/game_tile.tscn" id="1_ed5m1"]
 [ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_y604g"]
-[ext_resource type="Script" path="res://background.gd" id="3_20h8o"]
-[ext_resource type="Script" path="res://Global/BOARD.gd" id="4_nmhqh"]
-[ext_resource type="PackedScene" uid="uid://crs80oppmnox6" path="res://background_tile.tscn" id="5_bwn3f"]
-[ext_resource type="Script" path="res://Global/PIT.gd" id="5_mrluv"]
-[ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://tool_background_tile.tscn" id="6_rh1no"]
-[ext_resource type="Script" path="res://Global/LINE.gd" id="6_vstfk"]
-[ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://selection_tile.tscn" id="7_3lrgi"]
-[ext_resource type="Script" path="res://Global/BRICK.gd" id="7_sql4l"]
-[ext_resource type="PackedScene" uid="uid://cw30exc5aa45u" path="res://audio.tscn" id="8_to6od"]
+[ext_resource type="Script" uid="uid://b2h5qpr6nowww" path="res://Game/Scripts/background.gd" id="3_20h8o"]
+[ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_nmhqh"]
+[ext_resource type="PackedScene" uid="uid://crs80oppmnox6" path="res://Game/Scenes/background_tile.tscn" id="5_bwn3f"]
+[ext_resource type="Script" uid="uid://cvi1wou23m4f4" path="res://Game/Scripts/PIT.gd" id="5_mrluv"]
+[ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://Game/Scenes/tool_background_tile.tscn" id="6_rh1no"]
+[ext_resource type="Script" uid="uid://qunfa3c4235h" path="res://Game/Scripts/LINE.gd" id="6_vstfk"]
+[ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://Game/Scenes/selection_tile.tscn" id="7_3lrgi"]
+[ext_resource type="Script" uid="uid://duh208w7g8iw3" path="res://Game/Scripts/BRICK.gd" id="7_sql4l"]
+[ext_resource type="PackedScene" uid="uid://cw30exc5aa45u" path="res://Game/Scenes/audio.tscn" id="8_to6od"]
 [ext_resource type="Texture2D" uid="uid://bikexw8nixrnq" path="res://assets/Images/UI/vanish.png" id="9_5hugd"]
-[ext_resource type="Script" path="res://score.gd" id="9_s05xj"]
-[ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://lightning.tscn" id="10_rj7my"]
-[ext_resource type="Script" path="res://lightning.gd" id="12_ihpgp"]
+[ext_resource type="Script" uid="uid://bsc4scarallbq" path="res://Game/Scripts/score.gd" id="9_s05xj"]
+[ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://Game/Scenes/lightning.tscn" id="10_rj7my"]
+[ext_resource type="Script" uid="uid://7v33ng1f76oh" path="res://Game/Scripts/lightning.gd" id="12_ihpgp"]
 [ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="17_5t1t6"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_25puq"]
-[ext_resource type="Script" path="res://replay.gd" id="19_vg7a3"]
-[ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://fade.tscn" id="20_57qfn"]
+[ext_resource type="Script" uid="uid://bbu066avuqbl2" path="res://Game/Scripts/replay.gd" id="19_vg7a3"]
+[ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_57qfn"]
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
 length = 0.001
@@ -102,8 +102,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nuryj"]
 _data = {
-"RESET": SubResource("Animation_jt4qq"),
-"vanish": SubResource("Animation_2vajw")
+&"RESET": SubResource("Animation_jt4qq"),
+&"vanish": SubResource("Animation_2vajw")
 }
 
 [sub_resource type="Animation" id="Animation_6tgx4"]
@@ -111,7 +111,7 @@ resource_name = "pop_in"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b0tnt"]
 _data = {
-"pop_in": SubResource("Animation_6tgx4")
+&"pop_in": SubResource("Animation_6tgx4")
 }
 
 [node name="Node2D" type="Node2D"]
@@ -157,7 +157,7 @@ texture = ExtResource("9_5hugd")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="background/vanish"]
 libraries = {
-"": SubResource("AnimationLibrary_nuryj")
+&"": SubResource("AnimationLibrary_nuryj")
 }
 
 [node name="Hud" type="Node2D" parent="background"]
@@ -328,7 +328,7 @@ icon_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI"]
 libraries = {
-"": SubResource("AnimationLibrary_b0tnt")
+&"": SubResource("AnimationLibrary_b0tnt")
 }
 
 [node name="Fade" parent="." instance=ExtResource("20_57qfn")]

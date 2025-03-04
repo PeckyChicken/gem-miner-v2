@@ -11,14 +11,15 @@ config_version=5
 [application]
 
 config/name="Gem Miner v2"
-run/main_scene="res://node_2d.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+run/main_scene="res://Game/Scenes/node_2d.tscn"
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 config="*res://Global/CONFIG.gd"
 Events="*res://Global/EVENTS.gd"
+Music="*res://Music/MUSIC.gd"
 
 [debug]
 

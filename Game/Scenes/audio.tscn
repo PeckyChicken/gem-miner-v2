@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cw30exc5aa45u"]
 
-[ext_resource type="Script" path="res://master_audio.gd" id="1_qpiu6"]
+[ext_resource type="Script" uid="uid://c3gr5xmyslra0" path="res://Game/Scripts/master_audio.gd" id="1_qpiu6"]
 [ext_resource type="AudioStream" uid="uid://cg143r0dihujv" path="res://assets/Sounds/Gameplay/place.wav" id="1_yc5ua"]
-[ext_resource type="Script" path="res://audio.gd" id="2_e0wh2"]
+[ext_resource type="Script" uid="uid://6on6l3bp2xq0" path="res://Game/Scripts/audio.gd" id="2_e0wh2"]
 
 [node name="Audio" type="Node2D"]
 script = ExtResource("1_qpiu6")
