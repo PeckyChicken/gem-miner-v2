@@ -1,5 +1,5 @@
 extends Node
-class_name Board
+class_name brd
 
 const ROWS = 7
 const COLUMNS = 7
