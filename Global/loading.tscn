@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj351iyg6llgs"]
+
+[ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="1_v68iw"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Fade" type="Sprite2D" parent="."]
+position = Vector2(250, 250)
+texture = ExtResource("1_v68iw")

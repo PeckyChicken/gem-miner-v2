@@ -1,6 +1,6 @@
 extends Button
 
-@onready var node_2d: Node2D = $"../../.."
+@onready var node_2d: Node2D = $"../../../.."
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,10 +14,8 @@ func _process(_delta: float) -> void:
 
 func _on_pressed() -> void:
 	var current_scene = node_2d
-	var new_scene: Node = load("res://Game/Scenes/game.tscn").instantiate()
-	new_scene.get_node("background/Board").mode = $"../../../background/Board".mode
-	await $"../../../Fade".fade_in(0.5)
+	var new_scene: Node = load("res://Title/title.tscn").instantiate()
+	await $"../../../../Fade".fade_in(0.5)
 	get_tree().root.add_child(new_scene)  # Add the new scene first
 	
 	current_scene.queue_free()
-	
