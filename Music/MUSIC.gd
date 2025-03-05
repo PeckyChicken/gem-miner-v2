@@ -16,12 +16,14 @@ var sound: Resource
 
 var volume = 0.25
 
+var volume_tween: Tween
+
 func _ready() -> void:
 	for player in players:
 		player.volume_db = linear_to_db(volume)
 		add_child(player)
 
-func play(track:String):
+func play(track:String,fade_in=0):
 	stop()
 	var track_data
 	if track in track_cache:
@@ -45,14 +47,32 @@ func play(track:String):
 		player.stream = sound
 	
 	players[0].play()
+	if fade_in:
+		await _tween_players(fade_in,0,volume)
 	playing = track
+
+func _tween_players(time,start,end):
+	playing = null
+	volume_tween = get_tree().create_tween()
+	volume_tween.set_parallel()
+		
+	for player in players:
+		player.volume_db = linear_to_db(start)
+		
+		volume_tween.tween_property(player,"volume_db",linear_to_db(end),time)
+	print(volume_tween.is_running())
+	await volume_tween.finished
 	
-	
-func stop():
+
+func stop(fade_out=0):
+	if fade_out:
+		await _tween_players(fade_out,volume,0)
 	for player in players:
 		player.stop()
 	playing = null
 	current_player = 0
+	if volume_tween and volume_tween.is_running():
+		volume_tween.stop()
 	
 func _process(_delta: float) -> void:
 	if playing:
