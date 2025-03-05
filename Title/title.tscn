@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://btywqi1kth5wl"]
+
+[ext_resource type="Script" uid="uid://cs24j1srm1dxl" path="res://Title/title.gd" id="1_r824j"]
+[ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="1_s6sku"]
+[ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="2_7p1qe"]
+[ext_resource type="Script" uid="uid://brr8f1btfi8on" path="res://Title/start_game.gd" id="3_riw74"]
+[ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="4_r824j"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_r824j")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 500.0
+offset_bottom = 500.0
+
+[node name="Background" type="Sprite2D" parent="MarginContainer"]
+position = Vector2(250, 250)
+texture = ExtResource("1_s6sku")
+hframes = 3
+vframes = 3
+frame = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="survival" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Survival"
+icon = ExtResource("2_7p1qe")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_riw74")
+
+[node name="time_rush" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Time Rush
+"
+icon = ExtResource("2_7p1qe")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_riw74")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="obstacle" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Obstacles"
+icon = ExtResource("2_7p1qe")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_riw74")
+
+[node name="ascension" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Ascension
+"
+icon = ExtResource("2_7p1qe")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_riw74")
+
+[node name="Fade" parent="." instance=ExtResource("4_r824j")]
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/survival" to="MarginContainer/VBoxContainer/HBoxContainer/survival" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/time_rush" to="MarginContainer/VBoxContainer/HBoxContainer/time_rush" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" to="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ascension" to="MarginContainer/VBoxContainer/HBoxContainer2/ascension" method="_on_pressed"]

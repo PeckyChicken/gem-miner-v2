@@ -1,20 +1,23 @@
 extends Node2D
 
 var PRESSED_KEYS = []
+var BACKGROUNDS = {"survival":1,"time_rush":2,"obstacle":3,"chromablitz":4,"ascension":7}
 @onready var Board: brd = $background/Board
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Fade.fade_out(0.5)
 	setup.call_deferred()
-
-func setup():
+	await $Fade.fade_out(0.5)
 	if Board.mode == "survival":
 		if Music.playing not in ["survival1","survival2"]:
 			Music.play(["survival1","survival2"].pick_random())
 	else:
 		if Board.mode != Music.playing:
 			Music.play(Board.mode)
+
+func setup():
+	set_background(Board.mode)
+
 	Events.TileClicked.connect(tile_clicked)
 	Board.draw_background($background/background_tile)
 	Board.draw($background/tile)
@@ -31,6 +34,15 @@ func setup():
 	random_place([13])
 
 	Board.draw($background/tile)
+
+func set_background(mode):
+
+	if mode == "ascension":
+		$ascension_particles.show()
+	else:
+		$ascension_particles.queue_free()
+	
+	$background.frame = BACKGROUNDS[mode]
 
 func random_place(items:Array):
 	assert (0 in Board.board)

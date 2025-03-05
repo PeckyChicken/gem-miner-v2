@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Gem Miner v2"
-run/main_scene="res://Game/Scenes/node_2d.tscn"
+run/main_scene="uid://btywqi1kth5wl"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
