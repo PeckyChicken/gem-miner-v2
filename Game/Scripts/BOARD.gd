@@ -21,6 +21,8 @@ var goal = 500
 var moves = 15
 var mode = "survival"
 
+var game_over = false
+
 var width
 var height
 var start_x
@@ -28,6 +30,7 @@ var start_y
 
 func _ready():
 	clear_board()
+	Events.GameOver.connect(func():game_over=true)
 	
 func within_board(location:Vector2):
 	var board_start = Vector2.ZERO
@@ -135,6 +138,11 @@ func next_level():
 	else:
 		goal *= 5
 	
+	if mode == "obstacle":
+		moves += level
+
+		$"../..".add_bricks(level)
+	
 	Events.AddScore.emit(0) #Forces an update of the displays
 
 func remove_square(location:Vector2):
@@ -145,17 +153,26 @@ func remove_square(location:Vector2):
 	set_square(location,0)
 	await tile.animation_player.animation_finished
 
+func evaluate_next_level():
+	if mode == "obstacle":
+		if Item.BRICK not in board:
+			next_level()
+		return
+	
+	if score >= goal:
+		next_level()
+
 func evaluate_game_over():
-	var game_over = false
+	var _game_over = false
 	if mode == "obstacle":
 		if moves <= 0:
-			game_over = true
+			_game_over = true
 	
-	if 0 not in board:
+	if Item.AIR not in board:
 		if not board.any(func (x): return x in $"../Pit".TOOLS):
-			game_over = true
+			_game_over = true
 	
-	return game_over
+	return _game_over
 
 func draw(tile_sprite,location:Vector2=Vector2.INF):
 	assert (len(background_tiles) == len(board))

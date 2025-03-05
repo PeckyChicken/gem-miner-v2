@@ -60,7 +60,7 @@ func _tween_players(time,start,end):
 		player.volume_db = linear_to_db(start)
 		
 		volume_tween.tween_property(player,"volume_db",linear_to_db(end),time)
-	print(volume_tween.is_running())
+	#print(volume_tween.is_running())
 	await volume_tween.finished
 	
 

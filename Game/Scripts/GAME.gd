@@ -3,9 +3,11 @@ extends Node2D
 var PRESSED_KEYS = []
 var BACKGROUNDS = {"survival":1,"time_rush":2,"obstacle":3,"chromablitz":4,"ascension":7}
 @onready var Board: brd = $background/Board
+var time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Events.GameOver.connect(game_over)
 	setup.call_deferred()
 	await $Fade.fade_out(0.5)
 	if Board.mode == "survival":
@@ -14,6 +16,16 @@ func _ready() -> void:
 	else:
 		if Board.mode != Music.playing:
 			Music.play(Board.mode)
+
+func _process(delta: float) -> void:
+	if Board.mode == "time_rush" and not Board.game_over:
+		time += delta
+		if time >= 1:
+			add_bricks()
+			while time >= 1:
+				time -= 1
+			if Board.evaluate_game_over():
+				Events.GameOver.emit()
 
 func setup():
 	set_background(Board.mode)
@@ -28,10 +40,12 @@ func setup():
 	$background/selection_tile.type = Events.Type.selected
 	random_place($background/Pit.OPTIONS)
 	random_place($background/Pit.OPTIONS)
+	
 	random_place([13])
-	random_place([13])
-	random_place([13])
-	random_place([13])
+	if Board.mode != "obstacle":
+		random_place([13])
+		random_place([13])
+		random_place([13])
 
 	Board.draw($background/tile)
 
@@ -41,6 +55,12 @@ func set_background(mode):
 		$ascension_particles.show()
 	else:
 		$ascension_particles.queue_free()
+	
+	if mode == "obstacle":
+		$background/Hud/Goal.hide()
+		$background/Hud/Goal_Label.hide()
+		$background/Hud/Moves.show()
+		$background/Hud/Moves_Label.show()
 	
 	$background.frame = BACKGROUNDS[mode]
 
@@ -64,9 +84,6 @@ func random_place(items:Array):
 	Board.set_square(selection,items.pick_random())
 	Board.draw($background/tile,selection)
 	Board.pop_in(selection)
-
-func _process(_delta: float) -> void:
-	pass
 
 func _input(event):
 	if Input.is_action_pressed("ui_cancel"):
@@ -93,11 +110,12 @@ func validate_tile_placement(location:Vector2):
 	
 	return true
 
-func add_bricks():
-	var count = 1
-	count += floori(Board.level / 5.0)
-	if randi_range(0,4) < Board.level % 5:
-		count += 1
+func add_bricks(count=null):
+	if count == null:
+		count = 1
+		count += floori(Board.level / 5.0)
+		if randi_range(0,4) < Board.level % 5:
+			count += 1
 	
 	for __ in range(count):
 		if 0 not in Board.board:
@@ -279,6 +297,7 @@ func double_diamond(location:Vector2):
 	Events.AddScore.emit(100)
 	Board.clear_board()
 	await Board._get_foreground_square(location).animation_player.animation_finished
+	Board.evaluate_next_level()
 
 func evaluate_tool_combo(location:Vector2,combo):
 	await $background/Line.animate_line_clear(location,combo,false)
@@ -314,25 +333,25 @@ func evaluate_tool_combo(location:Vector2,combo):
 	if top_two[0] in [5,6,7,8] and top_two[1] in [5,6,7,8]:
 		await double_diamond(location)
 	
-	if top_two.any(func(n):return n in [5,6,7,8,9]):
+	if top_two.any(func(n):return n in Item.DIAMONDS):
 		var color
 		for one in top_two:
 			if one in [5,6,7,8,9]:
 				color = one-4
-		if 10 in top_two or 11 in top_two:
+		if Item.H_DRILL in top_two or Item.V_DRILL in top_two:
 			var replacements = replace_squares(color,[10,11])
 			for replacement in replacements:
 				evaluate_game_tool(replacement,false)
-		if 13 in top_two:
+		if Item.BOMB in top_two:
 			var replacements = replace_squares(color,13)
 			for replacement in replacements:
 				evaluate_game_tool(replacement,false)
 	
-	if top_two[0] == 12 and top_two[1] == 12:
+	if top_two[0] == Item.BOMB and top_two[1] == Item.BOMB:
 		Events.PlaySound.emit("Bomb/use")
 		clear_blast(location,2)
 	
-	if top_two[0] in [10,11] and top_two[1] in [10,11]:
+	if top_two[0] in Item.DRILLS and top_two[1] in Item.DRILLS:
 		Events.PlaySound.emit("Drill/use")
 		clear_line(location,"V")
 		clear_line(location,"H")
@@ -350,7 +369,8 @@ func handle_lines(location:Vector2):
 		clears += vertical_matches
 	
 	if len(clears) == 0:
-		add_bricks()
+		if Board.mode not in ["obstacle","time_rush"]:
+			add_bricks()
 		return
 	
 	var type = Board.get_square(location)
@@ -380,7 +400,7 @@ func handle_lines(location:Vector2):
 		Events.PlaySound.emit("Gameplay/place")
 
 func board_empty():
-	return Board.board.all(func(__): return __ == 0)
+	return Board.board.all(func(__): return __ == Item.AIR)
 
 func place(location,value):
 	Board.set_square(location,value)
@@ -413,11 +433,18 @@ func clear_line(location,direction:String):
 	for cur_x in x_positions:
 		for cur_y in y_positions:
 			var cur_location = Vector2(cur_x,cur_y)
-			if Board.get_square(cur_location) != 0:
+			if Board.get_square(cur_location) != Item.AIR:
 				Events.AddScore.emit(10)
+			if Board.get_square(cur_location) in Item.BRICKS:
+				$background/Brick._destroy_brick(cur_location)
+				
 			if cur_location != location:
 				evaluate_game_tool(cur_location,false)
-			Board.remove_square(cur_location)
+			
+			if Board.get_square(cur_location) in Item.GEMS:
+				Board.remove_square(cur_location)
+	
+	Board.remove_square(location)
 
 func clear_blast(location,radius:int):
 	var cur_x = location.x - radius
@@ -427,13 +454,20 @@ func clear_blast(location,radius:int):
 		while cur_y <= location.y + radius:
 			var cur_location = Vector2(cur_x,cur_y)
 			if Board.within_board(cur_location):
-				if Board.get_square(cur_location) != 0:
+				if Board.get_square(cur_location) != Item.AIR:
 					Events.AddScore.emit(10)
+				if Board.get_square(cur_location) in Item.BRICKS:
+					$background/Brick._destroy_brick(cur_location)
+				
 				if cur_location != location:
 					evaluate_game_tool(cur_location,false)
-				Board.remove_square(cur_location)
+				
+				if Board.get_square(cur_location) in Item.GEMS:
+					Board.remove_square(cur_location)
 			cur_y += 1
 		cur_x += 1
+	
+	Board.remove_square(location)
 
 func select_pit_item(pos:int):
 	var temp = Board.selected
@@ -458,7 +492,18 @@ func replace_squares(type,replacement):
 		index += 1
 	return replaced_squares
 
+func game_over():
+	var game_over_ui: MarginContainer = $"Game over UI"
+	config.game_over = true
+	game_over_ui.position = Vector2(config.WINDOW_WIDTH/2,config.WINDOW_HEIGHT/2) - game_over_ui.size * 0.5
+	game_over_ui.set_anchors_preset(Control.PRESET_CENTER)
+	game_over_ui.show()
+	
+	Music.play("game_over")
+
 func tile_clicked(tile):
+	if Board.game_over:
+		return
 	var location = Vector2(tile.x,tile.y)
 	if tile.type == Events.Type.board:
 		if Board.selected:
@@ -468,14 +513,12 @@ func tile_clicked(tile):
 					Events.AddScore.emit(0)
 				await place(location,Board.selected)
 				handle_lines(location)
+				if Board.evaluate_game_over() and Board.mode == "obstacle":
+					#If player is out of moves on obstacle, check if they've at least cleared the level.
+					Board.evaluate_next_level()
+					#If not, then it's game over.
 				if Board.evaluate_game_over():
-					var game_over_ui: MarginContainer = $"Game over UI"
-					config.game_over = true
-					game_over_ui.position = Vector2(config.WINDOW_WIDTH/2,config.WINDOW_HEIGHT/2) - game_over_ui.size * 0.5
-					game_over_ui.set_anchors_preset(Control.PRESET_CENTER)
-					game_over_ui.show()
-					
-					Music.play("game_over")
+					Events.GameOver.emit()
 
 			else:
 				Events.PlaySound.emit("Gameplay/nomatch")

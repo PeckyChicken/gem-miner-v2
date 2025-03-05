@@ -7,10 +7,6 @@ func _ready() -> void:
 	Events.AddScore.connect(add_score)
 	_update()
 
-func evaluate_next_level():
-	if board.score >= board.goal:
-		board.next_level()
-
 func add_score(score):
 	var score_to_add = score*board.level
 	
@@ -28,7 +24,8 @@ func add_score(score):
 	_update()
 	self_modulate = Color(1,1,1)
 	
-	evaluate_next_level()
+	if board.mode != "obstacle":
+		board.evaluate_next_level()
 	
 func _update():
 	add_theme_font_size_override("normal_font_size", _calculate_font_size(board.score))

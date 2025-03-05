@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=30 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_gsb0v"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
 [ext_resource type="Script" uid="uid://bbu066avuqbl2" path="res://Game/Scripts/replay.gd" id="19_56wl4"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
+[ext_resource type="Script" uid="uid://cxi6m8p8mp2j" path="res://Game/Scenes/switch.gd" id="21_tyrie"]
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
 length = 0.001
@@ -355,6 +356,7 @@ text = "Switch mode"
 icon = ExtResource("18_j81tf")
 flat = true
 icon_alignment = 1
+script = ExtResource("21_tyrie")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI"]
 libraries = {
@@ -364,3 +366,4 @@ libraries = {
 [node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
 
 [connection signal="pressed" from="Game over UI/VBoxContainer/Replay" to="Game over UI/VBoxContainer/Replay" method="_on_pressed"]
+[connection signal="pressed" from="Game over UI/VBoxContainer/MarginContainer/Switch" to="Game over UI/VBoxContainer/MarginContainer/Switch" method="_on_pressed"]

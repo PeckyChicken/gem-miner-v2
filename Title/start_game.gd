@@ -9,4 +9,4 @@ func _on_pressed() -> void:
 	Music.stop(100000)
 	await $"../../../../Fade".fade_in(0.5)
 	get_tree().root.add_child(node)
-	get_tree().current_scene.queue_free()
+	$"../../../..".queue_free()

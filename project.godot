@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 config="*res://Global/CONFIG.gd"
 Events="*res://Global/EVENTS.gd"
 Music="*res://Music/MUSIC.gd"
+Item="*res://Global/ITEMS.gd"
 
 [debug]
 
