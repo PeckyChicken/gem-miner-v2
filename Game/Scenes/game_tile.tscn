@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cnfmw3udolcqt" path="res://assets/Images/tiles.png" id="1_kv688"]
 [ext_resource type="Script" uid="uid://4rcvmd68mrq2" path="res://Game/Scripts/game_tile.gd" id="2_ovnvd"]
-[ext_resource type="Texture2D" uid="uid://dnbtc58i6dlyh" path="res://assets/Images/Tools/explosion.png" id="3_61y4n"]
+[ext_resource type="Texture2D" uid="uid://dnbtc58i6dlyh" path="res://assets/Images/Particles/explosion.png" id="3_61y4n"]
 [ext_resource type="Script" uid="uid://c0xyqs2taxlqd" path="res://Game/Scripts/explosion_particles.gd" id="4_jpheh"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0i6mb"]

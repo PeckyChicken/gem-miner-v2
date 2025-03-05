@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bikexw8nixrnq"
-path="res://.godot/imported/vanish.png-77b0d65f874c33b284f0740a98edf886.ctex"
+path="res://.godot/imported/vanish.png-432258b0a08495bf622cc7e7fe70020d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Images/UI/vanish.png"
-dest_files=["res://.godot/imported/vanish.png-77b0d65f874c33b284f0740a98edf886.ctex"]
+source_file="res://assets/Images/Particles/vanish.png"
+dest_files=["res://.godot/imported/vanish.png-432258b0a08495bf622cc7e7fe70020d.ctex"]
 
 [params]
 
