@@ -1,10 +1,13 @@
+@tool
 extends Button
 
 const NODE_2D = preload("res://Game/Scenes/game.tscn")
 
+@export var mode: Game.Mode = Game.Mode.survival
+
 func _on_pressed() -> void:
 	var node = NODE_2D.instantiate()
-	node.get_node("background/Board").mode = self.name
+	Game.current_mode = mode
 	
 	Music.stop(100000)
 	await $"../../../../Fade".fade_in(0.5)

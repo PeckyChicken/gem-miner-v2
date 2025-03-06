@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://7v33ng1f76oh" path="res://Game/Scripts/lightning.gd" id="16_t4ufd"]
 [ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="17_04prp"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
-[ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
+[ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scenes/game_over.gd" id="18_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
@@ -115,33 +115,6 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 offsets = PackedFloat32Array(0, 0.36)
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 
-[sub_resource type="Animation" id="Animation_tyrie"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05)]
-}
-
 [sub_resource type="Animation" id="Animation_6tgx4"]
 resource_name = "pop_in"
 tracks/0/type = "value"
@@ -167,6 +140,33 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_tyrie"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b0tnt"]
@@ -338,21 +338,13 @@ visible = false
 self_modulate = Color(1.2, 1.2, 1.2, 1)
 z_index = -19
 position = Vector2(250, 250)
-amount = 30
+amount = 20
 texture = ExtResource("14_gsb0v")
 speed_scale = 0.5
 randomness = 1.0
 emission_shape = 3
 emission_rect_extents = Vector2(250, 250)
-spread = 180.0
 gravity = Vector2(0, 0)
-initial_velocity_max = 20.0
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.01
-orbit_velocity_max = 0.01
-linear_accel_min = -10.0
-linear_accel_max = 10.0
 angle_max = 720.0
 scale_amount_max = 3.0
 color_ramp = SubResource("Gradient_tyrie")
@@ -422,12 +414,13 @@ icon = ExtResource("18_j81tf")
 flat = true
 icon_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI/MarginContainer"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI"]
+root_node = NodePath("../MarginContainer")
 libraries = {
 &"": SubResource("AnimationLibrary_b0tnt")
 }
 
 [node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
 
-[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
-[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI" method="_on_switch_pressed"]
+[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI/MarginContainer" method="_on_replay_pressed"]
+[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI/MarginContainer" method="_on_switch_pressed"]

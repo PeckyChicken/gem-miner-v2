@@ -24,7 +24,7 @@ func add_score(score):
 	_update()
 	self_modulate = Color(1,1,1)
 	
-	if board.mode != "obstacle":
+	if Game.current_mode != Game.Mode.obstacle:
 		board.evaluate_next_level()
 	
 func _update():

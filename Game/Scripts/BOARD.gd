@@ -19,7 +19,6 @@ var level = 1
 var score = 0
 var goal = 500
 var moves = 15
-var mode = "survival"
 
 var game_over = false
 
@@ -138,7 +137,7 @@ func next_level():
 	else:
 		goal *= 5
 	
-	if mode == "obstacle":
+	if Game.current_mode == Game.Mode.obstacle:
 		moves += level
 
 		$"../..".add_bricks(level)
@@ -154,7 +153,7 @@ func remove_square(location:Vector2):
 	await tile.animation_player.animation_finished
 
 func evaluate_next_level():
-	if mode == "obstacle":
+	if Game.current_mode == Game.Mode.obstacle:
 		if Item.BRICK not in board:
 			next_level()
 		return
@@ -164,7 +163,7 @@ func evaluate_next_level():
 
 func evaluate_game_over():
 	var _game_over = false
-	if mode == "obstacle":
+	if Game.current_mode == Game.Mode.obstacle:
 		if moves <= 0:
 			_game_over = true
 	

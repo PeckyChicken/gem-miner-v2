@@ -1,24 +1,25 @@
 extends Node2D
 
+const MODE_TO_STRING = {Game.Mode.survival:"survival",Game.Mode.time_rush:"time_rush",Game.Mode.obstacle:"obstacle",Game.Mode.chromablitz:"chromablitz",Game.Mode.ascension:"ascension"}
+const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.chromablitz:4,Game.Mode.ascension:7}
+
 var PRESSED_KEYS = []
-var BACKGROUNDS = {"survival":1,"time_rush":2,"obstacle":3,"chromablitz":4,"ascension":7}
 @onready var Board: brd = $background/Board
 var time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Events.GameOver.connect(game_over)
 	setup.call_deferred()
 	await $Fade.fade_out(0.5)
-	if Board.mode == "survival":
+	if Game.current_mode == Game.Mode.survival:
 		if Music.playing not in ["survival1","survival2"]:
 			Music.play(["survival1","survival2"].pick_random())
 	else:
-		if Board.mode != Music.playing:
-			Music.play(Board.mode)
+		if MODE_TO_STRING[Game.current_mode] != Music.playing:
+			Music.play(MODE_TO_STRING[Game.current_mode])
 
 func _process(delta: float) -> void:
-	if Board.mode == "time_rush" and not Board.game_over:
+	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
 		time += delta
 		if time >= 1:
 			add_bricks()
@@ -28,7 +29,7 @@ func _process(delta: float) -> void:
 				Events.GameOver.emit()
 
 func setup():
-	set_background(Board.mode)
+	set_background(Game.current_mode)
 
 	Events.TileClicked.connect(tile_clicked)
 	Board.draw_background($background/background_tile)
@@ -42,7 +43,7 @@ func setup():
 	random_place($background/Pit.OPTIONS)
 	
 	random_place([13])
-	if Board.mode != "obstacle":
+	if Game.current_mode != Game.Mode.obstacle:
 		random_place([13])
 		random_place([13])
 		random_place([13])
@@ -51,12 +52,12 @@ func setup():
 
 func set_background(mode):
 
-	if mode == "ascension":
+	if mode == Game.Mode.ascension:
 		$ascension_particles.show()
 	else:
 		$ascension_particles.queue_free()
 	
-	if mode == "obstacle":
+	if mode == Game.Mode.obstacle:
 		$background/Hud/Goal.hide()
 		$background/Hud/Goal_Label.hide()
 		$background/Hud/Moves.show()
@@ -369,7 +370,7 @@ func handle_lines(location:Vector2):
 		clears += vertical_matches
 	
 	if len(clears) == 0:
-		if Board.mode not in ["obstacle","time_rush"]:
+		if Game.current_mode not in [Game.Mode.obstacle,Game.Mode.time_rush]:
 			add_bricks()
 		return
 	
@@ -492,15 +493,6 @@ func replace_squares(type,replacement):
 		index += 1
 	return replaced_squares
 
-func game_over():
-	var game_over_ui: MarginContainer = $"Game over UI"
-	config.game_over = true
-	game_over_ui.position = Vector2(config.WINDOW_WIDTH/2,config.WINDOW_HEIGHT/2) - game_over_ui.size * 0.5
-	game_over_ui.set_anchors_preset(Control.PRESET_CENTER)
-	game_over_ui.show()
-	
-	Music.play("game_over")
-
 func tile_clicked(tile):
 	if Board.game_over:
 		return
@@ -508,12 +500,12 @@ func tile_clicked(tile):
 	if tile.type == Events.Type.board:
 		if Board.selected:
 			if validate_tile_placement(location):
-				if Board.mode == "obstacle":
+				if Game.current_mode == Game.Mode.obstacle:
 					Board.moves -= 1
 					Events.AddScore.emit(0)
 				await place(location,Board.selected)
 				handle_lines(location)
-				if Board.evaluate_game_over() and Board.mode == "obstacle":
+				if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacle:
 					#If player is out of moves on obstacle, check if they've at least cleared the level.
 					Board.evaluate_next_level()
 					#If not, then it's game over.
