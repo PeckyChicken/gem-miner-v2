@@ -8,7 +8,10 @@ class_name Lightning
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	animation_player.animation_finished.connect(func(__): queue_free())
+	animation_player.animation_finished.connect(destroy)
+
+func destroy(__=null):
+	queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
