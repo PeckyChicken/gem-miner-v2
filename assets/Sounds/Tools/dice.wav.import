@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dqxvkhcculskj"
-path="res://.godot/imported/shuffleused.wav-5e0419ba1d58a399610083497245cda3.sample"
+path="res://.godot/imported/dice.wav-51bd7259697b9d8b4cecb265ff8592bd.sample"
 
 [deps]
 
-source_file="res://assets/Sounds/Tools/shuffleused.wav"
-dest_files=["res://.godot/imported/shuffleused.wav-5e0419ba1d58a399610083497245cda3.sample"]
+source_file="res://assets/Sounds/Tools/dice.wav"
+dest_files=["res://.godot/imported/dice.wav-51bd7259697b9d8b4cecb265ff8592bd.sample"]
 
 [params]
 
