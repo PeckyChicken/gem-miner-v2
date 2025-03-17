@@ -1,14 +1,15 @@
 extends Node
 
 const SQUARES = 3
-const OPTIONS = [1,2,3,4]
+const OPTIONS = Item.GEMS
 var TOOLS = range(5,13)
-var pit = []
+var pit: Array[int] = []
 var background_tiles = []
-var foreground_tiles = []
+var foreground_tiles: Array[GameTile] = []
 var board_padding = 0.5 #Number of squares the pit is from the board.
 
-func draw_background(background_tile):
+func draw_background():
+	var background_tile = $"../tool_background_tile"
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()
@@ -29,7 +30,8 @@ func draw_background(background_tile):
 		background_tiles.append(new_tile)
 		cur_x += x_margin + square_width
 
-func draw(tile_sprite):
+func draw():
+	var tile_sprite = $"../tile"
 	assert (len(background_tiles) == len(pit))
 	
 	for tile in foreground_tiles:
@@ -47,8 +49,7 @@ func draw(tile_sprite):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for __ in range(SQUARES):
-		pit.append(0)
+	empty()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -59,6 +60,11 @@ func set_item(index,value):
 
 func get_item(index):
 	return pit[index]
+
+func empty():
+	pit.clear()
+	for __ in range(SQUARES):
+		pit.append(0)
 
 func fill(color = null):
 	var index = 0

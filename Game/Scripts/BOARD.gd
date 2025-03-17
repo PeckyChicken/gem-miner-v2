@@ -37,7 +37,7 @@ func within_board(location:Vector2):
 	return (location.x >= board_start.x and location.x <= board_end.x) and (location.y >= board_start.y and location.y <= board_end.y)
 
 func _index_to_coords(index):
-	return [index % COLUMNS,floori(index / COLUMNS)]
+	return Vector2(index % COLUMNS,floori(index / COLUMNS))
 
 func clear_gems(matches:Array):
 	for item in matches:
@@ -52,7 +52,7 @@ func get_square(location:Vector2):
 func get_absolute_coords(location:Vector2):
 	return _get_background_square(location).position
 
-func _get_foreground_square(location:Vector2):
+func _get_foreground_square(location:Vector2) -> GameTile:
 	return foreground_tiles[location.x*COLUMNS+location.y]
 
 func calculate_directions(location:Vector2):
@@ -85,8 +85,8 @@ func pop_in(location:Vector2):
 	tile.animation_player.play("pop")
 	await tile.animation_player.animation_finished
 
-func draw_background(background_tile:Sprite2D):
-	
+func draw_background():
+	var background_tile = $"../background_tile"
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()
@@ -118,29 +118,44 @@ func draw_background(background_tile:Sprite2D):
 		cur_x += square_width
 		cur_y = start_y
 
-func select(value,tile_sprite,selected_object):
-	selected = value
+func select(value,type=Events.Type.pit):
+	var tile_sprite
+	if type == Events.Type.pit:
+		selected = value
+		tile_sprite = $"../tile"
+	elif type == Events.Type.tool:
+		selected = Item.AIR
+		tile_sprite = $"../Tools/Tool".get_node("Image")
+	else:
+		printerr('"type" parameter set to an unsupported value (%s)' % [type])
+		assert(false)
+	
+	var selection_object = $"../selection_tile"
 	
 	if selected_tile:
 		selected_tile.queue_free()
 	var tile = tile_sprite.duplicate()
 	tile.set_frame(value)
 	tile.show()
-	selected_object.add_child(tile)
+	selection_object.add_child(tile)
 	selected_tile = tile
 
 func next_level():
 	level += 1
 	Events.PlaySound.emit("Gameplay/next_level")
+	
 	if level % 2 == 0:
 		goal *= 2
 	else:
 		goal *= 5
 	
 	if Game.current_mode == Game.Mode.obstacle:
+		$"../Tools".tool_counts[randi_range(0,len($"../Tools".tool_counts)-1)] += 1
 		moves += level
 
 		$"../..".add_bricks(level)
+	else:
+		$"../Tools".tool_counts = [1,1,1,1,1]
 	
 	Events.AddScore.emit(0) #Forces an update of the displays
 
@@ -148,6 +163,9 @@ func remove_square(location:Vector2):
 	var tile = _get_foreground_square(location)
 	if tile.animation_player.is_playing():
 		await tile.animation_player.animation_finished
+	if get_square(location) in Item.BRICKS:
+		await $"../Brick"._destroy_brick(location)
+		return
 	tile.animation_player.play("vanish")
 	set_square(location,0)
 	await tile.animation_player.animation_finished
@@ -173,7 +191,8 @@ func evaluate_game_over():
 	
 	return _game_over
 
-func draw(tile_sprite,location:Vector2=Vector2.INF):
+func draw(location:Vector2=Vector2.INF):
+	var tile_sprite = $"../tile"
 	assert (len(background_tiles) == len(board))
 	
 	if location != Vector2.INF:

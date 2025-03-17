@@ -1,4 +1,5 @@
 extends Node2D
+class_name Lightning
 
 @onready var line: Line2D = $Line
 @onready var animation_player: AnimationPlayer = $AnimationPlayer

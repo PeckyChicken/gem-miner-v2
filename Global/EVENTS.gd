@@ -10,7 +10,9 @@ signal AddScore(score)
 signal DestroyBricks(gems)
 signal CreateLightning(point_a,point_b,color)
 signal Explode(x,y)
+
 signal GameOver()
+signal DeselectTools()
 
 enum Type {
 	board,

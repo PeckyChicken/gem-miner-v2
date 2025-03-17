@@ -108,5 +108,5 @@ texture_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_fqfb0")
+&"": SubResource("AnimationLibrary_fqfb0")
 }

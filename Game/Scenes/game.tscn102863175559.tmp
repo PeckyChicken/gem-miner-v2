@@ -208,13 +208,8 @@ z_index = 5
 [node name="background_tile" parent="background" instance=ExtResource("9_572oi")]
 
 [node name="selection_tile" parent="background" instance=ExtResource("11_hjvjr")]
-position = Vector2(437, 22)
+position = Vector2(437, 34)
 type = 3
-
-[node name="tool_background_tile" parent="background" instance=ExtResource("10_8srii")]
-visible = false
-position = Vector2(-24, -28)
-type = 2
 
 [node name="vanish" type="Sprite2D" parent="background"]
 position = Vector2(7.62939e-06, 0)
@@ -341,24 +336,13 @@ scroll_active = false
 [node name="Tools" type="Node2D" parent="background"]
 script = ExtResource("13_tyrie")
 
-[node name="Tool" parent="background/Tools" instance=ExtResource("15_ofkml")]
-z_index = 2
-position = Vector2(436, 112)
-
-[node name="background_tile" parent="background/Tools" instance=ExtResource("10_8srii")]
-visible = false
-position = Vector2(437, 113)
+[node name="tool_background_tile" parent="background/Tools" instance=ExtResource("10_8srii")]
+position = Vector2(437, 133)
 type = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="background/Tools"]
-offset_left = 431.0
-offset_top = 81.0
-offset_right = 497.0
-offset_bottom = 107.0
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
-text = "[center]Tools"
-scroll_active = false
+[node name="Tool" parent="background/Tools" instance=ExtResource("15_ofkml")]
+z_index = 2
+position = Vector2(436, 121)
 
 [node name="ascension_particles" type="CPUParticles2D" parent="."]
 visible = false

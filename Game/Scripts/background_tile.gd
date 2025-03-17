@@ -1,8 +1,12 @@
 extends Sprite2D
+
+class_name BackgroundTile
+
 var x = 0
 var y = 0
 var hovered = false
-var type
+
+@export var type: Events.Type
 
 func _ready() -> void:
 	Events.MouseClicked.connect(_on_mouse_clicked)

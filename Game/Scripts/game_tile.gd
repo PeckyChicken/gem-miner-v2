@@ -1,7 +1,9 @@
 extends Sprite2D
+class_name GameTile
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var brick_particles: CPUParticles2D = $BrickParticles
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

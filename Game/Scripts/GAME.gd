@@ -32,13 +32,12 @@ func setup():
 	set_background(Game.current_mode)
 
 	Events.TileClicked.connect(tile_clicked)
-	Board.draw_background($background/background_tile)
-	Board.draw($background/tile)
-	$background/Pit.draw_background($background/tool_background_tile)
+	Board.draw_background()
+	Board.draw()
+	$background/Pit.draw_background()
 	$background/Pit.fill()
-	$background/Pit.draw($background/tile)
+	$background/Pit.draw()
 	
-	$background/selection_tile.type = Events.Type.selected
 	random_place($background/Pit.OPTIONS)
 	random_place($background/Pit.OPTIONS)
 	
@@ -47,8 +46,8 @@ func setup():
 		random_place([13])
 		random_place([13])
 		random_place([13])
-
-	Board.draw($background/tile)
+	
+	Board.draw()
 
 func set_background(mode):
 
@@ -83,7 +82,7 @@ func random_place(items:Array):
 	
 	
 	Board.set_square(selection,items.pick_random())
-	Board.draw($background/tile,selection)
+	Board.draw(selection)
 	Board.pop_in(selection)
 
 func _input(event):
@@ -158,23 +157,26 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 		Events.PlaySound.emit("Bomb/create")
 	
 	for l in [location] + clears:
-		Board.draw($background/tile,l)
+		Board.draw(l)
 	
 	await Board.pop_in(location)
 
-func create_lightning(point_a:Vector2,point_b:Vector2,color: Color) -> Node2D:
+func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vector2.ZERO,Vector2.ZERO]) -> Lightning:
 	var lightning = $Lightning.duplicate()
 	var lightning_line: Line2D = lightning.get_node("Line")
 	lightning_line.position = Vector2(Board.width/Board.ROWS / 2,Board.height/Board.COLUMNS / 2)
 	
+	var square_size = Vector2(Board.width/Board.ROWS,Board.height/Board.COLUMNS)
+	
 	var point_a_node = Board._get_background_square(point_a)
 	
-	var dx = point_b[0] - point_a[0]
-	var dy = point_b[1] - point_a[1]
-	dx *= Board.width/Board.ROWS
-	dy *= Board.height/Board.COLUMNS
-
-	lightning_line.points = [Vector2(0,0), Vector2(dx,dy)]
+	var delta = point_b - point_a
+	delta *= square_size
+	
+	offsets[0] *= square_size
+	offsets[1] *= square_size
+	
+	lightning_line.points = [offsets[0]/lightning_line.scale, (delta+offsets[1])/lightning_line.scale]
 	lightning.modulate = color
 	
 	lightning.show()
@@ -182,24 +184,27 @@ func create_lightning(point_a:Vector2,point_b:Vector2,color: Color) -> Node2D:
 	
 	return lightning
 
-func diamond(location:Vector2,type):
+func diamond(location:Vector2,type,replacement=Item.AIR) -> Array[Vector2]:
 	var lights = []
-	var squares = []
+	var squares: Array[Vector2] = []
 	for square_x in Board.COLUMNS:
 		for square_y in Board.ROWS:
 			var square_location = Vector2(square_x,square_y)
 			if Board.get_square(square_location) == type-4:
-				Board._get_foreground_square(square_location).align_for_animation()
-				Board._get_foreground_square(square_location).animation_player.play("energized")
+				var tile: GameTile = Board._get_foreground_square(square_location)
+				tile.z_index = 2
+				tile.align_for_animation()
+				tile.animation_player.play("energized")
 				squares.append(square_location)
 				
 				var lightning = create_lightning(location,square_location,Board.COLORS[type-5])
+				lightning.z_index = 1
 				lightning.animation_player.play("energized")
 				lights.append(lightning)
 	
-	replace_squares(type-4,0)
+	replace_squares(type-4,replacement)
 	Events.AddScore.emit(10)
-	Board.set_square(location,0)
+	Board.set_square(location,Item.AIR)
 	Events.PlaySound.emit("Diamond/use")
 	Board._get_foreground_square(location).animation_player.play("diamond")
 	if len(lights) > 0:
@@ -207,8 +212,12 @@ func diamond(location:Vector2,type):
 	for light in lights:
 		light.queue_free()
 	$background/Brick.destroy_bricks(squares+[location])
+	for square in squares:
+		Board.draw(square)
+		Board.pop_in(square)
 	
 	await Board._get_foreground_square(location).animation_player.animation_finished
+	return squares
 
 func evaluate_game_tool(location,calculate_combo=true):
 	var type = Board.get_square(location)
@@ -235,19 +244,19 @@ func evaluate_game_tool(location,calculate_combo=true):
 		await diamond(location,type)
 		
 	if type == 10:
-		clear_line(location,"h")
 		Events.PlaySound.emit("Drill/use")
+		await clear_line(location,"h")
 		
 	if type == 11:
-		clear_line(location,"v")
 		Events.PlaySound.emit("Drill/use")
+		await clear_line(location,"v")
 		
 	if type == 12:
 		clear_blast(location,1)
 		Events.PlaySound.emit("Bomb/use")
 		#await Board._get_foreground_square(x,y).explode()
 	
-	Board.draw($background/tile)
+	Board.draw()
 	
 	if board_empty():
 		random_place($background/Pit.OPTIONS)
@@ -329,6 +338,7 @@ func evaluate_tool_combo(location:Vector2,combo):
 				break
 			index += 1
 		Board.set_square(item,0)
+	print(top_two)
 	assert (0 not in top_two)
 	
 	if top_two[0] in [5,6,7,8] and top_two[1] in [5,6,7,8]:
@@ -336,17 +346,22 @@ func evaluate_tool_combo(location:Vector2,combo):
 	
 	if top_two.any(func(n):return n in Item.DIAMONDS):
 		var color
-		for one in top_two:
-			if one in [5,6,7,8,9]:
-				color = one-4
+		for item in top_two:
+			if item in [5,6,7,8,9]:
+				color = item
+		
+		var tool_type
 		if Item.H_DRILL in top_two or Item.V_DRILL in top_two:
-			var replacements = replace_squares(color,[10,11])
-			for replacement in replacements:
-				evaluate_game_tool(replacement,false)
-		if Item.BOMB in top_two:
-			var replacements = replace_squares(color,13)
-			for replacement in replacements:
-				evaluate_game_tool(replacement,false)
+			tool_type = Item.DRILLS
+		elif Item.BOMB in top_two:
+			tool_type = Item.BOMB
+		
+		var replacements: Array[Vector2] = await diamond(location,color,tool_type)
+		replacements.shuffle()
+		for replacement in replacements:
+			if Board.get_square(replacement) == Item.AIR:
+				continue
+			await evaluate_game_tool(replacement,false)
 	
 	if top_two[0] == Item.BOMB and top_two[1] == Item.BOMB:
 		Events.PlaySound.emit("Bomb/use")
@@ -394,7 +409,7 @@ func handle_lines(location:Vector2):
 	
 	for item in clears:
 		Board._get_foreground_square(item).queue_free()
-		Board.draw($background/tile,item)
+		Board.draw(item)
 	
 	if board_empty():
 		random_place($background/Pit.OPTIONS)
@@ -403,33 +418,52 @@ func handle_lines(location:Vector2):
 func board_empty():
 	return Board.board.all(func(__): return __ == Item.AIR)
 
-func place(location,value):
+func _place(location,value):
 	Board.set_square(location,value)
 	Events.PlaySound.emit("Gameplay/place")
 	
-	Board.draw($background/tile,location)
-	Board.select(0,$background/tile,$background/selection_tile)
+	Board.draw(location)
+	Board.select(Item.AIR)
 	$background/Pit.fill()
-	$background/Pit.draw($background/tile)
+	$background/Pit.draw()
 	Events.AddScore.emit(1)
 	await Board.pop_in(location)
 
-func clear_line(location,direction:String):
-	assert (direction.to_lower() in ["h","v"])
+func clear_line(location,direction:String,show_lightning=true):
+	direction = direction.to_lower()
+	assert (direction in ["h","v"])
+	
+	Board.set_square(location,Item.AIR)
+	
 	var x_positions = []
 	var y_positions = []
-	if direction.to_lower() == "h":
+	if direction == "h":
 		x_positions = range(Board.COLUMNS)
 	else:
 		x_positions.resize(Board.COLUMNS)
 		x_positions.fill(location.x)
 	
-	if direction.to_lower() == "v":
+	if direction == "v":
 		y_positions = range(Board.ROWS)
 	else:
 		y_positions.resize(Board.ROWS)
 		y_positions.fill(location.y)
 	
+	var start_pos = Vector2(x_positions[0],y_positions[0])
+	var end_pos = Vector2(x_positions[-1],y_positions[-1])
+	
+	var lightning: Lightning
+	if show_lightning:
+		var offsets
+		if direction == "v":
+			offsets = [Vector2(0,-0.5),Vector2(0,0.5)]
+		elif direction == "h":
+			offsets = [Vector2(-0.5,0),Vector2(0.5,0)]
+		lightning = create_lightning(start_pos,end_pos,Color.WHITE,offsets)
+		lightning.animation_player.speed_scale = 5
+		lightning.animation_player.play("energized")
+	
+	var chains = []
 	
 	for cur_x in x_positions:
 		for cur_y in y_positions:
@@ -439,13 +473,21 @@ func clear_line(location,direction:String):
 			if Board.get_square(cur_location) in Item.BRICKS:
 				$background/Brick._destroy_brick(cur_location)
 				
-			if cur_location != location:
-				evaluate_game_tool(cur_location,false)
+			if cur_location != location and Board.get_square(cur_location) in Item.GAME_TOOLS:
+				chains.append(cur_location)
 			
 			if Board.get_square(cur_location) in Item.GEMS:
 				Board.remove_square(cur_location)
 	
+	if len(chains) > 0:
+		await lightning.animation_player.animation_finished
+		for chain in chains:
+			evaluate_game_tool(chain,false)
+	
 	Board.remove_square(location)
+	if show_lightning:
+		await lightning.animation_player.animation_finished
+		lightning.queue_free()
 
 func clear_blast(location,radius:int):
 	var cur_x = location.x - radius
@@ -471,10 +513,16 @@ func clear_blast(location,radius:int):
 	Board.remove_square(location)
 
 func select_pit_item(pos:int):
+	if Board.game_over:
+		return
+	
+	if $background/Tools.selected_tool != null:
+		Events.DeselectTools.emit()
+	
 	var temp = Board.selected
-	Board.select($background/Pit.get_item(pos),$background/tile,$background/selection_tile)
+	Board.select($background/Pit.get_item(pos))
 	$background/Pit.set_item(pos,temp)
-	$background/Pit.draw($background/tile)
+	$background/Pit.draw()
 
 func replace_squares(type,replacement):
 	var index = 0
@@ -493,29 +541,196 @@ func replace_squares(type,replacement):
 		index += 1
 	return replaced_squares
 
+func place_tile(tile,location):
+	if not validate_tile_placement(location):
+		Events.PlaySound.emit("Gameplay/nomatch")
+		return
+	
+	if Game.current_mode == Game.Mode.obstacle:
+		Board.moves -= 1
+	Events.AddScore.emit(0)
+	await _place(location,tile)
+	handle_lines(location)
+	if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacle:
+		#If player is out of moves on obstacle, check if they've at least cleared the level.
+		Board.evaluate_next_level()
+		#If not, then it's game over.
+	if Board.evaluate_game_over():
+		Events.GameOver.emit()
+
+func return_selected_to_pit():
+	var _pit: Array[int] = $background/Pit.pit
+	
+	if 0 in _pit:
+		_pit[_pit.find(0)] = Board.selected
+	
+	$background/Pit.draw()
+
+func select_tool(bg_tile: BackgroundTile):
+	var tool_tile: Tool = bg_tile.get_child(-1)
+	var tool_type = tool_tile.tool
+	#var tool_index = $background/Tools.active_tools.find(tool_type)
+	
+	if tool_tile.count < 1:
+		return
+	
+	if tool_tile.selected:
+		Events.DeselectTools.emit()
+		Board.select(0)
+		return
+	
+	return_selected_to_pit()
+	
+	Events.DeselectTools.emit()
+	
+	tool_tile.selected = true
+	$background/Tools.selected_tool = tool_type
+	Board.select(tool_type,Events.Type.tool)
+
+	Events.PlaySound.emit("Tools/selected")
+
+func find_best_pit() -> Array:
+	var colors = []
+	var used_squares = []
+	
+	#Step 1: Find any lines of 2 on the board, and give the missing color to complete those.
+	for x in range(Board.COLUMNS):
+		for y in range(Board.ROWS):
+			if Board.get_square(Vector2(x,y)) not in Item.GEMS:
+				continue
+			var lines = $background/Line.detect_lines(Vector2(x,y))
+			for line in lines:
+				if used_squares.any(func(item): return item in line):
+					break
+				
+				if len(line) >= 2:
+					used_squares += line
+					colors.append(Board.get_square(Vector2(x,y)))
+					break
+			if len(colors) >= 3:
+				break
+		if len(colors) >= 3:
+			break
+	
+	#Step 2:
+	#If we found no lines, find single gems on the board and add them to the pit.
+	if len(colors) == 0 and Board.board.any(func(item):return item in Item.GEMS):
+		var _board = Board.board.duplicate()
+		_board.shuffle()
+		for item in _board:
+			if item in Item.GEMS:
+				colors.append(item)
+			if len(colors) >= $background/Pit.SQUARES:
+				break
+	
+	#Step 3: If there's no colors at all on the board, give players 2 of the same color.
+	if len(colors) == 0:
+		var _color = $background/Pit.OPTIONS.pick_random()
+		colors.append(_color)
+		colors.append(_color)
+	
+	#Step 4: Fill the remainder of the pit with random colors
+	if len(colors) < $background/Pit.SQUARES:
+		for __ in range($background/Pit.SQUARES - len(colors)):
+			colors.append($background/Pit.OPTIONS.pick_random())
+	
+	#Step 5: Trim down the list of colors to the size of the pit and return it.
+	
+	assert (len(colors) >= $background/Pit.SQUARES)
+	
+	colors.shuffle()
+	return colors.slice(0,$background/Pit.SQUARES)
+
+func evaluate_external_tool(location,tool,use_tool=true):
+	var Tools = $background/Tools.Tools
+	
+	var square_type
+	if location is int:
+		square_type = $background/Pit.get_item(location)
+	elif location is Vector2:
+		square_type = Board.get_square(location)
+	else:
+		printerr('"location" parameter needs to be of type "int" or "Vector2", not %s.' % [typeof(location)])
+	
+	if use_tool:
+		var tool_index = $background/Tools.active_tools.find(tool)
+		$background/Tools.tool_counts[tool_index] -= 1
+		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
+	
+	Events.DeselectTools.emit()
+	Board.select(Item.AIR)
+	
+	match tool:
+		Tools.pickaxe:
+			if square_type == Item.AIR:
+				Events.PlaySound.emit("Gameplay/nomatch")
+				return
+			Events.AddScore.emit(10)
+			Events.PlaySound.emit("Tools/pickaxe")
+			if square_type in Item.GAME_TOOLS:
+				evaluate_game_tool(location,false)
+				return
+			Board.remove_square(location)
+		Tools.axe:
+			Events.PlaySound.emit("Drill/use")
+			clear_line(location,"h")
+		Tools.jackhammer:
+			Events.PlaySound.emit("Drill/use")
+			clear_line(location,"v")
+		Tools.star:
+			pass
+		Tools.bucket:
+			printerr("Bucket tool is not yet implemented")
+			assert (false)
+		Tools.dice:
+			Events.PlaySound.emit("Tools/dice")
+			var last_tile
+			for tile in $background/Pit.foreground_tiles:
+				tile.animation_player.play("vanish")
+				last_tile = tile
+			await last_tile.animation_player.animation_finished
+			
+			var old_pit: Array = $background/Pit.pit
+			var new_pit = find_best_pit()
+			old_pit.clear()
+			old_pit.append_array(new_pit)
+			$background/Pit.draw()
+			for tile in $background/Pit.foreground_tiles:
+				tile.animation_player.play("pop")
+				last_tile = tile
+			await last_tile.animation_player.animation_finished
+	
+	if location is Vector2:
+		Board.draw(location)
+	
+	if board_empty():
+		await get_tree().create_timer(0.5).timeout
+		random_place($background/Pit.OPTIONS)
+		Events.PlaySound.emit("Gameplay/place")
+	
+
 func tile_clicked(tile):
 	if Board.game_over:
 		return
 	var location = Vector2(tile.x,tile.y)
 	if tile.type == Events.Type.board:
-		if Board.selected:
-			if validate_tile_placement(location):
-				if Game.current_mode == Game.Mode.obstacle:
-					Board.moves -= 1
-					Events.AddScore.emit(0)
-				await place(location,Board.selected)
-				handle_lines(location)
-				if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacle:
-					#If player is out of moves on obstacle, check if they've at least cleared the level.
-					Board.evaluate_next_level()
-					#If not, then it's game over.
-				if Board.evaluate_game_over():
-					Events.GameOver.emit()
-
-			else:
-				Events.PlaySound.emit("Gameplay/nomatch")
+		if $background/Tools.selected_tool != null:
+			if $background/Tools.selected_tool == $background/Tools.Tools.dice:
+				return
+			evaluate_external_tool(location,$background/Tools.selected_tool)
+			
+		
+		elif Board.selected:
+			place_tile(Board.selected,location)
 		else:
 			evaluate_game_tool(location)
+		
 	
 	if tile.type == Events.Type.pit:
+		if $background/Tools.selected_tool == $background/Tools.Tools.dice:
+			evaluate_external_tool(tile.x,$background/Tools.selected_tool)
+			return
 		select_pit_item(tile.x)
+	
+	if tile.type == Events.Type.tool:
+		select_tool(tile)

@@ -1,4 +1,3 @@
-@tool
 extends Button
 
 const NODE_2D = preload("res://Game/Scenes/game.tscn")
