@@ -429,7 +429,7 @@ func _place(location,value):
 	Events.AddScore.emit(1)
 	await Board.pop_in(location)
 
-func clear_line(location,direction:String,show_lightning=true):
+func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE):
 	direction = direction.to_lower()
 	assert (direction in ["h","v"])
 	
@@ -459,7 +459,7 @@ func clear_line(location,direction:String,show_lightning=true):
 			offsets = [Vector2(0,-0.5),Vector2(0,0.5)]
 		elif direction == "h":
 			offsets = [Vector2(-0.5,0),Vector2(0.5,0)]
-		lightning = create_lightning(start_pos,end_pos,Color.WHITE,offsets)
+		lightning = create_lightning(start_pos,end_pos,color,offsets)
 		lightning.animation_player.speed_scale = 5
 		lightning.animation_player.play("energized")
 	
@@ -488,6 +488,48 @@ func clear_line(location,direction:String,show_lightning=true):
 	if show_lightning:
 		await lightning.animation_player.animation_finished
 		lightning.queue_free()
+
+func clear_diagonal_lines(location:Vector2, show_lightning=true):
+	var clears = []
+	
+	var top_left = location
+	var top_right = location
+	var bottom_left = location
+	var bottom_right = location
+	
+	while Board.within_board(top_left + Vector2(-1,-1)):
+		top_left += Vector2(-1,-1)
+		clears.append(top_left)
+	while Board.within_board(top_right + Vector2(1,-1)):
+		top_right += Vector2(1,-1)
+		clears.append(top_right)
+	while Board.within_board(bottom_left + Vector2(-1,1)):
+		bottom_left += Vector2(-1,1)
+		clears.append(bottom_left)
+	while Board.within_board(bottom_right + Vector2(1,1)):
+		bottom_right += Vector2(1,1)
+		clears.append(bottom_right)
+	
+	var lightning: Array[Lightning] = []
+	if show_lightning:
+		lightning.append(create_lightning(top_left,bottom_right,Color.GOLDENROD,[Vector2(-0.5,-0.5),Vector2(0.5,0.5)]))
+		lightning.append(create_lightning(top_right,bottom_left,Color.GOLDENROD,[Vector2(0.5,-0.5),Vector2(-0.5,0.5)]))
+	
+	for light in lightning:
+		light.animation_player.speed_scale = 5
+		light.animation_player.play("energized")
+	
+	for clear in clears:
+		Board.remove_square(clear)
+	
+	Board.remove_square(location)
+	
+	if show_lightning:
+		await lightning[0].animation_player.animation_finished
+		for light in lightning:
+			light.queue_free()
+	
+	
 
 func clear_blast(location,radius:int):
 	var cur_x = location.x - radius
@@ -652,14 +694,6 @@ func evaluate_external_tool(location,tool,use_tool=true):
 	else:
 		printerr('"location" parameter needs to be of type "int" or "Vector2", not %s.' % [typeof(location)])
 	
-	if use_tool:
-		var tool_index = $background/Tools.active_tools.find(tool)
-		$background/Tools.tool_counts[tool_index] -= 1
-		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
-	
-	Events.DeselectTools.emit()
-	Board.select(Item.AIR)
-	
 	match tool:
 		Tools.pickaxe:
 			if square_type == Item.AIR:
@@ -671,17 +705,25 @@ func evaluate_external_tool(location,tool,use_tool=true):
 				evaluate_game_tool(location,false)
 				return
 			Board.remove_square(location)
+		
 		Tools.axe:
 			Events.PlaySound.emit("Drill/use")
 			clear_line(location,"h")
+		
 		Tools.jackhammer:
 			Events.PlaySound.emit("Drill/use")
 			clear_line(location,"v")
+		
 		Tools.star:
-			pass
+			Events.PlaySound.emit("Tools/star")
+			clear_line(location,"v",true,Color.GOLDENROD)
+			clear_line(location,"h",true,Color.GOLDENROD)
+			await clear_diagonal_lines(location)
+		
 		Tools.bucket:
 			printerr("Bucket tool is not yet implemented")
 			assert (false)
+		
 		Tools.dice:
 			Events.PlaySound.emit("Tools/dice")
 			var last_tile
@@ -699,6 +741,14 @@ func evaluate_external_tool(location,tool,use_tool=true):
 				tile.animation_player.play("pop")
 				last_tile = tile
 			await last_tile.animation_player.animation_finished
+	
+	if use_tool:
+		var tool_index = $background/Tools.active_tools.find(tool)
+		$background/Tools.tool_counts[tool_index] -= 1
+		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
+	
+	Events.DeselectTools.emit()
+	Board.select(Item.AIR)
 	
 	if location is Vector2:
 		Board.draw(location)

@@ -166,6 +166,9 @@ func remove_square(location:Vector2):
 	if get_square(location) in Item.BRICKS:
 		await $"../Brick"._destroy_brick(location)
 		return
+	elif get_square(location) in Item.GAME_TOOLS:
+		$"../..".evaluate_game_tool(location,false)
+		return
 	tile.animation_player.play("vanish")
 	set_square(location,0)
 	await tile.animation_player.animation_finished
