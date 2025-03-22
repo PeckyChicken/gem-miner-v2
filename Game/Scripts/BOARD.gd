@@ -159,14 +159,14 @@ func next_level():
 	
 	Events.AddScore.emit(0) #Forces an update of the displays
 
-func remove_square(location:Vector2):
+func remove_square(location:Vector2,trigger_tools=true):
 	var tile = _get_foreground_square(location)
 	if tile.animation_player.is_playing():
 		await tile.animation_player.animation_finished
 	if get_square(location) in Item.BRICKS:
 		await $"../Brick"._destroy_brick(location)
 		return
-	elif get_square(location) in Item.GAME_TOOLS:
+	elif get_square(location) in Item.GAME_TOOLS and trigger_tools:
 		$"../..".evaluate_game_tool(location,false)
 		return
 	tile.animation_player.play("vanish")
