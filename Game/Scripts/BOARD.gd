@@ -11,7 +11,7 @@ const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
 
 var background_tiles: Array[Sprite2D] = []
 var foreground_tiles = []
-var board = []
+var board: Array[int] = []
 var selected = 0
 var selected_tile = null
 

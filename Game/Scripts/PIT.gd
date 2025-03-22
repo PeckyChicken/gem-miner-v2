@@ -9,7 +9,7 @@ var foreground_tiles: Array[GameTile] = []
 var board_padding = 0.5 #Number of squares the pit is from the board.
 
 func draw_background():
-	var background_tile = $"../tool_background_tile"
+	var background_tile = $"../pit_background_tile"
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()

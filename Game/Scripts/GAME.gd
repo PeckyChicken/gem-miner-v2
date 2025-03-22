@@ -5,6 +5,8 @@ const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstac
 
 var PRESSED_KEYS = []
 @onready var Board: brd = $background/Board
+@onready var Preview: previewer = $background/Preview
+
 var time = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -32,11 +34,13 @@ func setup():
 	set_background(Game.current_mode)
 
 	Events.TileClicked.connect(tile_clicked)
+	Events.TileHovered.connect(tile_hovered)
 	Board.draw_background()
 	Board.draw()
 	$background/Pit.draw_background()
 	$background/Pit.fill()
 	$background/Pit.draw()
+	
 	
 	random_place($background/Pit.OPTIONS)
 	random_place($background/Pit.OPTIONS)
@@ -373,7 +377,7 @@ func evaluate_tool_combo(location:Vector2,combo):
 		clear_line(location,"H")
 	
 
-func handle_lines(location:Vector2):
+func handle_lines(location:Vector2,preview=false):
 	var lines = $background/Line.detect_lines(location)
 	var horizontal_matches = lines[0]
 	var vertical_matches = lines[1]
@@ -383,6 +387,13 @@ func handle_lines(location:Vector2):
 		
 	if len(vertical_matches) >= 3:
 		clears += vertical_matches
+	
+	if preview:
+		for clear in clears:
+			if clear == location:
+				continue
+			Preview.create_preview(clear,Board.get_square(clear))
+		return
 	
 	if len(clears) == 0:
 		if Game.current_mode not in [Game.Mode.obstacle,Game.Mode.time_rush]:
@@ -418,7 +429,10 @@ func handle_lines(location:Vector2):
 func board_empty():
 	return Board.board.all(func(__): return __ == Item.AIR)
 
-func _place(location,value):
+func _place(location,value,preview=false):
+	if preview:
+		Preview.create_preview(location,value)
+		return
 	Board.set_square(location,value)
 	Events.PlaySound.emit("Gameplay/place")
 	
@@ -429,7 +443,9 @@ func _place(location,value):
 	Events.AddScore.emit(1)
 	await Board.pop_in(location)
 
-func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE):
+func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE,preview=false):
+	if preview:
+		show_lightning = false
 	direction = direction.to_lower()
 	assert (direction in ["h","v"])
 	
@@ -464,20 +480,29 @@ func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE)
 		lightning.animation_player.play("energized")
 	
 	var chains = []
-	
 	for cur_x in x_positions:
 		for cur_y in y_positions:
 			var cur_location = Vector2(cur_x,cur_y)
+			if cur_location != location and Board.get_square(cur_location) in Item.GAME_TOOLS:
+				chains.append(cur_location)
+			
+			if preview:
+				if Preview.previews.any(func(_preview): return _preview.location == cur_location):
+					continue
+				Preview.create_preview(cur_location,Item.AIR)
+				continue
+			
 			if Board.get_square(cur_location) != Item.AIR:
 				Events.AddScore.emit(10)
 			if Board.get_square(cur_location) in Item.BRICKS:
 				$background/Brick._destroy_brick(cur_location)
-				
-			if cur_location != location and Board.get_square(cur_location) in Item.GAME_TOOLS:
-				chains.append(cur_location)
+			
 			
 			if Board.get_square(cur_location) in Item.GEMS:
 				Board.remove_square(cur_location)
+	
+	if preview:
+		return
 	
 	if len(chains) > 0:
 		await lightning.animation_player.animation_finished
@@ -489,7 +514,9 @@ func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE)
 		await lightning.animation_player.animation_finished
 		lightning.queue_free()
 
-func clear_diagonal_lines(location:Vector2, show_lightning=true):
+func clear_diagonal_lines(location:Vector2, show_lightning=true,preview=false):
+	if preview:
+		show_lightning = false
 	var clears = []
 	
 	var top_left = location
@@ -520,9 +547,13 @@ func clear_diagonal_lines(location:Vector2, show_lightning=true):
 		light.animation_player.play("energized")
 	
 	for clear in clears:
+		if preview:
+			Preview.create_preview(clear,Item.AIR)
+			continue
 		Board.remove_square(clear)
 	
-	Board.remove_square(location)
+	if not preview:
+		Board.remove_square(location)
 	
 	if show_lightning:
 		await lightning[0].animation_player.animation_finished
@@ -583,16 +614,28 @@ func replace_squares(type,replacement):
 		index += 1
 	return replaced_squares
 
-func place_tile(tile,location):
+func place_tile(tile,location,preview=false):
+	if !preview:
+		Preview.delete_all_previews()
 	if not validate_tile_placement(location):
+		if preview:
+			Preview.create_preview(location,Item.CROSS)
+			return
 		Events.PlaySound.emit("Gameplay/nomatch")
 		return
 	
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacle and !preview:
 		Board.moves -= 1
-	Events.AddScore.emit(0)
-	await _place(location,tile)
-	handle_lines(location)
+		Events.AddScore.emit(0)
+	await _place(location,tile,preview)
+	var temp_board: Array[int] = Board.board.duplicate()
+	if preview:
+		Board.set_square(location,tile)
+	
+	handle_lines(location,preview)
+	if preview:
+		Board.board = temp_board.duplicate()
+		return
 	if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacle:
 		#If player is out of moves on obstacle, check if they've at least cleared the level.
 		Board.evaluate_next_level()
@@ -683,7 +726,11 @@ func find_best_pit() -> Array:
 	colors.shuffle()
 	return colors.slice(0,$background/Pit.SQUARES)
 
-func evaluate_external_tool(location,tool,use_tool=true):
+func evaluate_external_tool(location,tool,use_tool=true,preview=false):
+	if preview:
+		use_tool = false
+	else:
+		Preview.delete_all_previews()
 	var Tools = $background/Tools.Tools
 	
 	var square_type
@@ -694,10 +741,26 @@ func evaluate_external_tool(location,tool,use_tool=true):
 	else:
 		printerr('"location" parameter needs to be of type "int" or "Vector2", not %s.' % [typeof(location)])
 	
+	$background/Tools.get_tool($background/Tools.selected_tool)
+	
+	if (tool == Tools.pickaxe) and (square_type == Item.AIR) and !preview:
+		Events.PlaySound.emit("Gameplay/nomatch")
+		return
+	
+	if use_tool:
+		var tool_index = $background/Tools.active_tools.find(tool)
+		$background/Tools.tool_counts[tool_index] -= 1
+		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
+		Events.DeselectTools.emit()
+		Board.select(Item.AIR)
+	
 	match tool:
 		Tools.pickaxe:
-			if square_type == Item.AIR:
-				Events.PlaySound.emit("Gameplay/nomatch")
+			if preview:
+				if square_type == Item.AIR:
+					Preview.create_preview(location,Item.CROSS)
+					return
+				Preview.create_preview(location,Item.AIR)
 				return
 			Events.AddScore.emit(10)
 			Events.PlaySound.emit("Tools/pickaxe")
@@ -707,14 +770,26 @@ func evaluate_external_tool(location,tool,use_tool=true):
 			Board.remove_square(location)
 		
 		Tools.axe:
+			if preview:
+				clear_line(location,"h",false,Color.WHITE,true)
+				return
 			Events.PlaySound.emit("Drill/use")
 			clear_line(location,"h")
 		
 		Tools.jackhammer:
+			if preview:
+				clear_line(location,"v",false,Color.WHITE,true)
+				return
 			Events.PlaySound.emit("Drill/use")
 			clear_line(location,"v")
 		
 		Tools.star:
+			if preview:
+				clear_line(location,"h",false,Color.WHITE,true)
+				clear_line(location,"v",false,Color.WHITE,true)
+				clear_diagonal_lines(location,false,true)
+				return
+				
 			Events.PlaySound.emit("Tools/star")
 			clear_line(location,"v",true,Color.GOLDENROD)
 			clear_line(location,"h",true,Color.GOLDENROD)
@@ -742,13 +817,8 @@ func evaluate_external_tool(location,tool,use_tool=true):
 				last_tile = tile
 			await last_tile.animation_player.animation_finished
 	
-	if use_tool:
-		var tool_index = $background/Tools.active_tools.find(tool)
-		$background/Tools.tool_counts[tool_index] -= 1
-		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
-	
-	Events.DeselectTools.emit()
-	Board.select(Item.AIR)
+	if preview:
+		return
 	
 	if location is Vector2:
 		Board.draw(location)
@@ -757,7 +827,26 @@ func evaluate_external_tool(location,tool,use_tool=true):
 		await get_tree().create_timer(0.5).timeout
 		random_place($background/Pit.OPTIONS)
 		Events.PlaySound.emit("Gameplay/place")
+
+func tile_hovered(tile: BackgroundTile):
+	if tile.type == Events.Type.preview:
+		return
 	
+	Preview.delete_all_previews()
+	
+	if Board.game_over:
+		return
+	
+	var location = Vector2(tile.x,tile.y)
+	
+	if tile.type == Events.Type.board:
+		if $background/Tools.selected_tool != null:
+			if $background/Tools.selected_tool == $background/Tools.Tools.dice:
+				return
+			evaluate_external_tool(location,$background/Tools.selected_tool,false,true)
+		
+		elif Board.selected:
+			place_tile(Board.selected,location,true)
 
 func tile_clicked(tile):
 	if Board.game_over:
