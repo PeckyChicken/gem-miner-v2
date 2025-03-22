@@ -17,6 +17,8 @@ signal Explode(x,y)
 signal GameOver()
 signal DeselectTools()
 
+signal UpdateHover()
+
 enum Type {
 	board,
 	pit,

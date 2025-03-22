@@ -29,7 +29,8 @@ func dealign_from_animation():
 func explode():
 	var explosion = $ExplosionParticles.duplicate()
 	explosion.show()
-	$"..".add_child(explosion)
+	explosion.global_position = global_position + (self.get_rect().size/2)
+	$"../..".add_child(explosion)
 	await explosion.explode()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -7,7 +7,6 @@ func _ready() -> void:
 
 func explode():
 	emitting=true
-	$AnimationPlayer.play("shrink")
 	await finished
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
