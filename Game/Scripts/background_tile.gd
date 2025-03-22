@@ -10,7 +10,12 @@ var hovered = false
 
 func _ready() -> void:
 	Events.MouseClicked.connect(_on_mouse_clicked)
-	
+	Events.UpdateHover.connect(update_hover)
+
+func update_hover():
+	if hovered:
+		Events.TileHovered.emit(self)
+
 func _process(_delta: float) -> void:
 	pass
 
