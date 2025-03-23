@@ -51,6 +51,8 @@ func setup():
 		random_place([13])
 		random_place([13])
 	
+	Board.set_square(Vector2(2,3),Item.RAINBOW_DIAMOND)
+	
 	Board.draw()
 
 func set_background(mode):
@@ -203,13 +205,16 @@ func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vect
 	
 	return lightning
 
-func diamond(location:Vector2,type,replacement=Item.AIR) -> Array[Vector2]:
+func diamond(location:Vector2,type,replacement=Item.AIR,preview=false) -> Array[Vector2]:
 	var lights = []
 	var squares: Array[Vector2] = []
 	for square_x in Board.COLUMNS:
 		for square_y in Board.ROWS:
 			var square_location = Vector2(square_x,square_y)
 			if Board.get_square(square_location) == type-4:
+				if preview:
+					Preview.create_preview(square_location,replacement)
+					continue
 				var tile: GameTile = Board._get_foreground_square(square_location)
 				tile.z_index = 2
 				tile.align_for_animation()
@@ -220,6 +225,9 @@ func diamond(location:Vector2,type,replacement=Item.AIR) -> Array[Vector2]:
 				lightning.z_index = 1
 				lightning.animation_player.play("energized")
 				lights.append(lightning)
+	
+	if preview:
+		return squares
 	
 	replace_squares(type-4,replacement)
 	Events.AddScore.emit(10)
@@ -246,12 +254,12 @@ func evaluate_game_tool(location,calculate_combo=true,preview=false):
 		return
 	
 	if type == Item.RAINBOW_DIAMOND:
-		await double_diamond(location)
+		await double_diamond(location,preview)
 	
 	if calculate_combo:
 		var combo = calculate_tool_combo(location)
 		if len(combo) > 1:
-			await evaluate_tool_combo(location,combo)
+			await evaluate_tool_combo(location,combo,preview)
 		if board_empty():
 			random_place($background/Pit.OPTIONS)
 			Events.PlaySound.emit("Gameplay/place")
@@ -260,7 +268,7 @@ func evaluate_game_tool(location,calculate_combo=true,preview=false):
 			
 	
 	if type in Item.DIAMONDS and type != Item.RAINBOW_DIAMOND:
-		await diamond(location,type)
+		await diamond(location,type,0,preview)
 	
 	if type == Item.H_DRILL:
 		if !preview:
@@ -298,7 +306,7 @@ func calculate_tool_combo(location):
 	return combo
 
 func _get_priority(item_type):
-	const PRIORITIES = [[5,6,7,8,9],[12],[10,11],[0]]
+	const PRIORITIES = [Item.DIAMONDS,[Item.BOMB],Item.DRILLS,[Item.AIR]]
 	var priority = 0
 	for p in PRIORITIES:
 		if item_type in p:
@@ -306,14 +314,20 @@ func _get_priority(item_type):
 		priority += 1
 	return priority
 
-func double_diamond(location:Vector2):
-	Board._get_foreground_square(location).animation_player.play("double_diamond")
-	Events.PlaySound.emit("Diamond/double_diamond")
+func double_diamond(location:Vector2,preview:bool=false):
+	if !preview:
+		Events.PlaySound.emit("Diamond/double_diamond")
+	var square = Board._get_foreground_square(location)
+	square.double_diamond_spin(3)
 	var lights = []
 	for cur_x in Board.COLUMNS:
 		for cur_y in Board.ROWS:
 			var cur_location = Vector2(cur_x,cur_y)
 			var item = Board.get_square(cur_location)
+			if preview:
+				if item != Item.AIR:
+					Preview.create_preview(cur_location,Item.AIR)
+				continue
 			var item_object = Board._get_foreground_square(cur_location)
 			if item != 0:
 				var color = Board.COLORS[len(lights)%len(Board.COLORS)]
@@ -321,33 +335,42 @@ func double_diamond(location:Vector2):
 				lights.append(light)
 				light.animation_player.play("energized")
 			if not item_object.animation_player.is_playing():
-				item_object.animation_player.play("energized")
+				if not cur_location == location:
+					item_object.animation_player.play("energized")
+	
+	if preview:
+		return
+	
 	if len(lights) > 0:
 		await lights[0].animation_player.animation_finished
 	for light in lights:
 		light.queue_free()
-
+	
+	
 	Events.AddScore.emit(100)
 	Board.clear_board()
-	await Board._get_foreground_square(location).animation_player.animation_finished
+	await square.SpinFinished
+	square.animation_player.play("vanish")
+	await square.animation_player.animation_finished
 	Board.evaluate_next_level()
 
-func evaluate_tool_combo(location:Vector2,combo):
-	await $background/Line.animate_line_clear(location,combo,false)
-	var background_square = Board._get_background_square(location)
-	var _square
-	var _squares = []
-	for item in combo:
-		if item != location:
-			_square = Board._get_foreground_square(item)
-			_square.reparent(background_square)
-			_square.z_index -= 1
-			
-			_square.animation_player.play("vanish")
-			_squares.append(_square)
-	await _square.animation_player.animation_finished
-	for square in _squares:
-		square.hide()
+func evaluate_tool_combo(location:Vector2,combo,preview=false):
+	if !preview:
+		await $background/Line.animate_line_clear(location,combo,false)
+		var background_square = Board._get_background_square(location)
+		var _square
+		var _squares = []
+		for item in combo:
+			if item != location:
+				_square = Board._get_foreground_square(item)
+				_square.reparent(background_square)
+				_square.z_index -= 1
+				
+				_square.animation_player.play("vanish")
+				_squares.append(_square)
+		await _square.animation_player.animation_finished
+		for square in _squares:
+			square.hide()
 	
 	var top_two = [0,0]
 
@@ -364,13 +387,16 @@ func evaluate_tool_combo(location:Vector2,combo):
 	print(top_two)
 	assert (0 not in top_two)
 	
-	if top_two[0] in [5,6,7,8] and top_two[1] in [5,6,7,8]:
-		await double_diamond(location)
+	if top_two[0] in Item.DIAMONDS and top_two[1] in Item.DIAMONDS:
+		Board.set_square(location,Item.RAINBOW_DIAMOND)
+		await double_diamond(location,preview)
+		if preview:
+			return
 	
 	if top_two.any(func(n):return n in Item.DIAMONDS):
 		var color
 		for item in top_two:
-			if item in [5,6,7,8,9]:
+			if item in Item.DIAMONDS:
 				color = item
 		
 		var tool_type
