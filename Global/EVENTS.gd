@@ -19,6 +19,10 @@ signal DeselectTools()
 
 signal UpdateHover()
 
+signal Pause()
+signal Resume()
+signal Quit()
+
 enum Type {
 	board,
 	pit,

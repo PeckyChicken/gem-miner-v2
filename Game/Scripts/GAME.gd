@@ -4,8 +4,12 @@ const MODE_TO_STRING = {Game.Mode.survival:"survival",Game.Mode.time_rush:"time_
 const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.chromablitz:4,Game.Mode.ascension:7}
 
 var PRESSED_KEYS = []
+
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
+
+const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
+var pause_menu: Control
 
 var time = 0
 
@@ -21,10 +25,12 @@ func _ready() -> void:
 			Music.play(MODE_TO_STRING[Game.current_mode])
 
 func _process(delta: float) -> void:
+
 	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
 		time += delta
 		if time >= 1:
-			add_bricks()
+			if not get_tree().paused:
+				add_bricks()
 			while time >= 1:
 				time -= 1
 			if Board.evaluate_game_over():
@@ -35,6 +41,9 @@ func setup():
 
 	Events.TileClicked.connect(tile_clicked)
 	Events.TileHovered.connect(tile_hovered)
+	Events.Pause.connect(pause)
+	Events.Resume.connect(resume)
+	
 	Board.draw_background()
 	Board.draw()
 	$background/Pit.draw_background()
@@ -52,7 +61,7 @@ func setup():
 		random_place([13])
 	
 	Board.set_square(Vector2(2,2),Item.BOMB)
-	Board.set_square(Vector2(2,3),Item.H_DRILL)
+	Board.set_square(Vector2(2,3),Item.BOMB)
 	
 	
 	Board.draw()
@@ -94,8 +103,15 @@ func random_place(items:Array):
 	Board.pop_in(selection)
 
 func _input(event):
-	if Input.is_action_pressed("ui_cancel"):
-		get_tree().quit()
+	if Input.is_action_just_pressed("ui_cancel"):
+		if get_tree().paused:
+			get_tree().paused = false
+			Events.Resume.emit()
+		else:
+			Events.Pause.emit()
+	
+	if get_tree().paused:
+		return
 	
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		Events.MouseClicked.emit(event.button_index,event.position)
@@ -107,6 +123,28 @@ func _input(event):
 			if len($background/Pit.pit) > pos:
 				select_pit_item(pos)
 				Events.UpdateHover.emit()
+
+func pause():
+	Events.PlaySound.emit("Gameplay/click")
+	if pause_menu:
+		var player: AnimationPlayer = pause_menu.get_node("AnimationPlayer")
+		if player.is_playing():
+			await player.animation_finished
+	get_tree().paused = true
+	pause_menu = PAUSE_MENU_SCENE.instantiate()
+	add_child(pause_menu)
+	
+
+func resume():
+	var player: AnimationPlayer = pause_menu.get_node("AnimationPlayer")
+	if player.is_playing():
+		await player.animation_finished
+	
+	get_tree().paused = false
+	
+	player.play("unpause")
+	await player.animation_finished
+	pause_menu.queue_free()
 
 func validate_tile_placement(location:Vector2):
 	if Board.get_square(location) != 0:
@@ -425,9 +463,12 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 				continue
 			await evaluate_game_tool(replacement,false)
 	
-	if top_two[0] == Item.BOMB and top_two[1] == Item.BOMB:
-		Events.PlaySound.emit("Bomb/use")
-		clear_blast(location,2)
+	if top_two == [Item.BOMB,Item.BOMB]:
+		if !preview:
+			Events.PlaySound.emit("Bomb/use")
+			Board._get_foreground_square(location).explode(2)
+			
+		clear_blast(location,2,preview)
 	
 	if top_two.any(func(x): return x in Item.DRILLS):
 		if Item.BOMB in top_two:
@@ -644,6 +685,10 @@ func clear_diagonal_lines(location:Vector2, show_lightning=true,preview=false):
 func clear_blast(location,radius:int,preview=false):
 	var cur_x = location.x - radius
 	var cur_y
+
+	if !preview:
+		Board.remove_square(location,false)
+
 	while cur_x <= location.x + radius:
 		cur_y = location.y - radius
 		while cur_y <= location.y + radius:
@@ -668,9 +713,6 @@ func clear_blast(location,radius:int,preview=false):
 					Board.remove_square(cur_location)
 			cur_y += 1
 		cur_x += 1
-	
-	if !preview:
-		Board.remove_square(location,false)
 
 func select_pit_item(pos:int):
 	if Board.game_over:
@@ -940,12 +982,18 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 		Events.PlaySound.emit("Gameplay/place")
 
 func tile_hovered(tile: BackgroundTile):
+	if get_tree().paused:
+		return
+	
 	if tile.type == Events.Type.preview:
 		return
 	
 	Preview.delete_all_previews()
 	
 	if Board.game_over:
+		return
+	
+	if not Game.preview:
 		return
 	
 	var location = Vector2(tile.x,tile.y)
@@ -962,8 +1010,9 @@ func tile_hovered(tile: BackgroundTile):
 		else: evaluate_game_tool(location,true,true)
 
 func tile_clicked(tile):
-	if Board.game_over:
+	if Board.game_over or get_tree().paused:
 		return
+	
 	var location = Vector2(tile.x,tile.y)
 	if tile.type == Events.Type.board:
 		if $background/Tools.selected_tool != null:

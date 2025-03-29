@@ -2,30 +2,33 @@ extends Node
 
 var playing = null
 
-var track_cache = {}
+var track_cache: Dictionary[String,Dictionary] = {}
 var sound_file_cache = {}
 
 var players: Array[AudioStreamPlayer] = [AudioStreamPlayer.new(),AudioStreamPlayer.new()]
 
-var current_player = 0
+var current_player: int = 0
 
 var path: String
 var loop_start: float
 var loop_end: float
 var sound: Resource
 
-var volume = 0.25
+var volume: float = 0.25
+var sfx_volume: float = 0.5
 
 var volume_tween: Tween
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	for player in players:
 		player.volume_db = linear_to_db(volume)
+		player.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(player)
 
-func play(track:String,fade_in=0):
+func play(track:String,fade_in:int=0):
 	stop()
-	var track_data
+	var track_data: Dictionary
 	if track in track_cache:
 		track_data = track_cache[track]
 	else:

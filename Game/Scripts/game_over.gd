@@ -4,6 +4,7 @@ extends CenterContainer
 
 func _ready() -> void:
 	Events.GameOver.connect(game_over)
+	Events.Quit.connect(quit)
 	pivot_offset = size / 2
 	$MarginContainer.pivot_offset = $MarginContainer.size / 2
 
@@ -25,6 +26,9 @@ func _on_replay_pressed() -> void:
 
 
 func _on_switch_pressed() -> void:
+	Events.Quit.emit()
+
+func quit():
 	var new_scene: Node = load("res://Title/title.tscn").instantiate()
 	
 	await $"../Fade".fade_in(0.5)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=34 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_gsb0v"]
@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://Game/Scenes/lightning.tscn" id="15_p6li4"]
 [ext_resource type="Script" uid="uid://7v33ng1f76oh" path="res://Game/Scripts/lightning.gd" id="16_t4ufd"]
 [ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="17_04prp"]
+[ext_resource type="Texture2D" uid="uid://bi5556pl5dvf0" path="res://assets/Images/UI/settings.svg" id="17_he1k8"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
 [ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
@@ -179,9 +180,11 @@ _data = {
 }
 
 [node name="Node2D" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_seuk0")
 
 [node name="background" type="Sprite2D" parent="."]
+process_mode = 1
 z_index = -20
 texture = ExtResource("2_gsb0v")
 centered = false
@@ -365,6 +368,15 @@ bbcode_enabled = true
 text = "[center]Moves"
 scroll_active = false
 
+[node name="Pause" type="Button" parent="background/Hud"]
+offset_top = 459.0
+offset_right = 40.0
+offset_bottom = 499.0
+icon = ExtResource("17_he1k8")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [node name="ascension_particles" type="CPUParticles2D" parent="."]
 visible = false
 self_modulate = Color(1.2, 1.2, 1.2, 1)
@@ -462,5 +474,6 @@ libraries = {
 
 [node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
 
+[connection signal="pressed" from="background/Hud/Pause" to="." method="pause"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI" method="_on_switch_pressed"]

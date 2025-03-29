@@ -7,7 +7,7 @@ func _ready() -> void:
 	Events.PlaySound.connect(play_sound)
 
 func play_sound(path):
-	var temp_player = $AudioStreamPlayer.duplicate()
+	var temp_player: AudioStreamPlayer = $AudioStreamPlayer.duplicate()
 	var sound
 	if path in sound_cache:
 		sound = sound_cache[path]
@@ -16,6 +16,7 @@ func play_sound(path):
 		sound_cache[path] = sound
 	temp_player.stream = sound
 	add_child(temp_player)
+	temp_player.volume_db = linear_to_db(Music.sfx_volume)
 	temp_player.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

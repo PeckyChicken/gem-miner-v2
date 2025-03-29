@@ -28,8 +28,9 @@ func dealign_from_animation():
 	centered = false
 	position = Vector2.ZERO
 
-func explode():
+func explode(explosion_scale=1):
 	var explosion = $ExplosionParticles.duplicate()
+	explosion.scale = Vector2(explosion_scale,explosion_scale)
 	explosion.show()
 	explosion.global_position = global_position + (self.get_rect().size/2)
 	$"../..".add_child(explosion)

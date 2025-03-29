@@ -8,4 +8,12 @@ enum Mode {
 	ascension
 }
 
+enum Preview {
+	off,
+	basic,
+	advanced
+}
+
+var preview = Preview.basic
+
 var current_mode = Mode.survival
