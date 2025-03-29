@@ -1,0 +1,466 @@
+[gd_scene load_steps=33 format=3 uid="uid://bo82chpiopg54"]
+
+[ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
+[ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_gsb0v"]
+[ext_resource type="Script" uid="uid://b2h5qpr6nowww" path="res://Game/Scripts/background.gd" id="3_tyrie"]
+[ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_ofkml"]
+[ext_resource type="Script" uid="uid://cvi1wou23m4f4" path="res://Game/Scripts/PIT.gd" id="5_opxns"]
+[ext_resource type="Script" uid="uid://qunfa3c4235h" path="res://Game/Scripts/LINE.gd" id="6_he1k8"]
+[ext_resource type="Script" uid="uid://duh208w7g8iw3" path="res://Game/Scripts/BRICK.gd" id="7_wwslj"]
+[ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://Game/Scenes/game_tile.tscn" id="8_4yil1"]
+[ext_resource type="Script" uid="uid://cqojhpc4vxilt" path="res://Game/Scripts/PREVIEW.gd" id="8_opxns"]
+[ext_resource type="PackedScene" uid="uid://crs80oppmnox6" path="res://Game/Scenes/background_tile.tscn" id="9_572oi"]
+[ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://Game/Scenes/tool_background_tile.tscn" id="10_8srii"]
+[ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://Game/Scenes/selection_tile.tscn" id="11_hjvjr"]
+[ext_resource type="Texture2D" uid="uid://bikexw8nixrnq" path="res://assets/Images/Particles/vanish.png" id="12_t1k1h"]
+[ext_resource type="Script" uid="uid://bsc4scarallbq" path="res://Game/Scripts/score.gd" id="13_ekxpf"]
+[ext_resource type="Script" uid="uid://bgosl2q3qmw3l" path="res://Game/Scripts/TOOLS.gd" id="13_tyrie"]
+[ext_resource type="Texture2D" uid="uid://b21tn7x5xlxo4" path="res://assets/Images/Particles/ascension.png" id="14_gsb0v"]
+[ext_resource type="PackedScene" uid="uid://cw30exc5aa45u" path="res://Game/Scenes/audio.tscn" id="14_j7yts"]
+[ext_resource type="PackedScene" uid="uid://b80bttngtd0jp" path="res://Game/Scenes/tool.tscn" id="15_ofkml"]
+[ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://Game/Scenes/lightning.tscn" id="15_p6li4"]
+[ext_resource type="Script" uid="uid://7v33ng1f76oh" path="res://Game/Scripts/lightning.gd" id="16_t4ufd"]
+[ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="17_04prp"]
+[ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
+[ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
+[ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
+
+[sub_resource type="Animation" id="Animation_jt4qq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2vajw"]
+resource_name = "vanish"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.785398]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nuryj"]
+_data = {
+&"RESET": SubResource("Animation_jt4qq"),
+&"vanish": SubResource("Animation_2vajw")
+}
+
+[sub_resource type="Gradient" id="Gradient_tyrie"]
+offsets = PackedFloat32Array(0.713333, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_ofkml"]
+offsets = PackedFloat32Array(0, 0.36)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_tyrie"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="Animation" id="Animation_6tgx4"]
+resource_name = "pop_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b0tnt"]
+_data = {
+&"RESET": SubResource("Animation_tyrie"),
+&"pop_in": SubResource("Animation_6tgx4")
+}
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_seuk0")
+
+[node name="background" type="Sprite2D" parent="."]
+z_index = -20
+texture = ExtResource("2_gsb0v")
+centered = false
+hframes = 3
+vframes = 3
+script = ExtResource("3_tyrie")
+metadata/_edit_lock_ = true
+
+[node name="Board" type="Node2D" parent="background"]
+script = ExtResource("4_ofkml")
+
+[node name="Pit" type="Node2D" parent="background"]
+script = ExtResource("5_opxns")
+
+[node name="Line" type="Node2D" parent="background"]
+script = ExtResource("6_he1k8")
+
+[node name="Brick" type="Node2D" parent="background"]
+script = ExtResource("7_wwslj")
+
+[node name="Preview" type="Node2D" parent="background"]
+z_index = 10
+script = ExtResource("8_opxns")
+
+[node name="Tools" type="Node2D" parent="background"]
+script = ExtResource("13_tyrie")
+
+[node name="Tool" parent="background/Tools" instance=ExtResource("15_ofkml")]
+z_index = 2
+position = Vector2(436, 112)
+
+[node name="background_tile" parent="background/Tools" instance=ExtResource("10_8srii")]
+visible = false
+position = Vector2(437, 113)
+type = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="background/Tools"]
+offset_left = 431.0
+offset_top = 81.0
+offset_right = 497.0
+offset_bottom = 107.0
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "[center]Tools"
+scroll_active = false
+
+[node name="tile" parent="background" instance=ExtResource("8_4yil1")]
+visible = false
+z_index = 5
+
+[node name="background_tile" parent="background" instance=ExtResource("9_572oi")]
+
+[node name="selection_tile" parent="background" instance=ExtResource("11_hjvjr")]
+position = Vector2(437, 22)
+type = 3
+
+[node name="pit_background_tile" parent="background" instance=ExtResource("10_8srii")]
+visible = false
+position = Vector2(-24, -28)
+type = 1
+
+[node name="vanish" type="Sprite2D" parent="background"]
+position = Vector2(7.62939e-06, 0)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("12_t1k1h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="background/vanish"]
+libraries = {
+&"": SubResource("AnimationLibrary_nuryj")
+}
+
+[node name="Hud" type="Node2D" parent="background"]
+z_index = 10
+
+[node name="Score" type="RichTextLabel" parent="background/Hud"]
+self_modulate = Color(31.429, 27.857, 27.143, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.0
+offset_top = 17.0
+offset_right = 79.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]0"
+fit_content = true
+scroll_active = false
+script = ExtResource("13_ekxpf")
+
+[node name="Score_Label" type="RichTextLabel" parent="background/Hud"]
+offset_left = 10.0
+offset_top = 3.0
+offset_right = 64.0
+offset_bottom = 26.0
+bbcode_enabled = true
+text = "[center]Score"
+scroll_active = false
+
+[node name="Level" type="RichTextLabel" parent="background/Hud"]
+offset_left = -7.0
+offset_top = 178.0
+offset_right = 78.0
+offset_bottom = 249.0
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]0"
+scroll_active = false
+
+[node name="Level_Label" type="RichTextLabel" parent="background/Hud"]
+offset_left = 9.0
+offset_top = 167.0
+offset_right = 63.0
+offset_bottom = 190.0
+bbcode_enabled = true
+text = "[center]Level"
+scroll_active = false
+
+[node name="Goal" type="RichTextLabel" parent="background/Hud"]
+self_modulate = Color(31.429, 27.857, 27.143, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.0
+offset_top = 99.0
+offset_right = 79.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]0"
+fit_content = true
+scroll_active = false
+
+[node name="Goal_Label" type="RichTextLabel" parent="background/Hud"]
+offset_left = 9.0
+offset_top = 85.0
+offset_right = 63.0
+offset_bottom = 108.0
+bbcode_enabled = true
+text = "[center]Goal"
+scroll_active = false
+
+[node name="Moves" type="RichTextLabel" parent="background/Hud"]
+visible = false
+self_modulate = Color(31.429, 27.857, 27.143, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.0
+offset_top = 94.0
+offset_right = 79.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]0"
+fit_content = true
+scroll_active = false
+
+[node name="Moves_Label" type="RichTextLabel" parent="background/Hud"]
+visible = false
+offset_left = 9.0
+offset_top = 85.0
+offset_right = 63.0
+offset_bottom = 108.0
+bbcode_enabled = true
+text = "[center]Moves"
+scroll_active = false
+
+[node name="ascension_particles" type="CPUParticles2D" parent="."]
+visible = false
+self_modulate = Color(1.2, 1.2, 1.2, 1)
+z_index = -19
+position = Vector2(250, 250)
+amount = 30
+texture = ExtResource("14_gsb0v")
+speed_scale = 0.5
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(250, 250)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 20.0
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.01
+orbit_velocity_max = 0.01
+linear_accel_min = -10.0
+linear_accel_max = 10.0
+angle_max = 720.0
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_tyrie")
+color_initial_ramp = SubResource("Gradient_ofkml")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Audio" parent="." instance=ExtResource("14_j7yts")]
+
+[node name="Lightning" parent="." instance=ExtResource("15_p6li4")]
+visible = false
+z_index = 6
+position = Vector2(0, 2)
+script = ExtResource("16_t4ufd")
+
+[node name="Game over UI" type="CenterContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+use_top_left = true
+script = ExtResource("18_ofkml")
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Game over UI"]
+visible = false
+z_index = 11
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+
+[node name="Background" type="TextureRect" parent="Game over UI/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("17_04prp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Game over UI/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Game over UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Game over UI/MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]Game Over"
+fit_content = true
+scroll_active = false
+
+[node name="Replay" type="Button" parent="Game over UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Play again"
+icon = ExtResource("18_j81tf")
+flat = true
+icon_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Game over UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 10
+
+[node name="Switch" type="Button" parent="Game over UI/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Switch mode"
+icon = ExtResource("18_j81tf")
+flat = true
+icon_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Game over UI/MarginContainer"]
+libraries = {
+&"": SubResource("AnimationLibrary_b0tnt")
+}
+
+[node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
+
+[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
+[connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI" method="_on_switch_pressed"]

@@ -571,5 +571,5 @@ script = ExtResource("4_jpheh")
 visible = false
 scale = Vector2(1.563, 1.563)
 sprite_frames = SubResource("SpriteFrames_jigi1")
-frame = 3
-frame_progress = 0.720418
+frame = 1
+frame_progress = 0.177608

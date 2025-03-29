@@ -24,7 +24,7 @@ func remove_duplicates(list:Array):
 			used_values.append(item)
 		index += 1
 
-func detect_lines(location:Vector2):
+func detect_lines(location:Vector2) -> Array[Array]:
 	var vertical_matches = []
 	var horizontal_matches = []
 	var line_color = $"../Board".get_square(location)

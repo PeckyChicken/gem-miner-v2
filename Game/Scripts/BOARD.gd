@@ -37,7 +37,7 @@ func within_board(location:Vector2):
 	return (location.x >= board_start.x and location.x <= board_end.x) and (location.y >= board_start.y and location.y <= board_end.y)
 
 func _index_to_coords(index):
-	return Vector2(index % COLUMNS,floori(index / COLUMNS))
+	return Vector2(floori(index / COLUMNS),index % COLUMNS)
 
 func clear_gems(matches:Array):
 	for item in matches:

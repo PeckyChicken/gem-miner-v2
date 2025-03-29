@@ -51,7 +51,9 @@ func setup():
 		random_place([13])
 		random_place([13])
 	
-	Board.set_square(Vector2(2,3),Item.RAINBOW_DIAMOND)
+	Board.set_square(Vector2(2,2),Item.BOMB)
+	Board.set_square(Vector2(2,3),Item.H_DRILL)
+	
 	
 	Board.draw()
 
@@ -205,31 +207,35 @@ func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vect
 	
 	return lightning
 
-func diamond(location:Vector2,type,replacement=Item.AIR,preview=false) -> Array[Vector2]:
+func diamond(location:Vector2,type,replacements:Array=[Item.AIR],preview=false) -> Array[Vector2]:
 	var lights = []
 	var squares: Array[Vector2] = []
 	for square_x in Board.COLUMNS:
 		for square_y in Board.ROWS:
 			var square_location = Vector2(square_x,square_y)
 			if Board.get_square(square_location) == type-4:
+				squares.append(square_location)
 				if preview:
-					Preview.create_preview(square_location,replacement)
 					continue
+				
 				var tile: GameTile = Board._get_foreground_square(square_location)
 				tile.z_index = 2
 				tile.align_for_animation()
 				tile.animation_player.play("energized")
-				squares.append(square_location)
-				
 				var lightning = create_lightning(location,square_location,Board.COLORS[type-5])
 				lightning.z_index = 1
 				lightning.animation_player.play("energized")
 				lights.append(lightning)
 	
+	replace_squares(type-4,replacements,preview)
+	
 	if preview:
+		Preview.create_preview(location,Item.AIR)
 		return squares
 	
-	replace_squares(type-4,replacement)
+	
+	
+		
 	Events.AddScore.emit(10)
 	Board.set_square(location,Item.AIR)
 	Events.PlaySound.emit("Diamond/use")
@@ -268,7 +274,7 @@ func evaluate_game_tool(location,calculate_combo=true,preview=false):
 			
 	
 	if type in Item.DIAMONDS and type != Item.RAINBOW_DIAMOND:
-		await diamond(location,type,0,preview)
+		await diamond(location,type,[0],preview)
 	
 	if type == Item.H_DRILL:
 		if !preview:
@@ -315,11 +321,12 @@ func _get_priority(item_type):
 	return priority
 
 func double_diamond(location:Vector2,preview:bool=false):
+	var square = Board._get_foreground_square(location)
+	var lights = []
 	if !preview:
 		Events.PlaySound.emit("Diamond/double_diamond")
-	var square = Board._get_foreground_square(location)
-	square.double_diamond_spin(3)
-	var lights = []
+		square.double_diamond_spin(3)
+	
 	for cur_x in Board.COLUMNS:
 		for cur_y in Board.ROWS:
 			var cur_location = Vector2(cur_x,cur_y)
@@ -354,7 +361,7 @@ func double_diamond(location:Vector2,preview:bool=false):
 	await square.animation_player.animation_finished
 	Board.evaluate_next_level()
 
-func evaluate_tool_combo(location:Vector2,combo,preview=false):
+func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 	if !preview:
 		await $background/Line.animate_line_clear(location,combo,false)
 		var background_square = Board._get_background_square(location)
@@ -373,8 +380,11 @@ func evaluate_tool_combo(location:Vector2,combo,preview=false):
 			square.hide()
 	
 	var top_two = [0,0]
-
-	for item in combo:
+	
+	var sorted_combo = combo.duplicate()
+	sorted_combo.sort_custom(func(item,item2): return _get_priority(Board.get_square(item)) < _get_priority(Board.get_square(item2)))
+	
+	for item in sorted_combo:
 		var item_type = Board.get_square(item)
 		var priority = _get_priority(item_type)
 		var index = 0
@@ -383,12 +393,15 @@ func evaluate_tool_combo(location:Vector2,combo,preview=false):
 				top_two[index] = item_type
 				break
 			index += 1
-		Board.set_square(item,0)
-	print(top_two)
+		
+		if !preview:
+			Board.set_square(item,0)
+		
 	assert (0 not in top_two)
 	
 	if top_two[0] in Item.DIAMONDS and top_two[1] in Item.DIAMONDS:
-		Board.set_square(location,Item.RAINBOW_DIAMOND)
+		if !preview:
+			Board.set_square(location,Item.RAINBOW_DIAMOND)
 		await double_diamond(location,preview)
 		if preview:
 			return
@@ -399,13 +412,13 @@ func evaluate_tool_combo(location:Vector2,combo,preview=false):
 			if item in Item.DIAMONDS:
 				color = item
 		
-		var tool_type
+		var tool_type: Array
 		if Item.H_DRILL in top_two or Item.V_DRILL in top_two:
 			tool_type = Item.DRILLS
 		elif Item.BOMB in top_two:
-			tool_type = Item.BOMB
+			tool_type = [Item.BOMB]
 		
-		var replacements: Array[Vector2] = await diamond(location,color,tool_type)
+		var replacements: Array[Vector2] = await diamond(location,color,tool_type,preview)
 		replacements.shuffle()
 		for replacement in replacements:
 			if Board.get_square(replacement) == Item.AIR:
@@ -416,14 +429,29 @@ func evaluate_tool_combo(location:Vector2,combo,preview=false):
 		Events.PlaySound.emit("Bomb/use")
 		clear_blast(location,2)
 	
+	if top_two.any(func(x): return x in Item.DRILLS):
+		if Item.BOMB in top_two:
+			if !preview:
+				Events.PlaySound.emit("Drill/use")
+			const V_SHIFT = Vector2(0,1)
+			const H_SHIFT = Vector2(1,0)
+			
+			clear_line(location-H_SHIFT,"V",true,Color.WHITE,preview)
+			clear_line(location,"V",true,Color.WHITE,preview)
+			clear_line(location+H_SHIFT,"V",true,Color.WHITE,preview)
+			
+			clear_line(location-V_SHIFT,"H",true,Color.WHITE,preview)
+			clear_line(location,"H",true,Color.WHITE,preview)
+			clear_line(location+V_SHIFT,"H",true,Color.WHITE,preview)
+	
 	if top_two[0] in Item.DRILLS and top_two[1] in Item.DRILLS:
-		Events.PlaySound.emit("Drill/use")
-		clear_line(location,"V")
-		clear_line(location,"H")
+		if !preview:
+			Events.PlaySound.emit("Drill/use")
+		clear_line(location,"V",true,Color.WHITE,preview)
+		clear_line(location,"H",true,Color.WHITE,preview)
 	
 
-func handle_lines(location:Vector2,preview=false):
-	var lines = $background/Line.detect_lines(location)
+func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	var horizontal_matches = lines[0]
 	var vertical_matches = lines[1]
 	var clears = []
@@ -656,20 +684,22 @@ func select_pit_item(pos:int):
 	$background/Pit.set_item(pos,temp)
 	$background/Pit.draw()
 
-func replace_squares(type,replacement):
+func replace_squares(type,replacements:Array,preview):
 	var index = 0
 	var replaced_squares = []
 	for item in Board.board:
 		if item == type:
-			var replace
-			if replacement is Array:
-				replace = replacement.pick_random()
+			# Rotating through replacements
+			var replace = replacements[len(replaced_squares) % len(replacements)]
+			
+			if preview:
+				Preview.create_preview(Board._index_to_coords(index),replace)
 			else:
-				replace = replacement
-			Board.board[index] = replace
+				Board.board[index] = replace
+				Events.AddScore.emit(10)
+				
 			replaced_squares.append(Board._index_to_coords(index))
 			
-			Events.AddScore.emit(10)
 		index += 1
 	return replaced_squares
 
@@ -689,13 +719,17 @@ func place_tile(tile,location,preview=false):
 		Board.moves -= 1
 		Events.AddScore.emit(0)
 	
+	var lines
 	if !preview:
+		Board.set_square(location,tile)
+		lines = $background/Line.detect_lines(location)
 		await _place(location,tile)
 	var temp_board: Array[int] = Board.board.duplicate()
 	if preview:
 		Board.set_square(location,tile)
+		lines = $background/Line.detect_lines(location)
 	
-	handle_lines(location,preview)
+	handle_lines(location,lines,preview)
 	if preview:
 		Board.board = temp_board.duplicate()
 		return
@@ -737,9 +771,9 @@ func select_tool(bg_tile: BackgroundTile):
 
 	Events.PlaySound.emit("Tools/selected")
 
-func find_best_pit() -> Array:
-	var colors = []
-	var used_squares = []
+func find_best_pit() -> Array[int]:
+	var colors: Array[int] = []
+	var used_squares: Array = []
 	
 	#Step 1: Find any lines of 2 on the board, and give the missing color to complete those.
 	for x in range(Board.COLUMNS):
@@ -771,19 +805,32 @@ func find_best_pit() -> Array:
 			if len(colors) >= $background/Pit.SQUARES:
 				break
 	
-	#Step 3: If there's no colors at all on the board, give players 2 of the same color.
+	#Step 3: If there's a diamond on the board, give players colors of the diamond.
+	if len(colors) == 0 and Board.board.any(func(item):return item in Item.DIAMONDS):
+		var _board = Board.board.duplicate()
+		_board.shuffle()
+		for item in _board:
+			if item in Item.DIAMONDS:
+				colors.append(item-4)
+			if len(colors) >= $background/Pit.SQUARES:
+				break
+		
+		# If just 1 color, duplicate it.
+		if len(colors) == 1:
+			colors.append(colors[0])
+	
+	#Step 4: If there's no colors at all on the board, give players 2 of the same color.
 	if len(colors) == 0:
 		var _color = $background/Pit.OPTIONS.pick_random()
 		colors.append(_color)
 		colors.append(_color)
 	
-	#Step 4: Fill the remainder of the pit with random colors
+	#Step 5: Fill the remainder of the pit with random colors
 	if len(colors) < $background/Pit.SQUARES:
 		for __ in range($background/Pit.SQUARES - len(colors)):
 			colors.append($background/Pit.OPTIONS.pick_random())
 	
-	#Step 5: Trim down the list of colors to the size of the pit and return it.
-	
+	#Step 6: Trim down the list of colors to the size of the pit and return it.
 	assert (len(colors) >= $background/Pit.SQUARES)
 	
 	colors.shuffle()
