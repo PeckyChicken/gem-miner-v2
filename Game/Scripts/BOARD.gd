@@ -140,14 +140,32 @@ func select(value,type=Events.Type.pit):
 	selection_object.add_child(tile)
 	selected_tile = tile
 
+func remove_brick_ratio(ratio):
+	var bricks: Array[Vector2] = []
+	for index in range(len(board)):
+		var item: int = board[index]
+		if item in Item.BRICKS:
+			bricks.append(_index_to_coords(index))
+	
+	bricks.shuffle()
+	var num_clears = floori(len(bricks) * ratio)
+	for item in range(num_clears):
+		$"../Brick"._destroy_brick(bricks[item])
+
 func next_level():
 	level += 1
 	Events.PlaySound.emit("Gameplay/next_level")
+	
+	if Config.first_time:
+		Config.first_time = false
 	
 	if level % 2 == 0:
 		goal *= 2
 	else:
 		goal *= 5
+	
+	if Game.current_mode == Game.Mode.time_rush:
+		remove_brick_ratio(0.5)
 	
 	if Game.current_mode == Game.Mode.obstacle:
 		$"../Tools".tool_counts[randi_range(0,len($"../Tools".tool_counts)-1)] += 1
