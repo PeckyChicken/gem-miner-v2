@@ -7,6 +7,11 @@ func _ready() -> void:
 
 	await $"Fade".fade_out(0.5)
 	Music.play("title")
+	
+	if Config.first_time:
+		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
+		$MarginContainer/VBoxContainer/HBoxContainer2/obstacle.disabled = true
+		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
 
 func _on_pause_pressed() -> void:
 	get_tree().paused = true

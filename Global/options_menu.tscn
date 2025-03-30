@@ -108,7 +108,6 @@ autowrap_mode = 0
 [node name="OptionButton" type="OptionButton" parent="VBoxContainer/Previews"]
 layout_mode = 2
 alignment = 1
-selected = 0
 
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2

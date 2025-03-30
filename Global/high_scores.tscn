@@ -20,6 +20,7 @@ centered = false
 metadata/_edit_lock_ = true
 
 [node name="Options Text" type="RichTextLabel" parent="."]
+layout_mode = 0
 offset_top = 37.0
 offset_right = 500.0
 offset_bottom = 111.0
@@ -47,6 +48,7 @@ offset_bottom = 500.0
 alignment = 1
 
 [node name="Return" type="Button" parent="."]
+layout_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "Back"
 icon = ExtResource("3_kj5d3")

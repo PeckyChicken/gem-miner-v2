@@ -47,19 +47,30 @@ func setup():
 	Board.draw()
 	$background/Pit.draw_background()
 	$background/Pit.fill()
-	$background/Pit.draw()
 	
-	
-	random_place($background/Pit.OPTIONS)
-	random_place($background/Pit.OPTIONS)
-	
-	random_place([13])
-	if Game.current_mode != Game.Mode.obstacle:
+	if Config.first_time:
+		var tutorial_color = Item.GEMS.pick_random()
+		var mid = Vector2(floori(Board.COLUMNS/2.0),floori(Board.ROWS/2.0))
+		Board.set_square(mid,tutorial_color)
+		Board.set_square(mid+Vector2(1,0),tutorial_color)
+		Board.set_square(mid+Vector2(0,1),Item.BRICK)
+		Board.set_square(mid+Vector2(1,1),Item.BRICK)
+		Board.set_square(mid-Vector2(0,1),Item.BRICK)
+		Board.set_square(mid-Vector2(-1,1),Item.BRICK)
+		$background/Pit.set_item(0,tutorial_color)
+	else:
+		random_place($background/Pit.OPTIONS)
+		random_place($background/Pit.OPTIONS)
+		
 		random_place([13])
-		random_place([13])
-		random_place([13])
+		if Game.current_mode != Game.Mode.obstacle:
+			random_place([13])
+			random_place([13])
+			random_place([13])
 	
 	Board.draw()
+	$background/Pit.draw()
+	
 
 func set_background(mode):
 

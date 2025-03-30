@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cnfmw3udolcqt" path="res://assets/Images/tiles.png" id="1_kv688"]
 [ext_resource type="Script" uid="uid://4rcvmd68mrq2" path="res://Game/Scripts/game_tile.gd" id="2_ovnvd"]
 [ext_resource type="Texture2D" uid="uid://dnbtc58i6dlyh" path="res://assets/Images/Particles/explosion.png" id="3_61y4n"]
+[ext_resource type="Texture2D" uid="uid://bl53pl8dyxl83" path="res://assets/Images/Particles/brick_particle.png" id="3_p0aik"]
 [ext_resource type="Script" uid="uid://c0xyqs2taxlqd" path="res://Game/Scripts/explosion_particles.gd" id="4_jpheh"]
 [ext_resource type="Texture2D" uid="uid://cod3k4x0e1eot" path="res://assets/Images/Gems/rainbowsheet.png" id="5_r7pom"]
 
@@ -418,9 +419,6 @@ background_mode = 3
 glow_enabled = true
 glow_intensity = 2.0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h5tma"]
-load_path = "res://.godot/imported/brick_particle.png-c06f5dd1c210e8c018a866feccfc7a2d.ctex"
-
 [sub_resource type="Gradient" id="Gradient_lk848"]
 offsets = PackedFloat32Array(0.361111, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -530,7 +528,7 @@ environment = SubResource("Environment_uwx8p")
 position = Vector2(25, 25)
 emitting = false
 amount = 125
-texture = SubResource("CompressedTexture2D_h5tma")
+texture = ExtResource("3_p0aik")
 one_shot = true
 explosiveness = 1.0
 direction = Vector2(2, 1)
