@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6eclbsm2gbnf"
-path="res://.godot/imported/time_card.png-96b9260882d7d313972e4c5ba42eafb5.ctex"
+uid="uid://dlf8pfqorixxh"
+path="res://.godot/imported/survival_card.png-4071733e5f92dfb24e3b18c9ef5cf32d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Images/UI/time_card.png"
-dest_files=["res://.godot/imported/time_card.png-96b9260882d7d313972e4c5ba42eafb5.ctex"]
+source_file="res://assets/Images/Cards/survival_card.png"
+dest_files=["res://.godot/imported/survival_card.png-4071733e5f92dfb24e3b18c9ef5cf32d.ctex"]
 
 [params]
 

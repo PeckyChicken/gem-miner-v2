@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxic0xciwpcmb"
-path="res://.godot/imported/chroma_card.png-a8b4e47090b362acc119771db3a2bb15.ctex"
+uid="uid://bysubjgsyfbd2"
+path="res://.godot/imported/obstacles_card.png-4cdf53abb49b10bb13d71c5b4a00a77f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Images/UI/chroma_card.png"
-dest_files=["res://.godot/imported/chroma_card.png-a8b4e47090b362acc119771db3a2bb15.ctex"]
+source_file="res://assets/Images/Cards/obstacles_card.png"
+dest_files=["res://.godot/imported/obstacles_card.png-4cdf53abb49b10bb13d71c5b4a00a77f.ctex"]
 
 [params]
 
