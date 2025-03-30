@@ -1,7 +1,6 @@
 extends Node2D
 
-const MODE_TO_STRING = {Game.Mode.survival:"survival",Game.Mode.time_rush:"time_rush",Game.Mode.obstacle:"obstacle",Game.Mode.chromablitz:"chromablitz",Game.Mode.ascension:"ascension"}
-const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.chromablitz:4,Game.Mode.ascension:7}
+const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.ascension:7}
 
 var PRESSED_KEYS = []
 
@@ -21,8 +20,8 @@ func _ready() -> void:
 		if Music.playing not in ["survival1","survival2"]:
 			Music.play(["survival1","survival2"].pick_random())
 	else:
-		if MODE_TO_STRING[Game.current_mode] != Music.playing:
-			Music.play(MODE_TO_STRING[Game.current_mode])
+		if Game.Mode.keys()[Game.current_mode] != Music.playing:
+			Music.play(Game.Mode.keys()[Game.current_mode])
 
 func _process(delta: float) -> void:
 
@@ -59,10 +58,6 @@ func setup():
 		random_place([13])
 		random_place([13])
 		random_place([13])
-	
-	Board.set_square(Vector2(2,2),Item.BOMB)
-	Board.set_square(Vector2(2,3),Item.BOMB)
-	
 	
 	Board.draw()
 

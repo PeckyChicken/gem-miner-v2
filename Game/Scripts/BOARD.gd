@@ -98,9 +98,9 @@ func draw_background():
 	@warning_ignore("unused_variable")
 	height = square_height*ROWS
 	
-	start_x = config.WINDOW_WIDTH*REL_X - (width/2.0)
+	start_x = Config.WINDOW_WIDTH*REL_X - (width/2.0)
 	var cur_x = start_x
-	start_y = config.WINDOW_HEIGHT*REL_Y
+	start_y = Config.WINDOW_HEIGHT*REL_Y
 	var cur_y = start_y
 	
 	for x in range(COLUMNS):

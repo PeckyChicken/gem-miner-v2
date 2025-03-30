@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://btywqi1kth5wl"]
+[gd_scene load_steps=9 format=3 uid="uid://btywqi1kth5wl"]
 
 [ext_resource type="Script" uid="uid://cs24j1srm1dxl" path="res://Title/title.gd" id="1_r824j"]
 [ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="1_s6sku"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://brr8f1btfi8on" path="res://Title/start_game.gd" id="3_riw74"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="4_r824j"]
 [ext_resource type="Texture2D" uid="uid://bi5556pl5dvf0" path="res://assets/Images/UI/settings.svg" id="6_toehp"]
+[ext_resource type="Texture2D" uid="uid://bkorke0jejhmk" path="res://assets/Images/UI/leaderboard.svg" id="7_iliki"]
+[ext_resource type="Texture2D" uid="uid://c313ueea55dw0" path="res://assets/Images/UI/close.svg" id="8_n1pb7"]
 
 [node name="Node2D" type="Node2D"]
 process_mode = 3
@@ -91,8 +93,31 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
+[node name="High Scores" type="Button" parent="."]
+process_mode = 1
+offset_left = 460.0
+offset_top = 460.0
+offset_right = 500.0
+offset_bottom = 500.0
+icon = ExtResource("7_iliki")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="Close" type="Button" parent="."]
+process_mode = 1
+offset_left = 460.0
+offset_right = 500.0
+offset_bottom = 40.0
+icon = ExtResource("8_n1pb7")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/survival" to="MarginContainer/VBoxContainer/HBoxContainer/survival" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/time_rush" to="MarginContainer/VBoxContainer/HBoxContainer/time_rush" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" to="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ascension" to="MarginContainer/VBoxContainer/HBoxContainer2/ascension" method="_on_pressed"]
 [connection signal="pressed" from="Pause" to="." method="_on_pause_pressed"]
+[connection signal="pressed" from="High Scores" to="." method="_on_high_score_pressed"]
+[connection signal="pressed" from="Close" to="." method="_on_close_pressed"]

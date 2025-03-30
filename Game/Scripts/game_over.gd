@@ -9,8 +9,8 @@ func _ready() -> void:
 	$MarginContainer.pivot_offset = $MarginContainer.size / 2
 
 func game_over():
-	config.game_over = true
-	position = Vector2(config.WINDOW_WIDTH/2,config.WINDOW_HEIGHT/2)
+	Config.game_over = true
+	position = Vector2(Config.WINDOW_WIDTH/2,Config.WINDOW_HEIGHT/2)
 	$MarginContainer/AnimationPlayer.play("pop_in")
 	
 	Music.play("game_over")

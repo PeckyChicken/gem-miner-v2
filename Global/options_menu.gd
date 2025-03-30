@@ -7,6 +7,11 @@ const CLICK = preload("res://assets/Sounds/Gameplay/click.wav")
 var audio_player = AudioStreamPlayer.new()
 
 func _ready() -> void:
+	var preview_options: OptionButton = $VBoxContainer/Previews/OptionButton
+	preview_options.clear()
+	for item in Game.Preview.keys():
+		preview_options.add_item(item.capitalize())
+	
 	audio_player.stream = CLICK
 	add_child(audio_player)
 
@@ -19,6 +24,8 @@ func update_values():
 	$VBoxContainer/Sfx/Percentage.text = "%s%%" % [str(int($VBoxContainer/Sfx/Slider.value))]
 	
 	$VBoxContainer/Previews/OptionButton.select(Game.preview)
+	
+	Config.save_config()
 
 func _on_music_value_changed(value: float) -> void:
 	Music.volume = value / 100
@@ -43,7 +50,7 @@ func _on_sfx_pressed() -> void:
 	audio_player.play()
 
 func _on_preview_item_selected(index: int) -> void:
-	Game.preview = index
+	Game.preview = index as Game.Preview
 	update_values()
 
 func _on_return_pressed() -> void:

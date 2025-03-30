@@ -2,6 +2,8 @@ extends RichTextLabel
 
 @onready var board: brd = $"../../Board"
 
+var high_score_beaten: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Events.AddScore.connect(add_score)
@@ -26,6 +28,7 @@ func add_score(score):
 	
 	if Game.current_mode != Game.Mode.obstacle:
 		board.evaluate_next_level()
+	Config.save_config()
 	
 func _update():
 	add_theme_font_size_override("normal_font_size", _calculate_font_size(board.score))
@@ -39,6 +42,13 @@ func _update():
 	
 	$"../Moves".add_theme_font_size_override("normal_font_size", _calculate_font_size(board.moves))
 	$"../Moves".text = "[center]%s" % [board.moves]
+	
+	if board.score > Game.high_scores[Game.current_mode]:
+		if not high_score_beaten:
+			if Game.high_scores[Game.current_mode] > 0:
+				Events.PlaySound.emit("Gameplay/highscore")
+			high_score_beaten = true
+		Game.high_scores[Game.current_mode] = board.score
 
 func _calculate_font_size(score) -> int:
 	var font_size = 50

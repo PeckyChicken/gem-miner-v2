@@ -4,7 +4,6 @@ enum Mode {
 	survival,
 	time_rush,
 	obstacle,
-	chromablitz,
 	ascension
 }
 
@@ -14,6 +13,8 @@ enum Preview {
 	advanced
 }
 
-var preview = Preview.basic
+var preview: Preview
 
-var current_mode = Mode.survival
+var current_mode: Mode
+
+var high_scores: Dictionary
