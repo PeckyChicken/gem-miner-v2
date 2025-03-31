@@ -3,6 +3,7 @@ extends RichTextLabel
 @onready var board: brd = $"../../Board"
 
 var high_score_beaten: bool = false
+const HIGH_SCORE_COLOR = Color.CHARTREUSE
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -44,11 +45,15 @@ func _update():
 	$"../Moves".text = "[center]%s" % [board.moves]
 	
 	if board.score > Game.high_scores[Game.current_mode]:
+		$"../Best".modulate = HIGH_SCORE_COLOR
+		$"../Best_Label".modulate = HIGH_SCORE_COLOR
 		if not high_score_beaten:
 			if Game.high_scores[Game.current_mode] > 0:
 				Events.PlaySound.emit("Gameplay/highscore")
 			high_score_beaten = true
 		Game.high_scores[Game.current_mode] = board.score
+	
+	$"../Best".text = "[center]%s" % [Game.high_scores[Game.current_mode]]
 
 func _calculate_font_size(score) -> int:
 	var font_size = 50

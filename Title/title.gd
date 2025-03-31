@@ -5,24 +5,26 @@ const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
 
 func _ready() -> void:
 
-	await $"Fade".fade_out(0.5)
+	await $"../Fade".fade_out(0.5)
 	Music.play("title")
 	
 	if Config.first_time:
-		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
-		$MarginContainer/VBoxContainer/HBoxContainer2/obstacle.disabled = true
-		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
+		$"../Modes/VBoxContainer/HBoxContainer/time_rush".disabled = true
+		$"../Modes/VBoxContainer/HBoxContainer2/obstacle".disabled = true
+		$"../Modes/VBoxContainer/HBoxContainer2/ascension".disabled = true
 
 func _on_pause_pressed() -> void:
 	get_tree().paused = true
 	var options_menu: OptionsMenu = OPTIONS_MENU.instantiate()
 	options_menu.pause_menu = null
-	add_child(options_menu)
+	options_menu.position = Vector2(-250,-250)
+	add_sibling(options_menu)
 
 func _on_high_score_pressed() -> void:
 	get_tree().paused = true
 	var high_score_menu: HighScores = HIGH_SCORE_MENU.instantiate()
-	add_child(high_score_menu)
+	high_score_menu.position = Vector2(-250,-250)
+	add_sibling(high_score_menu)
 
 func _on_close_pressed() -> void:
 	get_tree().quit()

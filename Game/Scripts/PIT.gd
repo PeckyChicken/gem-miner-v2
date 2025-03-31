@@ -40,11 +40,12 @@ func draw():
 	
 	for index in range(len(background_tiles)):
 		var tile_value = pit[index]
-		var background_tile = background_tiles[index]
-		var object = tile_sprite.duplicate()
+		var background_tile: BackgroundTile = background_tiles[index]
+		var object: GameTile = tile_sprite.duplicate()
 		object.set_frame(tile_value)
 		object.show()
 		background_tile.add_child(object)
+		
 		foreground_tiles.append(object)
 
 # Called when the node enters the scene tree for the first time.

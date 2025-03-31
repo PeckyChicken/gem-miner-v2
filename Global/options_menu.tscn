@@ -18,10 +18,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nl8va")
 
-[node name="Fade" type="Sprite2D" parent="."]
+[node name="Fade" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 0
 texture = ExtResource("2_2gawg")
-centered = false
 metadata/_edit_lock_ = true
 
 [node name="Options Text" type="RichTextLabel" parent="."]

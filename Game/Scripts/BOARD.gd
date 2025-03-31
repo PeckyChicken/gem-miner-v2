@@ -13,7 +13,7 @@ var background_tiles: Array[Sprite2D] = []
 var foreground_tiles = []
 var board: Array[int] = []
 var selected = 0
-var selected_tile = null
+var selected_tile: Sprite2D
 
 var level = 1
 var score = 0
@@ -27,7 +27,11 @@ var height
 var start_x
 var start_y
 
+var background_size: Vector2
+@onready var background: Sprite2D = $".."
+
 func _ready():
+	background_size = background.get_rect().size
 	clear_board()
 	Events.GameOver.connect(func():game_over=true)
 	
@@ -86,7 +90,7 @@ func pop_in(location:Vector2):
 	await tile.animation_player.animation_finished
 
 func draw_background():
-	var background_tile = $"../background_tile"
+	var background_tile: BackgroundTile = $"../background_tile"
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()
@@ -98,9 +102,9 @@ func draw_background():
 	@warning_ignore("unused_variable")
 	height = square_height*ROWS
 	
-	start_x = Config.WINDOW_WIDTH*REL_X - (width/2.0)
+	start_x = background_size.x*REL_X - (width/2.0)
 	var cur_x = start_x
-	start_y = Config.WINDOW_HEIGHT*REL_Y
+	start_y = background_size.y*REL_Y
 	var cur_y = start_y
 	
 	for x in range(COLUMNS):
@@ -139,6 +143,9 @@ func select(value,type=Events.Type.pit):
 	tile.show()
 	selection_object.add_child(tile)
 	selected_tile = tile
+	if selected_tile is GameTile:
+		selected_tile.align_for_animation()
+	selected_tile.z_index = 15
 
 func remove_brick_ratio(ratio):
 	var bricks: Array[Vector2] = []
@@ -221,11 +228,12 @@ func draw(location:Vector2=Vector2.INF):
 		var index = foreground_tiles.find(_get_foreground_square(location))
 		
 		var tile_value = get_square(location)
-		var background_tile = _get_background_square(location)
-		var object = tile_sprite.duplicate()
+		var background_tile: BackgroundTile = _get_background_square(location)
+		var object: GameTile = tile_sprite.duplicate()
 		object.set_frame(tile_value)
 		object.show()
 		background_tile.add_child(object)
+		
 		
 		foreground_tiles[index] = object
 		return
@@ -239,4 +247,5 @@ func draw(location:Vector2=Vector2.INF):
 		object.set_frame(tile_value)
 		object.show()
 		background_tile.add_child(object)
+		
 		foreground_tiles.append(object)

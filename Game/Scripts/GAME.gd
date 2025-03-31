@@ -7,15 +7,12 @@ var PRESSED_KEYS = []
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
 
-const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
-var pause_menu: Control
-
 var time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	setup.call_deferred()
-	await $Fade.fade_out(0.5)
+	await $background/Fade.fade_out(0.5)
 	if Game.current_mode == Game.Mode.survival:
 		if Music.playing not in ["survival1","survival2"]:
 			Music.play(["survival1","survival2"].pick_random())
@@ -24,7 +21,15 @@ func _ready() -> void:
 			Music.play(Game.Mode.keys()[Game.current_mode])
 
 func _process(delta: float) -> void:
-
+	$Cursor.global_position = Events.mouse_position
+	$Cursor.modulate = Color.GOLDENROD if Events.mouse_clicked else Color.WHITE
+	
+	if not Board.background_tiles.any(func(x): return x.hovered):
+		Preview.delete_all_previews()
+	
+	if Board.selected_tile:
+		Board.selected_tile.global_position = Events.mouse_position - (BackgroundTile.COLLISION_OFFSET * $background.scale)
+		
 	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
 		time += delta
 		if time >= 1:
@@ -39,9 +44,9 @@ func setup():
 	set_background(Game.current_mode)
 
 	Events.TileClicked.connect(tile_clicked)
+	Events.TileReleased.connect(tile_released)
 	Events.TileHovered.connect(tile_hovered)
-	Events.Pause.connect(pause)
-	Events.Resume.connect(resume)
+	Events.MouseReleased.connect(func(__,___): if not Board.background_tiles.any(func(x): return x.hovered): cancel_place())
 	
 	Board.draw_background()
 	Board.draw()
@@ -71,6 +76,9 @@ func setup():
 	Board.draw()
 	$background/Pit.draw()
 	
+func cancel_place():
+	return_selected_to_pit()
+	Preview.delete_all_previews()
 
 func set_background(mode):
 
@@ -122,6 +130,9 @@ func _input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		Events.MouseClicked.emit(event.button_index,event.position)
 	
+	if event is InputEventMouseButton and event.is_released() and event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		Events.MouseReleased.emit(event.button_index,event.position)
+	
 	if event is InputEventKey and event.is_pressed():
 		var character = char(event.unicode)
 		if character.is_valid_int():
@@ -129,28 +140,6 @@ func _input(event):
 			if len($background/Pit.pit) > pos:
 				select_pit_item(pos)
 				Events.UpdateHover.emit()
-
-func pause():
-	Events.PlaySound.emit("Gameplay/click")
-	if pause_menu:
-		var player: AnimationPlayer = pause_menu.get_node("AnimationPlayer")
-		if player.is_playing():
-			await player.animation_finished
-	get_tree().paused = true
-	pause_menu = PAUSE_MENU_SCENE.instantiate()
-	add_child(pause_menu)
-	
-
-func resume():
-	var player: AnimationPlayer = pause_menu.get_node("AnimationPlayer")
-	if player.is_playing():
-		await player.animation_finished
-	
-	get_tree().paused = false
-	
-	player.play("unpause")
-	await player.animation_finished
-	pause_menu.queue_free()
 
 func validate_tile_placement(location:Vector2):
 	if Board.get_square(location) != 0:
@@ -754,6 +743,7 @@ func replace_squares(type,replacements:Array,preview):
 func place_tile(tile,location,preview=false):
 	if !preview:
 		Preview.delete_all_previews()
+	
 	if not validate_tile_placement(location):
 		if Board.get_square(location) == Item.AIR:
 			Preview.create_preview(location,Item.CROSS)
@@ -761,6 +751,7 @@ func place_tile(tile,location,preview=false):
 		if preview:
 			return
 		Events.PlaySound.emit("Gameplay/nomatch")
+		return_selected_to_pit()
 		return
 	
 	if Game.current_mode == Game.Mode.obstacle and !preview:
@@ -794,6 +785,7 @@ func return_selected_to_pit():
 	if 0 in _pit:
 		_pit[_pit.find(0)] = Board.selected
 	
+	Board.select(Item.AIR)
 	$background/Pit.draw()
 
 func select_tool(bg_tile: BackgroundTile):
@@ -990,7 +982,6 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 func tile_hovered(tile: BackgroundTile):
 	if get_tree().paused:
 		return
-	
 	if tile.type == Events.Type.preview:
 		return
 	
@@ -1015,28 +1006,37 @@ func tile_hovered(tile: BackgroundTile):
 		
 		else: evaluate_game_tool(location,true,true)
 
-func tile_clicked(tile):
+func tile_released(tile: BackgroundTile):
 	if Board.game_over or get_tree().paused:
 		return
 	
+	Preview.delete_all_previews()
+	
 	var location = Vector2(tile.x,tile.y)
+	
 	if tile.type == Events.Type.board:
 		if $background/Tools.selected_tool != null:
 			if $background/Tools.selected_tool == $background/Tools.Tools.dice:
 				return
 			evaluate_external_tool(location,$background/Tools.selected_tool)
-			
-		
 		elif Board.selected:
 			place_tile(Board.selected,location)
-		else:
-			evaluate_game_tool(location)
-		
 	
 	if tile.type == Events.Type.pit:
 		if $background/Tools.selected_tool == $background/Tools.Tools.dice:
 			evaluate_external_tool(tile.x,$background/Tools.selected_tool)
 			return
+
+func tile_clicked(tile: BackgroundTile):
+	if Board.game_over or get_tree().paused:
+		return
+	
+	var location = Vector2(tile.x,tile.y)
+	
+	if tile.type == Events.Type.board:
+		evaluate_game_tool(location)
+	
+	if tile.type == Events.Type.pit:
 		select_pit_item(tile.x)
 	
 	if tile.type == Events.Type.tool:
