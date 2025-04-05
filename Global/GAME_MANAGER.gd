@@ -39,6 +39,8 @@ enum Item {
 
 const GEMS = [Item.RUBY,Item.TOPAZ,Item.EMERALD,Item.SAPPHIRE]
 
+const DRILLS = [Item.H_DRILL,Item.V_DRILL]
+
 const DIAMONDS = [Item.RED_DIAMOND,Item.YELLOW_DIAMOND,Item.GREEN_DIAMOND,Item.BLUE_DIAMOND]
 
 var GAME_TOOLS = [Item.H_DRILL,Item.V_DRILL,Item.BOMB] + DIAMONDS
