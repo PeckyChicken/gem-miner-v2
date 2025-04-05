@@ -11,8 +11,10 @@ config_version=5
 [application]
 
 config/name="Gem Miner v2"
+config/version="2.0"
 run/main_scene="uid://btywqi1kth5wl"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
@@ -20,7 +22,6 @@ config/icon="res://icon.svg"
 Config="*res://Global/CONFIG.gd"
 Events="*res://Global/EVENTS.gd"
 Music="*res://Music/MUSIC.gd"
-Item="*res://Global/ITEMS.gd"
 Game="*res://Global/GAME_MANAGER.gd"
 
 [debug]
@@ -31,6 +32,8 @@ gdscript/warnings/unused_signal=0
 
 window/size/viewport_width=500
 window/size/viewport_height=500
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
 
 [editor]
 
