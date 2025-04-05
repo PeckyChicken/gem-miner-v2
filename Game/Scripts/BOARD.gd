@@ -11,7 +11,7 @@ const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
 
 var background_tiles: Array[Sprite2D] = []
 var foreground_tiles = []
-var board: Array[int] = []
+var board: Array[Game.Item] = []
 var selected = 0
 var selected_tile = null
 
@@ -41,12 +41,12 @@ func _index_to_coords(index):
 
 func clear_gems(matches:Array):
 	for item in matches:
-		set_square(item,0)
+		set_square(item,Game.Item.AIR)
 
-func set_square(location:Vector2,value):
+func set_square(location:Vector2,value:Game.Item):
 	board[location.x*COLUMNS+location.y] = value
 
-func get_square(location:Vector2):
+func get_square(location:Vector2) -> Game.Item:
 	return board[location.x*COLUMNS+location.y]
 
 func get_absolute_coords(location:Vector2):
@@ -78,7 +78,7 @@ func _get_background_square(location:Vector2):
 func clear_board():
 	board.clear()
 	for __ in range(ROWS*COLUMNS):
-		board.append(0)
+		board.append(Game.Item.AIR)
 
 func pop_in(location:Vector2):
 	var tile = _get_foreground_square(location)
@@ -124,7 +124,7 @@ func select(value,type=Events.Type.pit):
 		selected = value
 		tile_sprite = $"../tile"
 	elif type == Events.Type.tool:
-		selected = Item.AIR
+		selected = Game.Item.AIR
 		tile_sprite = $"../Tools/Tool".get_node("Image")
 	else:
 		printerr('"type" parameter set to an unsupported value (%s)' % [type])
@@ -144,7 +144,7 @@ func remove_brick_ratio(ratio):
 	var bricks: Array[Vector2] = []
 	for index in range(len(board)):
 		var item: int = board[index]
-		if item in Item.BRICKS:
+		if item in Game.BRICKS:
 			bricks.append(_index_to_coords(index))
 	
 	bricks.shuffle()
@@ -181,19 +181,19 @@ func remove_square(location:Vector2,trigger_tools=true):
 	var tile = _get_foreground_square(location)
 	if tile.animation_player.is_playing():
 		await tile.animation_player.animation_finished
-	if get_square(location) in Item.BRICKS:
+	if get_square(location) in Game.BRICKS:
 		await $"../Brick"._destroy_brick(location)
 		return
-	elif get_square(location) in Item.GAME_TOOLS and trigger_tools:
+	elif get_square(location) in Game.GAME_TOOLS and trigger_tools:
 		$"../..".evaluate_game_tool(location,false)
 		return
 	tile.animation_player.play("vanish")
-	set_square(location,0)
+	set_square(location,Game.Item.AIR)
 	await tile.animation_player.animation_finished
 
 func evaluate_next_level():
 	if Game.current_mode == Game.Mode.obstacle:
-		if Item.BRICK not in board:
+		if Game.Item.BRICK not in board:
 			next_level()
 		return
 	
@@ -206,7 +206,7 @@ func evaluate_game_over():
 		if moves <= 0:
 			_game_over = true
 	
-	if Item.AIR not in board:
+	if Game.Item.AIR not in board:
 		if not board.any(func (x): return x in $"../Pit".TOOLS):
 			_game_over = true
 	

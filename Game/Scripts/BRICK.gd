@@ -8,7 +8,7 @@ func _ready() -> void:
 func _destroy_brick(brick:Vector2):
 	Events.PlaySound.emit("Gameplay/brick_break")
 	Events.AddScore.emit(5)
-	$"../Board".set_square(brick,Item.AIR)
+	$"../Board".set_square(brick,Game.Item.AIR)
 	
 	var obj = $"../Board"._get_foreground_square(brick)
 	
@@ -25,7 +25,7 @@ func destroy_bricks(gems):
 	var success = false
 	for gem in gems:
 		for direction in $"../Board".calculate_directions(gem):
-			if $"../Board".get_square(direction) == Item.BRICK:
+			if $"../Board".get_square(direction) == Game.Item.BRICK:
 				_destroy_brick(direction)
 				success = true
 	
