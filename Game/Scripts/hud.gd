@@ -15,6 +15,7 @@ func pause():
 			await player.animation_finished
 	get_tree().paused = true
 	pause_menu = PAUSE_MENU_SCENE.instantiate()
+	pause_menu.z_index = 20
 	add_sibling(pause_menu)
 	
 
