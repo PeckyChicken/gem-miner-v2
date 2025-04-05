@@ -236,6 +236,7 @@ visible = false
 z_index = 5
 
 [node name="background_tile" parent="background" instance=ExtResource("9_572oi")]
+visible = true
 
 [node name="selection_tile" parent="background" instance=ExtResource("11_hjvjr")]
 position = Vector2(437, 22)

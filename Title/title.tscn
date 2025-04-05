@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bkorke0jejhmk" path="res://assets/Images/UI/leaderboard.svg" id="7_iliki"]
 [ext_resource type="Texture2D" uid="uid://c313ueea55dw0" path="res://assets/Images/UI/close.svg" id="8_n1pb7"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D2" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_r824j")
 
