@@ -1,13 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://crs80oppmnox6"]
+[gd_scene load_steps=5 format=3 uid="uid://crs80oppmnox6"]
 
 [ext_resource type="Texture2D" uid="uid://bwyicvm668xlr" path="res://assets/Images/UI/empty.png" id="1_74ec7"]
 [ext_resource type="Script" uid="uid://i4egn8qbcufn" path="res://Game/Scripts/background_tile.gd" id="2_8t21g"]
+[ext_resource type="Texture2D" uid="uid://dcj1rhqhlk24e" path="res://assets/Images/Gems/rainbow_gem.png" id="3_rugq5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vr0e"]
 size = Vector2(50, 50)
 
 [node name="background_tile" type="Sprite2D"]
-visible = false
 texture = ExtResource("1_74ec7")
 centered = false
 script = ExtResource("2_8t21g")
@@ -20,6 +20,9 @@ metadata/y = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(25, 25)
 shape = SubResource("RectangleShape2D_2vr0e")
+
+[node name="RainbowGem" type="Sprite2D" parent="Area2D/CollisionShape2D"]
+texture = ExtResource("3_rugq5")
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]
