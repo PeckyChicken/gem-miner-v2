@@ -19,8 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://b80bttngtd0jp" path="res://Game/Scenes/tool.tscn" id="15_ofkml"]
 [ext_resource type="PackedScene" uid="uid://bd2m28ykh7qwe" path="res://Game/Scenes/lightning.tscn" id="15_p6li4"]
 [ext_resource type="Script" uid="uid://7v33ng1f76oh" path="res://Game/Scripts/lightning.gd" id="16_t4ufd"]
-[ext_resource type="PackedScene" uid="uid://b84md5jc3fq31" path="res://Game/Scenes/hud.tscn" id="16_tyrie"]
-[ext_resource type="PackedScene" uid="uid://etdt7nk5ebja" path="res://Game/Scenes/game_over.tscn" id="17_ofkml"]
+[ext_resource type="PackedScene" uid="uid://dmx44q877cfg4" path="res://Game/Scenes/hud.tscn" id="16_tyrie"]
+[ext_resource type="PackedScene" uid="uid://ck6xaj1wt4elw" path="res://Game/Scenes/game_over.tscn" id="17_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
@@ -173,6 +173,7 @@ visible = false
 z_index = 5
 
 [node name="background_tile" parent="background" instance=ExtResource("9_572oi")]
+visible = false
 
 [node name="selection_tile" parent="background" instance=ExtResource("11_hjvjr")]
 position = Vector2(437, 22)
