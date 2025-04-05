@@ -78,7 +78,7 @@ icon = ExtResource("2_7p1qe")
 flat = true
 icon_alignment = 1
 script = ExtResource("3_riw74")
-mode = 4
+mode = 3
 
 [node name="Fade" parent="." instance=ExtResource("4_r824j")]
 
