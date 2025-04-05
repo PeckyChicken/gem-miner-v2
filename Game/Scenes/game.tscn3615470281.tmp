@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=34 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_gsb0v"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://Game/Scenes/game_tile.tscn" id="8_4yil1"]
 [ext_resource type="Script" uid="uid://cqojhpc4vxilt" path="res://Game/Scripts/PREVIEW.gd" id="8_opxns"]
 [ext_resource type="PackedScene" uid="uid://crs80oppmnox6" path="res://Game/Scenes/background_tile.tscn" id="9_572oi"]
-[ext_resource type="Script" uid="uid://cm53uwmcj7a2c" path="res://Game/Scripts/UPGRADE.gd" id="9_wwslj"]
 [ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://Game/Scenes/tool_background_tile.tscn" id="10_8srii"]
 [ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://Game/Scenes/selection_tile.tscn" id="11_hjvjr"]
 [ext_resource type="Texture2D" uid="uid://bikexw8nixrnq" path="res://assets/Images/Particles/vanish.png" id="12_t1k1h"]
@@ -209,9 +208,6 @@ script = ExtResource("7_wwslj")
 [node name="Preview" type="Node2D" parent="background"]
 z_index = 10
 script = ExtResource("8_opxns")
-
-[node name="Upgrade" type="Node" parent="background"]
-script = ExtResource("9_wwslj")
 
 [node name="Tools" type="Node2D" parent="background"]
 script = ExtResource("13_tyrie")

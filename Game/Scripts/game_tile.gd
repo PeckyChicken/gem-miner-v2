@@ -43,7 +43,7 @@ func double_diamond_spin(seconds: float):
 	$RainbowDiamond.show()
 	$RainbowDiamond.frame = 0
 	var _frame = self.frame
-	self.frame = Item.AIR
+	self.frame = Game.Item.AIR
 	var tween = get_tree().create_tween()
 	tween.tween_property($RainbowDiamond,"scale",Vector2(2,2),tween_time)
 	await tween.finished
@@ -58,7 +58,7 @@ func double_diamond_spin(seconds: float):
 	$RainbowDiamond.stop()
 	$RainbowDiamond.hide()
 	SpinFinished.emit()
-	self.frame = Item.RAINBOW_DIAMOND
+	self.frame = Game.Item.RAINBOW_DIAMOND
 	
 	dealign_from_animation()
 
