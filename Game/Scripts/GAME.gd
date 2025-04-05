@@ -23,6 +23,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	$Cursor.global_position = Events.mouse_position
 	$Cursor.modulate = Color.GOLDENROD if Events.mouse_clicked else Color.WHITE
+	if not Board:
+		return
 	
 	if not Board.background_tiles.any(func(x): return x.hovered):
 		Preview.delete_all_previews()
@@ -42,11 +44,12 @@ func _process(delta: float) -> void:
 
 func setup():
 	set_background(Game.current_mode)
-
+	
+	await get_tree().process_frame
 	Events.TileClicked.connect(tile_clicked)
 	Events.TileReleased.connect(tile_released)
 	Events.TileHovered.connect(tile_hovered)
-	Events.MouseReleased.connect(func(__,___): if not Board.background_tiles.any(func(x): return x.hovered): cancel_place())
+	Events.MouseReleased.connect(func(__,___): if Board and not Board.background_tiles.any(func(x): return x.hovered): cancel_place())
 	
 	Board.draw_background()
 	Board.draw()
@@ -169,7 +172,7 @@ func vanish_gems(location:Vector2):
 	var vanish = $background/vanish.duplicate()
 	vanish.show()
 	Board._get_background_square(location).add_child(vanish)
-	vanish.position += Vector2(Board.width/Board.COLUMNS/2,Board.height/Board.ROWS/2)
+	vanish.position += Vector2(Board.size.x/Board.COLUMNS/2,Board.size.y/Board.ROWS/2)
 	vanish.get_child(0).play("vanish")
 
 func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matches,preview=false):
@@ -220,9 +223,9 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vector2.ZERO,Vector2.ZERO]) -> Lightning:
 	var lightning = $Lightning.duplicate()
 	var lightning_line: Line2D = lightning.get_node("Line")
-	lightning_line.position = Vector2(Board.width/Board.ROWS / 2,Board.height/Board.COLUMNS / 2)
+	lightning_line.position = Vector2(Board.size.x/Board.ROWS / 2,Board.size.y/Board.COLUMNS / 2)
 	
-	var square_size = Vector2(Board.width/Board.ROWS,Board.height/Board.COLUMNS)
+	var square_size = Vector2(Board.size.x/Board.ROWS,Board.size.y/Board.COLUMNS)
 	
 	var point_a_node = Board._get_background_square(point_a)
 	
@@ -993,6 +996,7 @@ func tile_hovered(tile: BackgroundTile):
 	if not Game.preview:
 		return
 	
+	
 	var location = Vector2(tile.x,tile.y)
 	
 	if tile.type == Events.Type.board:
@@ -1002,6 +1006,7 @@ func tile_hovered(tile: BackgroundTile):
 			evaluate_external_tool(location,$background/Tools.selected_tool,false,true)
 		
 		elif Board.selected:
+			
 			place_tile(Board.selected,location,true)
 		
 		else: evaluate_game_tool(location,true,true)

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://i4egn8qbcufn" path="res://Game/Scripts/background_tile.gd" id="2_1ilkl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v3tjd"]
-size = Vector2(65, 65)
+size = Vector2(88, 84)
 
 [node name="tool_background_tile" type="Sprite2D"]
 texture = ExtResource("1_yhipk")
@@ -15,7 +15,7 @@ script = ExtResource("2_1ilkl")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(25.5, 25.5)
+position = Vector2(26, 26)
 shape = SubResource("RectangleShape2D_v3tjd")
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]

@@ -7,9 +7,12 @@ var y = 0
 var hovered = false
 var clicked = false
 
-const COLLISION_OFFSET = Vector2(0,150)
+var Board: brd
+
+const COLLISION_OFFSET = Vector2(0,100)
 
 @export var type: Events.Type
+
 
 func _ready() -> void:
 	Events.MouseClicked.connect(_on_mouse_clicked)
@@ -18,7 +21,10 @@ func _ready() -> void:
 	Events.UpdateHover.connect(update_hover)
 	
 	if type == Events.Type.board:
-		$Area2D/CollisionShape2D.position += COLLISION_OFFSET*0.5
+		$Area2D/CollisionShape2D.position *= scale
+		print($Area2D/CollisionShape2D.position)
+		$Area2D/CollisionShape2D.position += COLLISION_OFFSET * scale / $"../..".scale
+		$Area2D/CollisionShape2D.position -= Board.size / Vector2(Board.COLUMNS,Board.ROWS)
 
 func update_hover():
 	if hovered:
@@ -26,9 +32,14 @@ func update_hover():
 
 func _on_mouse_entered() -> void:
 	Events.TileHovered.emit(self)
+	if type == Events.Type.board:
+		$Area2D/CollisionShape2D/RainbowGem.show()
 	hovered = true
 
 func _on_mouse_exited() -> void:
+	if type == Events.Type.board:
+		pass
+		#$Area2D/CollisionShape2D/RainbowGem.hide()
 	hovered = false
 
 func _on_mouse_clicked(__,___):

@@ -123,7 +123,6 @@ script = ExtResource("1_seuk0")
 [node name="background" type="Sprite2D" parent="."]
 process_mode = 1
 z_index = -20
-position = Vector2(0, 350)
 scale = Vector2(2.16, 2.16)
 texture = ExtResource("2_gsb0v")
 centered = false
@@ -180,7 +179,6 @@ position = Vector2(437, 22)
 type = 3
 
 [node name="pit_background_tile" parent="background" instance=ExtResource("10_8srii")]
-visible = false
 position = Vector2(-24, -28)
 type = 1
 

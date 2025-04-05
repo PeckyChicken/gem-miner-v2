@@ -16,6 +16,7 @@ func delete_all_previews():
 	previews.clear()
 
 func create_preview(location: Vector2,image: int) -> Preview:
+
 	var preview = Preview.new()
 	
 	var background_tile: BackgroundTile = $"../background_tile".duplicate()
@@ -24,6 +25,7 @@ func create_preview(location: Vector2,image: int) -> Preview:
 	background_tile.type = Events.Type.preview
 	foreground_tile.frame = image
 	background_tile.position = $"../Board".get_absolute_coords(location)
+	background_tile.scale = $"../Board"._get_background_square(location).scale
 	
 	background_tile.show()
 	foreground_tile.show()

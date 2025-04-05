@@ -42,11 +42,11 @@ func detect_lines(location:Vector2) -> Array[Array]:
 
 func animate_line_clear(location:Vector2,matches: Array,disappear=true):
 	var tween = get_tree().create_tween().set_parallel()
-	var square_width = $"../Board".width/$"../Board".COLUMNS
-	#var square_height = $"../Board".height/$"../Board".ROWS
+	var square_width = $"../Board".size.x/$"../Board".COLUMNS
+	var square_height = $"../Board".size.y/$"../Board".ROWS
 	
 	for item in matches:
-		var delta = (location-item)*square_width
+		var delta = (location-item)*Vector2(square_width,square_height)
 		
 		var object = $"../Board"._get_foreground_square(item)
 		tween.tween_property(object,"position",object.position+delta,0.2)

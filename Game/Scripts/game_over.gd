@@ -1,6 +1,6 @@
 extends CenterContainer
 
-@onready var node_2d: Node2D = $".."
+@onready var node_2d: Node2D = $"../.."
 
 func _ready() -> void:
 	Events.GameOver.connect(game_over)
