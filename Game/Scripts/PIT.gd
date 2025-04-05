@@ -1,7 +1,7 @@
 extends Node
 
 const SQUARES = 3
-const OPTIONS = Item.GEMS
+const OPTIONS = Game.GEMS
 var TOOLS = range(5,13)
 var pit: Array[int] = []
 var background_tiles = []

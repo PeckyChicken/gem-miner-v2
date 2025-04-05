@@ -6,6 +6,7 @@ var PRESSED_KEYS = []
 
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
+@onready var Upgrade: upgrade_class = $background/Upgrade
 
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: Control
@@ -49,14 +50,14 @@ func setup():
 	$background/Pit.fill()
 	
 	if Config.first_time:
-		var tutorial_color = Item.GEMS.pick_random()
+		var tutorial_color = Game.GEMS.pick_random()
 		var mid = Vector2(floori(Board.COLUMNS/2.0),floori(Board.ROWS/2.0))
 		Board.set_square(mid,tutorial_color)
 		Board.set_square(mid+Vector2(1,0),tutorial_color)
-		Board.set_square(mid+Vector2(0,1),Item.BRICK)
-		Board.set_square(mid+Vector2(1,1),Item.BRICK)
-		Board.set_square(mid-Vector2(0,1),Item.BRICK)
-		Board.set_square(mid-Vector2(-1,1),Item.BRICK)
+		Board.set_square(mid+Vector2(0,1),Game.Item.BRICK)
+		Board.set_square(mid+Vector2(1,1),Game.Item.BRICK)
+		Board.set_square(mid-Vector2(0,1),Game.Item.BRICK)
+		Board.set_square(mid-Vector2(-1,1),Game.Item.BRICK)
 		$background/Pit.set_item(0,tutorial_color)
 	else:
 		random_place($background/Pit.OPTIONS)
@@ -188,10 +189,10 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 	var sound: String
 	if len(clears) == 4: #Drills
 		if len(horizontal_matches) == 4: #Vertical drill
-			tool = Item.V_DRILL
+			tool = Game.Item.V_DRILL
 		
 		elif len(vertical_matches) == 4: #Horizontal drill
-			tool = Item.H_DRILL
+			tool = Game.Item.H_DRILL
 		else:
 			printerr("4 gems were cleared but there was not a line of 4 in either direction.\nTHIS SHOULD NOT BE HAPPENING.")
 			assert(false)
@@ -200,7 +201,7 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 	
 	if len(horizontal_matches) >= 5 or len(vertical_matches) >= 5: #Diamonds
 		if len(horizontal_matches) >= 5 and len(vertical_matches) >= 5:
-			tool = Item.RAINBOW_DIAMOND
+			tool = Game.Item.RAINBOW_DIAMOND
 			sound = "Diamond/double_create"
 		else:
 			#The diamonds are 4 offsets from the gems
@@ -208,7 +209,7 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 			sound = "Diamond/create"
 	
 	elif len(horizontal_matches) >= 3 and len(vertical_matches) >= 3: #Bombs
-		tool = Item.BOMB
+		tool = Game.Item.BOMB
 		sound = "Bomb/create"
 	
 	if preview:
@@ -251,7 +252,7 @@ func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vect
 	
 	return lightning
 
-func diamond(location:Vector2,type,replacements:Array=[Item.AIR],preview=false) -> Array[Vector2]:
+func diamond(location:Vector2,type,replacements:Array=[Game.Item.AIR],preview=false) -> Array[Vector2]:
 	var lights = []
 	var squares: Array[Vector2] = []
 	for square_x in Board.COLUMNS:
@@ -274,14 +275,14 @@ func diamond(location:Vector2,type,replacements:Array=[Item.AIR],preview=false) 
 	replace_squares(type-4,replacements,preview)
 	
 	if preview:
-		Preview.create_preview(location,Item.AIR)
+		Preview.create_preview(location,Game.Item.AIR)
 		return squares
 	
 	
 	
 		
 	Events.AddScore.emit(10)
-	Board.set_square(location,Item.AIR)
+	Board.set_square(location,Game.Item.AIR)
 	Events.PlaySound.emit("Diamond/use")
 	Board._get_foreground_square(location).animation_player.play("diamond")
 	if len(lights) > 0:
@@ -303,7 +304,7 @@ func evaluate_game_tool(location,calculate_combo=true,preview=false):
 	if type not in GAME_TOOLS:
 		return
 	
-	if type == Item.RAINBOW_DIAMOND:
+	if type == Game.Item.RAINBOW_DIAMOND:
 		await double_diamond(location,preview)
 	
 	if calculate_combo:
@@ -317,20 +318,20 @@ func evaluate_game_tool(location,calculate_combo=true,preview=false):
 			return
 			
 	
-	if type in Item.DIAMONDS and type != Item.RAINBOW_DIAMOND:
+	if type in Game.DIAMONDS and type != Game.Item.RAINBOW_DIAMOND:
 		await diamond(location,type,[0],preview)
 	
-	if type == Item.H_DRILL:
+	if type == Game.Item.H_DRILL:
 		if !preview:
 			Events.PlaySound.emit("Drill/use")
 		await clear_line(location,"h",true,Color.WHITE,preview)
 		
-	if type == Item.V_DRILL:
+	if type == Game.Item.V_DRILL:
 		if !preview:
 			Events.PlaySound.emit("Drill/use")
 		await clear_line(location,"v",true,Color.WHITE,preview)
 		
-	if type == Item.BOMB:
+	if type == Game.Item.BOMB:
 		if !preview:
 			Events.PlaySound.emit("Bomb/use")
 		clear_blast(location,1,preview)
@@ -356,7 +357,7 @@ func calculate_tool_combo(location):
 	return combo
 
 func _get_priority(item_type):
-	const PRIORITIES = [Item.DIAMONDS,[Item.BOMB],Item.DRILLS,[Item.AIR]]
+	var PRIORITIES = [Game.DIAMONDS,[Game.Item.BOMB],Game.DRILLS,[Game.Item.AIR]]
 	var priority = 0
 	for p in PRIORITIES:
 		if item_type in p:
@@ -376,8 +377,8 @@ func double_diamond(location:Vector2,preview:bool=false):
 			var cur_location = Vector2(cur_x,cur_y)
 			var item = Board.get_square(cur_location)
 			if preview:
-				if item != Item.AIR:
-					Preview.create_preview(cur_location,Item.AIR)
+				if item != Game.Item.AIR:
+					Preview.create_preview(cur_location,Game.Item.AIR)
 				continue
 			var item_object = Board._get_foreground_square(cur_location)
 			if item != 0:
@@ -439,45 +440,45 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 			index += 1
 		
 		if !preview:
-			Board.set_square(item,0)
+			Board.set_square(item,Game.Item.AIR)
 		
 	assert (0 not in top_two)
 	
-	if top_two[0] in Item.DIAMONDS and top_two[1] in Item.DIAMONDS:
+	if top_two[0] in Game.DIAMONDS and top_two[1] in Game.DIAMONDS:
 		if !preview:
-			Board.set_square(location,Item.RAINBOW_DIAMOND)
+			Board.set_square(location,Game.Item.RAINBOW_DIAMOND)
 		await double_diamond(location,preview)
 		if preview:
 			return
 	
-	if top_two.any(func(n):return n in Item.DIAMONDS):
+	if top_two.any(func(n):return n in Game.DIAMONDS):
 		var color
 		for item in top_two:
-			if item in Item.DIAMONDS:
+			if item in Game.DIAMONDS:
 				color = item
 		
 		var tool_type: Array
-		if Item.H_DRILL in top_two or Item.V_DRILL in top_two:
-			tool_type = Item.DRILLS
-		elif Item.BOMB in top_two:
-			tool_type = [Item.BOMB]
+		if Game.Item.H_DRILL in top_two or Game.Item.V_DRILL in top_two:
+			tool_type = Game.DRILLS
+		elif Game.Item.BOMB in top_two:
+			tool_type = [Game.Item.BOMB]
 		
 		var replacements: Array[Vector2] = await diamond(location,color,tool_type,preview)
 		replacements.shuffle()
 		for replacement in replacements:
-			if Board.get_square(replacement) == Item.AIR:
+			if Board.get_square(replacement) == Game.Item.AIR:
 				continue
 			await evaluate_game_tool(replacement,false)
 	
-	if top_two == [Item.BOMB,Item.BOMB]:
+	if top_two == [Game.Item.BOMB,Game.Item.BOMB]:
 		if !preview:
 			Events.PlaySound.emit("Bomb/use")
 			Board._get_foreground_square(location).explode(2)
 			
 		clear_blast(location,2,preview)
 	
-	if top_two.any(func(x): return x in Item.DRILLS):
-		if Item.BOMB in top_two:
+	if top_two.any(func(x): return x in Game.DRILLS):
+		if Game.Item.BOMB in top_two:
 			if !preview:
 				Events.PlaySound.emit("Drill/use")
 			const V_SHIFT = Vector2(0,1)
@@ -491,7 +492,7 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 			clear_line(location,"H",true,Color.WHITE,preview)
 			clear_line(location+V_SHIFT,"H",true,Color.WHITE,preview)
 	
-	if top_two[0] in Item.DRILLS and top_two[1] in Item.DRILLS:
+	if top_two[0] in Game.DRILLS and top_two[1] in Game.DRILLS:
 		if !preview:
 			Events.PlaySound.emit("Drill/use")
 		clear_line(location,"V",true,Color.WHITE,preview)
@@ -513,13 +514,18 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 			if Game.current_mode not in [Game.Mode.obstacle,Game.Mode.time_rush]:
 				add_bricks()
 			return
-		
+		var mult = 1
 		var type = Board.get_square(location)
 		Board.clear_gems(clears)
 		Board.set_square(location,type)
 		
 		Events.PlaySound.emit("Gameplay/break")
-		Events.AddScore.emit(10*(len(horizontal_matches+vertical_matches)))
+		
+		if Game.current_mode == Game.Mode.ascension:
+			for item in Upgrade.upgraded_gems:
+				if Board.get_square(location) == item:
+					mult *= 2
+		Events.AddScore.emit(10*(len(horizontal_matches+vertical_matches)) * mult)
 		
 		Events.DestroyBricks.emit(clears)
 
@@ -532,7 +538,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 				Preview.create_preview(clear,Board.get_square(clear))
 		else:
 			vanish_gems(location)
-			Board.set_square(location,0)
+			Board.set_square(location,Game.Item.AIR)
 	
 	elif len(clears) > 3:
 		await create_game_tool(location,clears,horizontal_matches,vertical_matches,preview)
@@ -552,7 +558,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		Events.PlaySound.emit("Gameplay/place")
 
 func board_empty():
-	return Board.board.all(func(__): return __ == Item.AIR)
+	return Board.board.all(func(__): return __ == Game.Item.AIR)
 
 func _place(location,value,preview=false):
 	if preview:
@@ -562,7 +568,7 @@ func _place(location,value,preview=false):
 	Events.PlaySound.emit("Gameplay/place")
 	
 	Board.draw(location)
-	Board.select(Item.AIR)
+	Board.select(Game.Item.AIR)
 	$background/Pit.fill()
 	$background/Pit.draw()
 	Events.AddScore.emit(1)
@@ -610,23 +616,23 @@ func clear_line(location,direction:String,show_lightning=true,color=Color.WHITE,
 	for cur_x in x_positions:
 		for cur_y in y_positions:
 			var cur_location = Vector2(cur_x,cur_y)
-			if Board.get_square(cur_location) in Item.GAME_TOOLS:
+			if Board.get_square(cur_location) in Game.GAME_TOOLS:
 				if external_tool or (cur_location != location):
 					chains.append(cur_location)
 			
 			if preview:
 				if Preview.previews.any(func(_preview): return _preview.location == cur_location):
 					continue
-				Preview.create_preview(cur_location,Item.AIR)
+				Preview.create_preview(cur_location,Game.Item.AIR)
 				continue
 			
-			if Board.get_square(cur_location) != Item.AIR:
+			if Board.get_square(cur_location) != Game.Item.AIR:
 				Events.AddScore.emit(10)
-			if Board.get_square(cur_location) in Item.BRICKS:
+			if Board.get_square(cur_location) in Game.BRICKS:
 				$background/Brick._destroy_brick(cur_location)
 			
 			
-			if Board.get_square(cur_location) in Item.GEMS:
+			if Board.get_square(cur_location) in Game.GEMS:
 				Board.remove_square(cur_location)
 	
 	if preview:
@@ -675,7 +681,7 @@ func clear_diagonal_lines(location:Vector2, show_lightning=true,preview=false):
 	
 	for clear in clears:
 		if preview:
-			Preview.create_preview(clear,Item.AIR)
+			Preview.create_preview(clear,Game.Item.AIR)
 			continue
 		Board.remove_square(clear)
 	
@@ -701,7 +707,7 @@ func clear_blast(location,radius:int,preview=false):
 			var cur_location = Vector2(cur_x,cur_y)
 			if Board.within_board(cur_location):
 				if preview:
-					Preview.create_preview(cur_location,Item.AIR)
+					Preview.create_preview(cur_location,Game.Item.AIR)
 					cur_y += 1
 					continue
 				
@@ -709,13 +715,13 @@ func clear_blast(location,radius:int,preview=false):
 					evaluate_game_tool(cur_location,false,preview)
 
 				
-				if Board.get_square(cur_location) != Item.AIR:
+				if Board.get_square(cur_location) != Game.Item.AIR:
 					Events.AddScore.emit(10)
 				
-				if Board.get_square(cur_location) in Item.BRICKS:
+				if Board.get_square(cur_location) in Game.BRICKS:
 					$background/Brick._destroy_brick(cur_location)
 				
-				if Board.get_square(cur_location) in Item.GEMS:
+				if Board.get_square(cur_location) in Game.GEMS:
 					Board.remove_square(cur_location)
 			cur_y += 1
 		cur_x += 1
@@ -755,8 +761,8 @@ func place_tile(tile,location,preview=false):
 	if !preview:
 		Preview.delete_all_previews()
 	if not validate_tile_placement(location):
-		if Board.get_square(location) == Item.AIR:
-			Preview.create_preview(location,Item.CROSS)
+		if Board.get_square(location) == Game.Item.AIR:
+			Preview.create_preview(location,Game.Item.CROSS)
 		
 		if preview:
 			return
@@ -826,7 +832,7 @@ func find_best_pit() -> Array[int]:
 	#Step 1: Find any lines of 2 on the board, and give the missing color to complete those.
 	for x in range(Board.COLUMNS):
 		for y in range(Board.ROWS):
-			if Board.get_square(Vector2(x,y)) not in Item.GEMS:
+			if Board.get_square(Vector2(x,y)) not in Game.GEMS:
 				continue
 			var lines = $background/Line.detect_lines(Vector2(x,y))
 			for line in lines:
@@ -844,21 +850,21 @@ func find_best_pit() -> Array[int]:
 	
 	#Step 2:
 	#If we found no lines, find single gems on the board and add them to the pit.
-	if len(colors) == 0 and Board.board.any(func(item):return item in Item.GEMS):
+	if len(colors) == 0 and Board.board.any(func(item):return item in Game.GEMS):
 		var _board = Board.board.duplicate()
 		_board.shuffle()
 		for item in _board:
-			if item in Item.GEMS:
+			if item in Game.GEMS:
 				colors.append(item)
 			if len(colors) >= $background/Pit.SQUARES:
 				break
 	
 	#Step 3: If there's a diamond on the board, give players colors of the diamond.
-	if len(colors) == 0 and Board.board.any(func(item):return item in Item.DIAMONDS):
+	if len(colors) == 0 and Board.board.any(func(item):return item in Game.DIAMONDS):
 		var _board = Board.board.duplicate()
 		_board.shuffle()
 		for item in _board:
-			if item in Item.DIAMONDS:
+			if item in Game.DIAMONDS:
 				colors.append(item-4)
 			if len(colors) >= $background/Pit.SQUARES:
 				break
@@ -901,7 +907,7 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 	
 	$background/Tools.get_tool($background/Tools.selected_tool)
 	
-	if (tool == Tools.pickaxe) and (square_type == Item.AIR) and !preview:
+	if (tool == Tools.pickaxe) and (square_type == Game.Item.AIR) and !preview:
 		Events.PlaySound.emit("Gameplay/nomatch")
 		return
 	
@@ -910,20 +916,20 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 		$background/Tools.tool_counts[tool_index] -= 1
 		$background/Tools.get_tool(tool).count = $background/Tools.tool_counts[tool_index]
 		Events.DeselectTools.emit()
-		Board.select(Item.AIR)
+		Board.select(Game.Item.AIR)
 	
 	
 	match tool:
 		Tools.pickaxe:
 			if preview:
-				if square_type == Item.AIR:
-					Preview.create_preview(location,Item.CROSS)
+				if square_type == Game.Item.AIR:
+					Preview.create_preview(location,Game.Item.CROSS)
 					return
-				Preview.create_preview(location,Item.AIR)
+				Preview.create_preview(location,Game.Item.AIR)
 				return
 			Events.AddScore.emit(10)
 			Events.PlaySound.emit("Tools/pickaxe")
-			if square_type in Item.GAME_TOOLS:
+			if square_type in Game.GAME_TOOLS:
 				evaluate_game_tool(location,false)
 				return
 			Board.remove_square(location)
