@@ -6,25 +6,26 @@ var TOOLS = range(5,13)
 var pit: Array[int] = []
 var background_tiles = []
 var foreground_tiles: Array[GameTile] = []
-var board_padding = 0.5 #Number of squares the pit is from the board.
+var board_padding = 2.5 #Number of squares the pit is from the board.
 
 func draw_background():
 	var background_tile = $"../pit_background_tile"
 	for tile in background_tiles:
 		tile.queue_free()
 	background_tiles.clear()
-	var square_width = $"../Board".width / $"../Board".COLUMNS
-	var square_height = $"../Board".height / $"../Board".ROWS
+	var square_width = $"../Board".size.x / $"../Board".COLUMNS
+	var square_height = $"../Board".size.y / $"../Board".ROWS
 	
 	var cur_x = $"../Board".start_x
-	var y = $"../Board".start_y + $"../Board".height + (board_padding*square_height)
-	var x_margin = ($"../Board".width-square_width) / float(SQUARES)
+	var y = $"../Board".start_y + $"../Board".size.y + (board_padding*square_height)
+	var x_margin = ($"../Board".size.x-square_width) / float(SQUARES)
 	
 	for x in range(SQUARES):
 		var new_tile = background_tile.duplicate()
 		new_tile.x = x
 		new_tile.position = Vector2(cur_x,y)
 		new_tile.type = Events.Type.pit
+		new_tile.scale = $"../Board".SCALE
 		new_tile.show()
 		add_child(new_tile)
 		background_tiles.append(new_tile)

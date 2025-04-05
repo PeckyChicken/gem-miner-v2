@@ -3,9 +3,9 @@ class_name brd
 
 const ROWS = 7
 const COLUMNS = 7
-const REL_Y= 0.1
+const REL_Y= 0.2
 const REL_X = 0.5
-const SCALE = 1
+const SCALE = Vector2(1.0,1.0)
 
 const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
 
@@ -22,8 +22,7 @@ var moves = 15
 
 var game_over = false
 
-var width
-var height
+var size
 var start_x
 var start_y
 
@@ -76,7 +75,7 @@ func calculate_directions(location:Vector2):
 	
 	return [up,down,left,right]
 
-func _get_background_square(location:Vector2):
+func _get_background_square(location:Vector2) -> BackgroundTile:
 	return background_tiles[location.x*COLUMNS+location.y]
 
 func clear_board():
@@ -95,14 +94,12 @@ func draw_background():
 		tile.queue_free()
 	background_tiles.clear()
 	
-	var square_width = background_tile.texture.get_width() *SCALE
-	var square_height =background_tile.texture.get_height()*SCALE
+	var square_size = background_tile.get_rect().size * SCALE
 	
-	width = square_width*COLUMNS
-	@warning_ignore("unused_variable")
-	height = square_height*ROWS
+	size = square_size * Vector2(COLUMNS,ROWS)
 	
-	start_x = background_size.x*REL_X - (width/2.0)
+	
+	start_x = background_size.x*REL_X - (size.x/2.0)
 	var cur_x = start_x
 	start_y = background_size.y*REL_Y
 	var cur_y = start_y
@@ -112,14 +109,16 @@ func draw_background():
 			var new_tile = background_tile.duplicate()
 			new_tile.x = x
 			new_tile.y = y
+			new_tile.scale = SCALE
 			new_tile.position = Vector2(cur_x,cur_y)
 			new_tile.type = Events.Type.board
+			new_tile.Board = self
 			new_tile.show()
 			add_child(new_tile)
 			background_tiles.append(new_tile)
-			cur_y += square_height
+			cur_y += square_size.y
 			
-		cur_x += square_width
+		cur_x += square_size.x
 		cur_y = start_y
 
 func select(value,type=Events.Type.pit):
@@ -143,7 +142,9 @@ func select(value,type=Events.Type.pit):
 	tile.show()
 	selection_object.add_child(tile)
 	selected_tile = tile
+	
 	if selected_tile is GameTile:
+		selected_tile.scale = SCALE
 		selected_tile.align_for_animation()
 	selected_tile.z_index = 15
 
