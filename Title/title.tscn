@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c313ueea55dw0" path="res://assets/Images/UI/close.svg" id="8_n1pb7"]
 
 [node name="Background" type="Sprite2D"]
-position = Vector2(540, 887)
+position = Vector2(540, 959)
 scale = Vector2(2.16, 2.16)
 texture = ExtResource("1_s6sku")
 hframes = 3
@@ -82,10 +82,14 @@ mode = 4
 
 [node name="Pause" type="Button" parent="."]
 process_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = -250.0
-offset_top = 209.0
+offset_top = -484.0
 offset_right = -210.0
-offset_bottom = 249.0
+offset_bottom = -444.0
+grow_vertical = 0
 icon = ExtResource("6_toehp")
 flat = true
 icon_alignment = 1
@@ -93,10 +97,17 @@ expand_icon = true
 
 [node name="High Scores" type="Button" parent="."]
 process_mode = 1
-offset_left = 210.0
-offset_top = 210.0
-offset_right = 250.0
-offset_bottom = 250.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -484.0
+offset_right = -250.0
+offset_bottom = -444.0
+grow_horizontal = 0
+grow_vertical = 0
 icon = ExtResource("7_iliki")
 flat = true
 icon_alignment = 1
@@ -104,17 +115,22 @@ expand_icon = true
 
 [node name="Close" type="Button" parent="."]
 process_mode = 1
-offset_left = 210.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = -210.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -290.0
+offset_top = -444.0
+offset_right = -250.0
+offset_bottom = -404.0
+grow_horizontal = 0
 icon = ExtResource("8_n1pb7")
 flat = true
 icon_alignment = 1
 expand_icon = true
 
 [node name="Fade" parent="." instance=ExtResource("4_r824j")]
-position = Vector2(-250, -250)
+visible = true
+centered = true
 
 [node name="Node2D" type="Node2D" parent="."]
 process_mode = 3
