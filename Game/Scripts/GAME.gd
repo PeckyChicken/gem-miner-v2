@@ -9,7 +9,7 @@ var PRESSED_KEYS = []
 @onready var Upgrade: upgrade_class = $background/Upgrade
 
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
-var pause_menu: Control
+var pause_menu: PauseMenu
 
 var time = 0
 
@@ -143,6 +143,9 @@ func pause():
 	
 
 func resume():
+	if pause_menu.options_menu:
+		pause_menu.options_menu.queue_free()
+		pause_menu.show()
 	var player: AnimationPlayer = pause_menu.get_node("AnimationPlayer")
 	if player.is_playing():
 		await player.animation_finished
