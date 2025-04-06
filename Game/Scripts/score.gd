@@ -10,7 +10,8 @@ func _ready() -> void:
 	_update()
 
 func add_score(score):
-	var score_to_add = score*board.level
+	var mult = 1 + (board.level - 1) / 5.0
+	var score_to_add = score*mult
 	
 	var final_score = score_to_add + board.score
 	const SCORE_TIME = 0.5
@@ -31,8 +32,8 @@ func add_score(score):
 	Config.save_config()
 	
 func _update():
-	add_theme_font_size_override("normal_font_size", _calculate_font_size(board.score))
-	text = "[center]%s" % [board.score]
+	add_theme_font_size_override("normal_font_size", _calculate_font_size(floori(board.score)))
+	text = "[center]%s" % [floori(board.score)]
 	
 	$"../Level".add_theme_font_size_override("normal_font_size", _calculate_font_size(board.level))
 	$"../Level".text = "[center]%s" % [board.level]
