@@ -8,6 +8,7 @@ const REL_X = 0.5
 const SCALE = 1
 
 const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
+const ASCENSION_SCALING = [2,2,2.5]
 
 var background_tiles: Array[Sprite2D] = []
 var foreground_tiles = []
@@ -159,10 +160,10 @@ func next_level():
 	if Config.first_time:
 		Config.first_time = false
 	
-	if level % 2 == 0:
-		goal *= 2
-	else:
-		goal *= 5
+	if Game.current_mode in [Game.Mode.survival,Game.Mode.time_rush]:
+		goal += 500 + (1000 * (level - 2))
+	elif Game.current_mode == Game.Mode.ascension:
+		goal *= ASCENSION_SCALING[level % len(ASCENSION_SCALING)]
 	
 	if Game.current_mode == Game.Mode.time_rush:
 		remove_brick_ratio(0.5)
