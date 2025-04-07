@@ -4,7 +4,8 @@ const OPTIONS_MENU = preload("res://Global/options_menu.tscn")
 const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
 
 func _ready() -> void:
-
+	get_viewport().size_changed.connect(update_size)
+	
 	await $"Fade".fade_out(0.5)
 	Music.play("title")
 	
@@ -12,6 +13,12 @@ func _ready() -> void:
 		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
 		$MarginContainer/VBoxContainer/HBoxContainer2/obstacle.disabled = true
 		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
+
+func update_size() -> void:
+	print(get_window().size)
+	$CanvasLayer/Background.set_size(get_window().size)
+	print($CanvasLayer/Background.size)
+	print("------------------------")
 
 func _on_pause_pressed() -> void:
 	get_tree().paused = true

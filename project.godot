@@ -32,7 +32,8 @@ gdscript/warnings/unused_signal=0
 
 window/size/viewport_width=500
 window/size/viewport_height=500
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/handheld/orientation=1
 
 [editor]
