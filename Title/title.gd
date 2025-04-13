@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 const OPTIONS_MENU = preload("res://Global/options_menu.tscn")
 const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
@@ -15,10 +15,8 @@ func _ready() -> void:
 		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
 
 func update_size() -> void:
-	print(get_window().size)
-	$CanvasLayer/Background.set_size(get_window().size)
-	print($CanvasLayer/Background.size)
-	print("------------------------")
+	pass
+	
 
 func _on_pause_pressed() -> void:
 	get_tree().paused = true

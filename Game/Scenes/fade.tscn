@@ -3,9 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="1_gfpno"]
 [ext_resource type="Script" uid="uid://dismv6bu7h6hu" path="res://Game/Scripts/fade.gd" id="2_22bh6"]
 
-[node name="Fade" type="Sprite2D"]
-visible = false
+[node name="Fade" type="TextureRect"]
 z_index = 15
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -500.0
+offset_bottom = -500.0
 texture = ExtResource("1_gfpno")
-centered = false
+stretch_mode = 1
 script = ExtResource("2_22bh6")

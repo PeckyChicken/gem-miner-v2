@@ -4,23 +4,22 @@
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="1_m66qf"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="3_kj5d3"]
 
-[node name="high_score" type="Control"]
-layout_mode = 3
+[node name="high_score" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_4bm2n")
+
+[node name="Fade" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4bm2n")
-
-[node name="Fade" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.498039)
 texture = ExtResource("1_m66qf")
-centered = false
+stretch_mode = 1
 metadata/_edit_lock_ = true
 
 [node name="Options Text" type="RichTextLabel" parent="."]
-layout_mode = 0
 offset_top = 37.0
 offset_right = 500.0
 offset_bottom = 111.0
@@ -32,7 +31,6 @@ shortcut_keys_enabled = false
 
 [node name="score_element" type="RichTextLabel" parent="."]
 visible = false
-layout_mode = 2
 offset_top = 229.0
 offset_right = 500.0
 offset_bottom = 271.0
@@ -42,13 +40,13 @@ text = "[center]Survival:"
 fit_content = true
 
 [node name="score_holders" type="VBoxContainer" parent="."]
-layout_mode = 0
 offset_right = 500.0
 offset_bottom = 500.0
 alignment = 1
 
 [node name="Return" type="Button" parent="."]
-layout_mode = 0
+offset_right = 208.0
+offset_bottom = 58.0
 theme_override_font_sizes/font_size = 20
 text = "Back"
 icon = ExtResource("3_kj5d3")
