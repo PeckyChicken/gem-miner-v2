@@ -27,5 +27,6 @@ func _on_mouse_exited() -> void:
 	hovered = false
 
 func _on_mouse_clicked(__,___):
+	await get_tree().process_frame
 	if hovered:
 		Events.TileClicked.emit(self)
