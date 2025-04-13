@@ -153,6 +153,22 @@ func remove_brick_ratio(ratio):
 	for item in range(num_clears):
 		$"../Brick"._destroy_brick(bricks[item])
 
+func product(nums:Array,start=1):
+	for num in nums:
+		start *= num
+	return start
+
+func calculate_goal(_level):
+	var _goal := 500
+
+	if Game.current_mode in [Game.Mode.survival,Game.Mode.time_rush]:
+		_goal = (_goal*_level**2) - (1000*_level) + 1000
+	elif Game.current_mode == Game.Mode.ascension:
+		_level -= 1
+		_goal = _goal * (product(ASCENSION_SCALING) ** (floori(_level/len(ASCENSION_SCALING)))) * product(ASCENSION_SCALING.slice(0,_level%len(ASCENSION_SCALING)))
+	
+	return _goal
+
 func next_level():
 	level += 1
 	Events.PlaySound.emit("Gameplay/next_level")
@@ -160,10 +176,7 @@ func next_level():
 	if Config.first_time:
 		Config.first_time = false
 	
-	if Game.current_mode in [Game.Mode.survival,Game.Mode.time_rush]:
-		goal += 500 + (1000 * (level - 2))
-	elif Game.current_mode == Game.Mode.ascension:
-		goal *= ASCENSION_SCALING[level % len(ASCENSION_SCALING)]
+	goal = calculate_goal(level)
 	
 	if Game.current_mode == Game.Mode.time_rush:
 		remove_brick_ratio(0.5)
@@ -213,9 +226,13 @@ func evaluate_game_over():
 	
 	return _game_over
 
-func draw(location:Vector2=Vector2.INF):
+func draw(location:Vector2=Vector2.INF,save=true):
 	var tile_sprite = $"../tile"
 	assert (len(background_tiles) == len(board))
+	
+	if save:
+		pass
+		#Config.save_game(board,$"../Pit".pit,Game.current_mode,score,level,moves,$"../Hud/Score".high_score_beaten)
 	
 	if location != Vector2.INF:
 		Events.DeleteTiles.emit(_get_background_square(location).get_children())
