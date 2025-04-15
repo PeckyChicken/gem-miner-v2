@@ -16,10 +16,10 @@ var board: Array[Game.Item] = []
 var selected = 0
 var selected_tile = null
 
-var level = 1
-var score = 0
-var goal = 500
-var moves = 15
+var level := 1
+var score: float = 0.0
+var goal := 500
+var moves := 15
 
 var game_over = false
 
@@ -159,7 +159,7 @@ func product(nums:Array,start=1):
 	return start
 
 func calculate_goal(_level):
-	var _goal := 500
+	var _goal := goal
 
 	if Game.current_mode in [Game.Mode.survival,Game.Mode.time_rush]:
 		_goal = (_goal*_level**2) - (1000*_level) + 1000
