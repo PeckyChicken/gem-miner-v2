@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://btywqi1kth5wl"]
+[gd_scene load_steps=10 format=3 uid="uid://btywqi1kth5wl"]
 
 [ext_resource type="Script" uid="uid://cs24j1srm1dxl" path="res://Title/title.gd" id="1_r824j"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="2_7p1qe"]
 [ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_n1pb7"]
+[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_gpixp"]
 [ext_resource type="Script" uid="uid://brr8f1btfi8on" path="res://Title/start_game.gd" id="3_riw74"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="4_r824j"]
 [ext_resource type="Texture2D" uid="uid://bi5556pl5dvf0" path="res://assets/Images/UI/settings.svg" id="6_toehp"]
@@ -44,6 +45,7 @@ layout_mode = 2
 [node name="survival" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_gpixp")
 theme_override_font_sizes/font_size = 30
 text = "Survival"
 icon = ExtResource("2_7p1qe")
@@ -54,6 +56,7 @@ script = ExtResource("3_riw74")
 [node name="time_rush" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_gpixp")
 theme_override_font_sizes/font_size = 30
 text = "Time Rush
 "
@@ -69,6 +72,7 @@ layout_mode = 2
 [node name="obstacle" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_gpixp")
 theme_override_font_sizes/font_size = 30
 text = "Obstacles"
 icon = ExtResource("2_7p1qe")
@@ -80,6 +84,7 @@ mode = 2
 [node name="ascension" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_gpixp")
 theme_override_font_sizes/font_size = 30
 text = "Ascension
 "
@@ -90,6 +95,7 @@ script = ExtResource("3_riw74")
 mode = 3
 
 [node name="Fade" parent="." instance=ExtResource("4_r824j")]
+visible = false
 offset_right = 0.0
 offset_bottom = 0.0
 grow_horizontal = 2

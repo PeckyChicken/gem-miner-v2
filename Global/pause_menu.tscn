@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cximpkvfnteup"]
+[gd_scene load_steps=9 format=3 uid="uid://cximpkvfnteup"]
 
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="1_5fp10"]
 [ext_resource type="Script" uid="uid://cmiigp4g5067q" path="res://Global/pause_menu.gd" id="1_738sm"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="2_738sm"]
+[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_t3jih"]
 
 [sub_resource type="Animation" id="Animation_t3jih"]
 length = 0.001
@@ -79,6 +80,7 @@ layout_mode = 2
 offset_top = 37.0
 offset_right = 500.0
 offset_bottom = 111.0
+theme_override_fonts/normal_font = ExtResource("3_t3jih")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]GAME PAUSED"
@@ -95,6 +97,7 @@ alignment = 1
 
 [node name="resume" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_t3jih")
 theme_override_font_sizes/font_size = 25
 text = "Resume"
 icon = ExtResource("2_738sm")
@@ -103,6 +106,7 @@ icon_alignment = 1
 
 [node name="options" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_t3jih")
 theme_override_font_sizes/font_size = 25
 text = "Options
 "
@@ -112,6 +116,7 @@ icon_alignment = 1
 
 [node name="quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_t3jih")
 theme_override_font_sizes/font_size = 25
 text = "Main menu"
 icon = ExtResource("2_738sm")

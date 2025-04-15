@@ -6,13 +6,14 @@ const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
 func _ready() -> void:
 	get_viewport().size_changed.connect(update_size)
 	
-	await $"Fade".fade_out(0.5)
-	Music.play("title")
-	
 	if Config.first_time:
 		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
 		$MarginContainer/VBoxContainer/HBoxContainer2/obstacle.disabled = true
 		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
+	
+	await $"Fade".fade_out(0.5)
+	Music.play("title")
+
 
 func update_size() -> void:
 	pass

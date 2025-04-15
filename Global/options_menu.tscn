@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6ekewqsolru7"]
+[gd_scene load_steps=7 format=3 uid="uid://b6ekewqsolru7"]
 
 [ext_resource type="Script" uid="uid://df4ok8ijqlp6j" path="res://Global/options_menu.gd" id="1_nl8va"]
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="2_2gawg"]
+[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_2gawg"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="3_55sjd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2gawg"]
@@ -29,6 +30,7 @@ layout_mode = 2
 offset_top = 37.0
 offset_right = 500.0
 offset_bottom = 111.0
+theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]OPTIONS"
@@ -48,6 +50,7 @@ layout_mode = 2
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer/Music"]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]Music"
@@ -60,6 +63,7 @@ layout_mode = 2
 
 [node name="Percentage" type="Button" parent="VBoxContainer/Music"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2gawg")
 text = "100%"
@@ -73,6 +77,7 @@ layout_mode = 2
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer/Sfx"]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]Sound Effects"
@@ -85,6 +90,7 @@ layout_mode = 2
 
 [node name="Percentage" type="Button" parent="VBoxContainer/Sfx"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wweyj")
 text = "100%"
@@ -98,6 +104,7 @@ layout_mode = 2
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer/Previews"]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]Previews"
@@ -107,6 +114,7 @@ autowrap_mode = 0
 
 [node name="OptionButton" type="OptionButton" parent="VBoxContainer/Previews"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2gawg")
 alignment = 1
 
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
@@ -114,6 +122,7 @@ layout_mode = 2
 
 [node name="Return" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
 text = "Back"
 icon = ExtResource("3_55sjd")
