@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.ascension:7}
 
@@ -86,7 +86,7 @@ func set_background(mode):
 		$background/Hud/Moves.show()
 		$background/Hud/Moves_Label.show()
 	
-	$background.frame = BACKGROUNDS[mode]
+	#$background.frame = BACKGROUNDS[mode]
 
 func random_place(items:Array):
 	assert (0 in Board.board)

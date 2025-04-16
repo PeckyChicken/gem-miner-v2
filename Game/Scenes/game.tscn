@@ -1,7 +1,7 @@
 [gd_scene load_steps=36 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
-[ext_resource type="Texture2D" uid="uid://bcqbqbfu64w8c" path="res://assets/Images/backgrounds.png" id="2_gsb0v"]
+[ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_4yil1"]
 [ext_resource type="Script" uid="uid://b2h5qpr6nowww" path="res://Game/Scripts/background.gd" id="3_tyrie"]
 [ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_ofkml"]
 [ext_resource type="Script" uid="uid://cvi1wou23m4f4" path="res://Game/Scripts/PIT.gd" id="5_opxns"]
@@ -181,17 +181,20 @@ _data = {
 &"pop_in": SubResource("Animation_6tgx4")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Root" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_seuk0")
 
-[node name="background" type="Sprite2D" parent="."]
+[node name="background" type="TextureRect" parent="."]
 process_mode = 1
 z_index = -20
-texture = ExtResource("2_gsb0v")
-centered = false
-hframes = 3
-vframes = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4yil1")
+stretch_mode = 1
 script = ExtResource("3_tyrie")
 metadata/_edit_lock_ = true
 
@@ -489,6 +492,7 @@ libraries = {
 }
 
 [node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
+visible = false
 
 [connection signal="pressed" from="background/Hud/Pause" to="." method="pause"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]

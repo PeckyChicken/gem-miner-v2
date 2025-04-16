@@ -1,6 +1,6 @@
 extends CenterContainer
 
-@onready var node_2d: Node2D = $".."
+@onready var root: CanvasLayer = $".."
 
 func _ready() -> void:
 	Events.GameOver.connect(game_over)
@@ -22,7 +22,7 @@ func _on_replay_pressed() -> void:
 	await $"../Fade".fade_in(0.5)
 	
 	get_tree().root.add_child(new_scene)  # Add the new scene first
-	node_2d.queue_free()
+	root.queue_free()
 
 
 func _on_switch_pressed() -> void:
@@ -34,4 +34,4 @@ func quit():
 	await $"../Fade".fade_in(0.5)
 	
 	get_tree().root.add_child(new_scene)  # Add the new scene first
-	node_2d.queue_free()
+	root.queue_free()
