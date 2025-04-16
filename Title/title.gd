@@ -3,8 +3,14 @@ extends CanvasLayer
 const OPTIONS_MENU = preload("res://Global/options_menu.tscn")
 const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
 
+var web := false
+
 func _ready() -> void:
 	get_viewport().size_changed.connect(update_size)
+	
+	if OS.get_name() in ["Web","HTML5"]:
+		web = true
+		$Close.queue_free()
 	
 	if Config.first_time:
 		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
@@ -44,4 +50,5 @@ func _input(_event: InputEvent) -> void:
 			get_tree().paused = false
 			high_scores.queue_free()
 		else:
-			get_tree().quit()
+			if not web:
+				get_tree().quit()
