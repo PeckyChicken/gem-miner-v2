@@ -9,27 +9,29 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wweyj"]
 
-[node name="options_menu" type="Control"]
+[node name="options_menu" type="CanvasLayer"]
 process_mode = 3
-layout_mode = 3
+script = ExtResource("1_nl8va")
+
+[node name="Fade" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_nl8va")
-
-[node name="Fade" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.498039)
 texture = ExtResource("2_2gawg")
-centered = false
+stretch_mode = 1
 metadata/_edit_lock_ = true
 
 [node name="Options Text" type="RichTextLabel" parent="."]
-layout_mode = 2
-offset_top = 37.0
-offset_right = 500.0
-offset_bottom = 111.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 74.0
+grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
@@ -38,12 +40,17 @@ scroll_active = false
 shortcut_keys_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 146.0
-offset_top = 117.0
-offset_right = 354.0
-offset_bottom = 476.0
-alignment = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -173.0
+offset_right = 104.0
+offset_bottom = 173.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Music" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -58,10 +65,10 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Slider" type="HSlider" parent="VBoxContainer/Music"]
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer/Music"]
 layout_mode = 2
 
-[node name="Percentage" type="Button" parent="VBoxContainer/Music"]
+[node name="MusicPercentage" type="Button" parent="VBoxContainer/Music"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
@@ -85,10 +92,10 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Slider" type="HSlider" parent="VBoxContainer/Sfx"]
+[node name="SfxSlider" type="HSlider" parent="VBoxContainer/Sfx"]
 layout_mode = 2
 
-[node name="Percentage" type="Button" parent="VBoxContainer/Sfx"]
+[node name="SfxPercentage" type="Button" parent="VBoxContainer/Sfx"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
@@ -112,7 +119,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/Previews"]
+[node name="PreviewSelect" type="OptionButton" parent="VBoxContainer/Previews"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2gawg")
 alignment = 1
@@ -129,9 +136,9 @@ icon = ExtResource("3_55sjd")
 flat = true
 icon_alignment = 1
 
-[connection signal="value_changed" from="VBoxContainer/Music/Slider" to="." method="_on_music_value_changed"]
-[connection signal="pressed" from="VBoxContainer/Music/Percentage" to="." method="_on_music_pressed"]
-[connection signal="value_changed" from="VBoxContainer/Sfx/Slider" to="." method="_on_sfx_value_changed"]
-[connection signal="pressed" from="VBoxContainer/Sfx/Percentage" to="." method="_on_sfx_pressed"]
-[connection signal="item_selected" from="VBoxContainer/Previews/OptionButton" to="." method="_on_preview_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/Music/MusicSlider" to="." method="_on_music_value_changed"]
+[connection signal="pressed" from="VBoxContainer/Music/MusicPercentage" to="." method="_on_music_pressed"]
+[connection signal="value_changed" from="VBoxContainer/Sfx/SfxSlider" to="." method="_on_sfx_value_changed"]
+[connection signal="pressed" from="VBoxContainer/Sfx/SfxPercentage" to="." method="_on_sfx_pressed"]
+[connection signal="item_selected" from="VBoxContainer/Previews/PreviewSelect" to="." method="_on_preview_item_selected"]
 [connection signal="pressed" from="VBoxContainer/Return" to="." method="_on_return_pressed"]

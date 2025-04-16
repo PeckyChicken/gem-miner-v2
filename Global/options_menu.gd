@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 class_name OptionsMenu
 
 var pause_menu: PauseMenu
@@ -7,7 +7,7 @@ const CLICK = preload("res://assets/Sounds/Gameplay/click.wav")
 var audio_player = AudioStreamPlayer.new()
 
 func _ready() -> void:
-	var preview_options: OptionButton = $VBoxContainer/Previews/OptionButton
+	var preview_options: OptionButton = find_child("PreviewSelect")
 	preview_options.clear()
 	for item in Game.Preview.keys():
 		preview_options.add_item(item.capitalize())
@@ -18,12 +18,13 @@ func _ready() -> void:
 	update_values()
 
 func update_values():
-	$VBoxContainer/Music/Slider.value = Music.volume * 100
-	$VBoxContainer/Music/Percentage.text = "%s%%" % [str(int($VBoxContainer/Music/Slider.value))]
-	$VBoxContainer/Sfx/Slider.value = Music.sfx_volume * 100
-	$VBoxContainer/Sfx/Percentage.text = "%s%%" % [str(int($VBoxContainer/Sfx/Slider.value))]
 	
-	$VBoxContainer/Previews/OptionButton.select(Game.preview)
+	find_child("MusicSlider").value = Music.volume * 100
+	find_child("MusicPercentage").text = "%s%%" % [str(int(find_child("MusicSlider").value))]
+	find_child("SfxSlider").value = Music.sfx_volume * 100
+	find_child("SfxPercentage").text = "%s%%" % [str(int(find_child("SfxSlider").value))]
+	
+	find_child("PreviewSelect").select(Game.preview)
 	
 	Config.save_config()
 
