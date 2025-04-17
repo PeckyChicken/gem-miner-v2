@@ -85,7 +85,7 @@ grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("3_elbue")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]CREDITS"
+text = "[center]credits"
 scroll_active = false
 shortcut_keys_enabled = false
 
@@ -107,7 +107,7 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
-text = "Bricks created by:"
+text = "brick_credits"
 flat = true
 icon_alignment = 1
 
@@ -116,7 +116,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "           pinjefro
-on on itch.io"
+on: itch.io"
 underline = 2
 uri = "https://pinjefro.itch.io/red-bricks"
 
@@ -127,8 +127,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
-text = "Gems and diamonds created by: 
-"
+text = "gem_credits"
 flat = true
 icon_alignment = 1
 
@@ -136,8 +135,8 @@ icon_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
-text = "     
-gersonmarcel544 on Fiverr
+text = "  
+     gersonmarcel544: Fiverr
 "
 underline = 2
 
@@ -148,7 +147,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
-text = "Font and menu icons from:"
+text = "font_credits"
 flat = true
 icon_alignment = 1
 
@@ -156,7 +155,7 @@ icon_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
-text = "                Google fonts"
+text = "               Google fonts"
 underline = 2
 uri = "https://fonts.google.com/specimen/Fredoka"
 
@@ -167,7 +166,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 20
-text = "Back"
+text = "quit"
 icon = ExtResource("4_dq3jc")
 flat = true
 icon_alignment = 1
