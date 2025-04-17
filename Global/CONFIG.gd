@@ -41,8 +41,6 @@ func load_config(filepath="user://settings.cfg"):
 	Game.preview = user_config.get_value("game","previews",Game.Preview.basic)
 	first_time = user_config.get_value("game","first_time",true)
 	language = user_config.get_value("localization","language",DEFAULT_LANGUAGE if DEFAULT_LANGUAGE in SupportedLanguages.keys() else "en")
-	print(language)
-	print(SupportedLanguages.keys())
 	TranslationServer.set_locale(language)
 	
 
