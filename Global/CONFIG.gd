@@ -18,7 +18,7 @@ const DEFAULT_HIGH_SCORES = {
 	Game.Mode.ascension:0,
 }
 
-var language = "en"
+var language = "automatic"
 
 func _ready() -> void:
 	if language == "automatic":

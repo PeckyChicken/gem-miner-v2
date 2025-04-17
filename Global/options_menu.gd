@@ -10,7 +10,7 @@ func _ready() -> void:
 	var preview_options: OptionButton = find_child("PreviewSelect")
 	preview_options.clear()
 	for item in Game.Preview.keys():
-		preview_options.add_item(item.capitalize())
+		preview_options.add_item(TranslationServer.translate("preview_"+item))
 	
 	audio_player.stream = CLICK
 	add_child(audio_player)
