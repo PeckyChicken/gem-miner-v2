@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 class_name PauseMenu
 
 const OPTIONS_MENU: Resource = preload("res://Global/options_menu.tscn")
