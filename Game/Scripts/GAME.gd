@@ -63,11 +63,13 @@ func setup():
 		random_place($background/Pit.OPTIONS)
 		random_place($background/Pit.OPTIONS)
 		
-		random_place([13])
+		random_place([Game.Item.BRICK])
 		if Game.current_mode != Game.Mode.obstacle:
-			random_place([13])
-			random_place([13])
-			random_place([13])
+			random_place([Game.Item.BRICK])
+			random_place([Game.Item.BRICK])
+			random_place([Game.Item.BRICK])
+		
+		random_place([Game.Item.RAINBOW_DIAMOND])
 	
 	Board.draw()
 	$background/Pit.draw()
