@@ -69,8 +69,6 @@ func setup():
 			random_place([Game.Item.BRICK])
 			random_place([Game.Item.BRICK])
 		
-		random_place([Game.Item.RAINBOW_DIAMOND])
-	
 	Board.draw()
 	$background/Pit.draw()
 	
