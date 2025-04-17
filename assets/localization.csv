@@ -1,11 +1,11 @@
 keys,en,es
 survival,Survival,Supervivencia
-time_rush,Time Rush,Tiempo Priso
+time_rush,Time Rush,Contrarreloj
 obstacles,Obstacles,Obstáculos
 ascension,Ascension,Ascensión
 brick_credits,Bricks created by: ,Los ladrillos fueron creados por: 
-gem_credits,Gems and diamonds created by: ,Las gemas y los diamantes de: 
-font_credits,Font and menu icons from: ,Los íconos de menú y la fuente de: 
+gem_credits,Gems and diamonds created by: ,Las gemas y los diamantes por: 
+font_credits,Font and menu icons from: ,Los iconos de menú y la fuente son de: 
 quit,Back,Atrás
 [center]language,[center]Language,[center]Idioma
 [center]music,[center]Music,[center]Música
@@ -14,17 +14,17 @@ quit,Back,Atrás
 preview_off,Off,Ninguna
 preview_basic,Basic,Sencillo
 preview_advanced,Advanced,Avanzada
-[center]options,[center]Options,[center]Opcións
+[center]options,[center]Options,[center]Opciones
 [center]high_scores,[center]High Scores,[center]Récords
 [center]game_paused,[center]Game Paused,[center]Juego en Pausa
 main_menu,Main Menu,Menú Principal
 resume,Resume,Continuar
-[center]tools,[center]Tools,[center]Ítems
+[center]tools,[center]Tools,[center]Items
 [center]score,[center]Score,[center]Puntos
 [center]goal,[center]Goal,[center]Objetivo
 [center]moves,[center]Moves,[center]Turnos
 [center]level,[center]Level,[center]Nivel
 [center]credits,[center]Credits,[center]Créditos
-options,Options,Opcións
+options,Options,Opciones
 en,English,Inglés
 es,Spanish,Español
