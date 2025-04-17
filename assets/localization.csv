@@ -7,7 +7,7 @@ brick_credits,Bricks created by: ,Los ladrillos fueron creados por:
 gem_credits,Gems and diamonds created by: ,Las gemas y los diamantes de: 
 font_credits,Font and menu icons from: ,Los íconos de menú y la fuente de: 
 quit,Back,Atrás
-language,Language,Idioma
+[center]language,[center]Language,[center]Idioma
 [center]music,[center]Music,[center]Música
 [center]sfx,[center]Sound Effects,[center]Efectos de sonido
 [center]previews,[center]Previews,[center]Vistas previas
@@ -16,12 +16,15 @@ preview_basic,Basic,Sencillo
 preview_advanced,Advanced,Avanzada
 [center]options,[center]Options,[center]Opcións
 [center]high_scores,[center]High Scores,[center]Récords
-game_paused,Game Paused,Juego en Pausa
+[center]game_paused,[center]Game Paused,[center]Juego en Pausa
 main_menu,Main Menu,Menú Principal
 resume,Resume,Continuar
-[center]tools,[center]Tools,[center]Artículos
+[center]tools,[center]Tools,[center]Ítems
 [center]score,[center]Score,[center]Puntos
 [center]goal,[center]Goal,[center]Objetivo
 [center]moves,[center]Moves,[center]Turnos
 [center]level,[center]Level,[center]Nivel
 [center]credits,[center]Credits,[center]Créditos
+options,Options,Opcións
+en,English,Inglés
+es,Spanish,Español

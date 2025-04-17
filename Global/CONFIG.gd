@@ -18,14 +18,15 @@ const DEFAULT_HIGH_SCORES = {
 	Game.Mode.ascension:0,
 }
 
-var language = "automatic"
+enum SupportedLanguages{
+	en,
+	es
+}
+
+var language: String
+var DEFAULT_LANGUAGE: String = OS.get_locale_language()
 
 func _ready() -> void:
-	if language == "automatic":
-		var preferred_language = OS.get_locale_language()
-		TranslationServer.set_locale(preferred_language)
-	else:
-		TranslationServer.set_locale(language)
 	load_config()
 
 func load_config(filepath="user://settings.cfg"):
@@ -39,6 +40,10 @@ func load_config(filepath="user://settings.cfg"):
 	Game.high_scores = user_config.get_value("game","high_scores",DEFAULT_HIGH_SCORES.duplicate())
 	Game.preview = user_config.get_value("game","previews",Game.Preview.basic)
 	first_time = user_config.get_value("game","first_time",true)
+	language = user_config.get_value("localization","language",DEFAULT_LANGUAGE if DEFAULT_LANGUAGE in SupportedLanguages.keys() else "en")
+	print(language)
+	print(SupportedLanguages.keys())
+	TranslationServer.set_locale(language)
 	
 
 func save_config(filepath="user://settings.cfg"):
@@ -53,5 +58,6 @@ func save_config(filepath="user://settings.cfg"):
 	user_config.set_value("game","high_scores",Game.high_scores)
 	user_config.set_value("game","previews",Game.preview)
 	user_config.set_value("game","first_time",first_time)
+	user_config.set_value("localization","language",language)
 	
 	user_config.save(filepath)

@@ -230,14 +230,14 @@ position = Vector2(437, 113)
 type = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="background/Tools"]
-offset_left = 431.0
+offset_left = 424.0
 offset_top = 81.0
-offset_right = 497.0
+offset_right = 500.0
 offset_bottom = 107.0
 theme_override_fonts/normal_font = ExtResource("13_4yil1")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "[center]Tools"
+text = "[center]tools"
 scroll_active = false
 
 [node name="tile" parent="background" instance=ExtResource("8_4yil1")]
@@ -298,7 +298,7 @@ offset_right = 64.0
 offset_bottom = 26.0
 theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
-text = "[center]Score"
+text = "[center]score"
 scroll_active = false
 
 [node name="Level" type="RichTextLabel" parent="background/Hud"]
@@ -319,7 +319,7 @@ offset_right = 63.0
 offset_bottom = 190.0
 theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
-text = "[center]Level"
+text = "[center]level"
 scroll_active = false
 
 [node name="Goal" type="RichTextLabel" parent="background/Hud"]
@@ -344,13 +344,12 @@ fit_content = true
 scroll_active = false
 
 [node name="Goal_Label" type="RichTextLabel" parent="background/Hud"]
-offset_left = 9.0
 offset_top = 85.0
-offset_right = 63.0
+offset_right = 74.0
 offset_bottom = 108.0
 theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
-text = "[center]Goal"
+text = "[center]goal"
 scroll_active = false
 
 [node name="Moves" type="RichTextLabel" parent="background/Hud"]
@@ -383,7 +382,7 @@ offset_right = 63.0
 offset_bottom = 108.0
 theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
-text = "[center]Moves"
+text = "[center]moves"
 scroll_active = false
 
 [node name="Pause" type="Button" parent="background/Hud"]
