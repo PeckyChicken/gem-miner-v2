@@ -18,6 +18,19 @@ layer = -1
 follow_viewport_enabled = true
 script = ExtResource("1_r824j")
 
+[node name="Title" type="TextureRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 1.0
+offset_right = -122.0
+offset_bottom = 129.0
+grow_horizontal = 2
+scale = Vector2(3.89844, 3.88281)
+texture = ExtResource("11_syyxu")
+stretch_mode = 3
+
 [node name="Background" type="TextureRect" parent="."]
 z_index = -10
 anchors_preset = 15
@@ -70,7 +83,7 @@ mode = 1
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="obstacle" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="obstacles" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_gpixp")
@@ -153,22 +166,9 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="Title" type="TextureRect" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -250.0
-offset_top = 1.0
-offset_right = -122.0
-offset_bottom = 129.0
-grow_horizontal = 2
-scale = Vector2(3.89844, 3.88281)
-texture = ExtResource("11_syyxu")
-stretch_mode = 3
-
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/survival" to="MarginContainer/VBoxContainer/HBoxContainer/survival" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/time_rush" to="MarginContainer/VBoxContainer/HBoxContainer/time_rush" method="_on_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" to="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/obstacles" to="MarginContainer/VBoxContainer/HBoxContainer2/obstacles" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ascension" to="MarginContainer/VBoxContainer/HBoxContainer2/ascension" method="_on_pressed"]
 [connection signal="pressed" from="Pause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="High Scores" to="." method="_on_high_score_pressed"]
