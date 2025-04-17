@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://btywqi1kth5wl"]
+[gd_scene load_steps=11 format=3 uid="uid://btywqi1kth5wl"]
 
 [ext_resource type="Script" uid="uid://cs24j1srm1dxl" path="res://Title/title.gd" id="1_r824j"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="2_7p1qe"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bi5556pl5dvf0" path="res://assets/Images/UI/settings.svg" id="6_toehp"]
 [ext_resource type="Texture2D" uid="uid://bkorke0jejhmk" path="res://assets/Images/UI/leaderboard.svg" id="7_iliki"]
 [ext_resource type="Texture2D" uid="uid://c313ueea55dw0" path="res://assets/Images/UI/close.svg" id="8_n1pb7"]
+[ext_resource type="Texture2D" uid="uid://dw0yoxhsjql77" path="res://assets/Images/UI/credits.svg" id="10_eoook"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 process_mode = 3
@@ -144,6 +145,15 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
+[node name="Credits" type="Button" parent="."]
+process_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+icon = ExtResource("10_eoook")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/survival" to="MarginContainer/VBoxContainer/HBoxContainer/survival" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/time_rush" to="MarginContainer/VBoxContainer/HBoxContainer/time_rush" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" to="MarginContainer/VBoxContainer/HBoxContainer2/obstacle" method="_on_pressed"]
@@ -151,3 +161,4 @@ expand_icon = true
 [connection signal="pressed" from="Pause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="High Scores" to="." method="_on_high_score_pressed"]
 [connection signal="pressed" from="Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="Credits" to="." method="_on_credits_pressed"]

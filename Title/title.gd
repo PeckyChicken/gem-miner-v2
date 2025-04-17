@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const OPTIONS_MENU = preload("res://Global/options_menu.tscn")
 const HIGH_SCORE_MENU = preload("res://Global/high_scores.tscn")
+const CREDITS_MENU = preload("res://Global/credits_menu.tscn")
+
 
 var web := false
 
@@ -35,6 +37,11 @@ func _on_high_score_pressed() -> void:
 	get_tree().paused = true
 	var high_score_menu: HighScores = HIGH_SCORE_MENU.instantiate()
 	add_child(high_score_menu)
+
+func _on_credits_pressed() -> void:
+	get_tree().paused = true
+	var credits_menu: Credits = CREDITS_MENU.instantiate()
+	add_child(credits_menu)
 
 func _on_close_pressed() -> void:
 	get_tree().quit()

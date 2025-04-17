@@ -1,0 +1,186 @@
+[gd_scene load_steps=9 format=3 uid="uid://cw2mlrtdpff7j"]
+
+[ext_resource type="Script" uid="uid://bkyyqmbh0oql6" path="res://Global/credits_menu.gd" id="1_bcmwe"]
+[ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="2_3c3kn"]
+[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_elbue"]
+[ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="4_dq3jc"]
+
+[sub_resource type="Animation" id="Animation_t3jih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_738sm"]
+resource_name = "pause"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8cl8o"]
+resource_name = "unpause"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2jucq"]
+_data = {
+&"RESET": SubResource("Animation_t3jih"),
+&"pause": SubResource("Animation_738sm"),
+&"unpause": SubResource("Animation_8cl8o")
+}
+
+[node name="Control" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_bcmwe")
+
+[node name="Fade" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_3c3kn")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Credits text" type="RichTextLabel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 74.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("3_elbue")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]CREDITS"
+scroll_active = false
+shortcut_keys_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -91.0
+offset_right = 104.0
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="bricks" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "Bricks created by:"
+flat = true
+icon_alignment = 1
+
+[node name="bricks2" type="LinkButton" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "           pinjefro
+on on itch.io"
+underline = 2
+uri = "https://pinjefro.itch.io/red-bricks"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="gems" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "Gems and diamonds created by: 
+"
+flat = true
+icon_alignment = 1
+
+[node name="gems2" type="LinkButton" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "     
+gersonmarcel544 on Fiverr
+"
+underline = 2
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="font" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "Font and menu icons from:"
+flat = true
+icon_alignment = 1
+
+[node name="font2" type="LinkButton" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 25
+text = "                Google fonts"
+underline = 2
+uri = "https://fonts.google.com/specimen/Fredoka"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Return" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_elbue")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+icon = ExtResource("4_dq3jc")
+flat = true
+icon_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_2jucq")
+}
+
+[connection signal="pressed" from="VBoxContainer/bricks" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="VBoxContainer/bricks2" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="VBoxContainer/gems" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/gems2" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/font" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="VBoxContainer/font2" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="VBoxContainer/Return" to="." method="_on_return_pressed"]
