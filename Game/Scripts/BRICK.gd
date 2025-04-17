@@ -18,7 +18,7 @@ func _destroy_brick(brick:Vector2):
 	var tween = get_tree().create_tween()
 	tween.tween_property(obj,"scale",Vector2.ZERO,0.2)
 	await tween.finished
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacles:
 		$"../Board".evaluate_next_level()
 
 func destroy_bricks(gems):

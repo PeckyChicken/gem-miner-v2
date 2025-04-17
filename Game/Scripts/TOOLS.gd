@@ -22,7 +22,7 @@ var selected_tool = null
 
 func _ready() -> void:
 	Events.DeselectTools.connect(deselect)
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacles:
 		tool_counts = [0,0,0,0,0]
 	draw_background()
 	draw()

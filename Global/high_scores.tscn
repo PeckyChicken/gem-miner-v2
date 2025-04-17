@@ -31,7 +31,7 @@ grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("3_cxkri")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]HIGH SCORES"
+text = "[center]high_scores"
 scroll_active = false
 shortcut_keys_enabled = false
 
@@ -73,7 +73,7 @@ offset_right = 208.0
 offset_bottom = 58.0
 theme_override_fonts/font = ExtResource("3_cxkri")
 theme_override_font_sizes/font_size = 20
-text = "Back"
+text = "quit"
 icon = ExtResource("3_kj5d3")
 flat = true
 icon_alignment = 1

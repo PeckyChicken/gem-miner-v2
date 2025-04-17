@@ -181,7 +181,7 @@ func next_level():
 	if Game.current_mode == Game.Mode.time_rush:
 		remove_brick_ratio(0.5)
 	
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacles:
 		$"../Tools".tool_counts[randi_range(0,len($"../Tools".tool_counts)-1)] += 1
 		moves += level
 
@@ -206,7 +206,7 @@ func remove_square(location:Vector2,trigger_tools=true):
 	await tile.animation_player.animation_finished
 
 func evaluate_next_level():
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacles:
 		if Game.Item.BRICK not in board:
 			next_level()
 		return
@@ -216,7 +216,7 @@ func evaluate_next_level():
 
 func evaluate_game_over():
 	var _game_over = false
-	if Game.current_mode == Game.Mode.obstacle:
+	if Game.current_mode == Game.Mode.obstacles:
 		if moves <= 0:
 			_game_over = true
 	

@@ -5,7 +5,7 @@ class_name game_manager
 enum Mode {
 	survival,
 	time_rush,
-	obstacle,
+	obstacles,
 	ascension
 }
 

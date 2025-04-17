@@ -14,11 +14,11 @@ var user_config = ConfigFile.new()
 const DEFAULT_HIGH_SCORES = {
 	Game.Mode.survival:0,
 	Game.Mode.time_rush:0,
-	Game.Mode.obstacle:0,
+	Game.Mode.obstacles:0,
 	Game.Mode.ascension:0,
 }
 
-var language = "es"
+var language = "en"
 
 func _ready() -> void:
 	if language == "automatic":

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacle:3,Game.Mode.ascension:7}
+const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacles:3,Game.Mode.ascension:7}
 
 var PRESSED_KEYS = []
 
@@ -64,7 +64,7 @@ func setup():
 		random_place($background/Pit.OPTIONS)
 		
 		random_place([Game.Item.BRICK])
-		if Game.current_mode != Game.Mode.obstacle:
+		if Game.current_mode != Game.Mode.obstacles:
 			random_place([Game.Item.BRICK])
 			random_place([Game.Item.BRICK])
 			random_place([Game.Item.BRICK])
@@ -82,7 +82,7 @@ func set_background(mode):
 	else:
 		$ascension_particles.queue_free()
 	
-	if mode == Game.Mode.obstacle:
+	if mode == Game.Mode.obstacles:
 		$background/Hud/Goal.hide()
 		$background/Hud/Goal_Label.hide()
 		$background/Hud/Moves.show()
@@ -516,7 +516,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	
 	if !preview:
 		if len(clears) == 0:
-			if Game.current_mode not in [Game.Mode.obstacle,Game.Mode.time_rush]:
+			if Game.current_mode not in [Game.Mode.obstacles,Game.Mode.time_rush]:
 				add_bricks()
 			return
 		var mult = 1
@@ -774,7 +774,7 @@ func place_tile(tile,location,preview=false):
 		Events.PlaySound.emit("Gameplay/nomatch")
 		return
 	
-	if Game.current_mode == Game.Mode.obstacle and !preview:
+	if Game.current_mode == Game.Mode.obstacles and !preview:
 		Board.moves -= 1
 		Events.AddScore.emit(0)
 	
@@ -792,8 +792,8 @@ func place_tile(tile,location,preview=false):
 	if preview:
 		Board.board = temp_board.duplicate()
 		return
-	if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacle:
-		#If player is out of moves on obstacle, check if they've at least cleared the level.
+	if Board.evaluate_game_over() and Game.current_mode == Game.Mode.obstacles:
+		#If player is out of moves on obstacles, check if they've at least cleared the level.
 		Board.evaluate_next_level()
 		#If not, then it's game over.
 	if Board.evaluate_game_over():

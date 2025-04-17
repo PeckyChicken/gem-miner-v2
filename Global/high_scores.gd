@@ -16,7 +16,7 @@ func _ready() -> void:
 		var score_element: RichTextLabel = $score_element.duplicate()
 		
 		var title: String = Game.Mode.keys()[mode]
-		title = title.capitalize()
+		title = TranslationServer.translate(title)
 		
 		var score: int = Game.high_scores[mode]
 		

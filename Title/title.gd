@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 	if Config.first_time:
 		$MarginContainer/VBoxContainer/HBoxContainer/time_rush.disabled = true
-		$MarginContainer/VBoxContainer/HBoxContainer2/obstacle.disabled = true
+		$MarginContainer/VBoxContainer/HBoxContainer2/obstacles.disabled = true
 		$MarginContainer/VBoxContainer/HBoxContainer2/ascension.disabled = true
 	
 	await $"Fade".fade_out(0.5)
