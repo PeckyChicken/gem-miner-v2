@@ -18,7 +18,14 @@ const DEFAULT_HIGH_SCORES = {
 	Game.Mode.ascension:0,
 }
 
+var language = "es"
+
 func _ready() -> void:
+	if language == "automatic":
+		var preferred_language = OS.get_locale_language()
+		TranslationServer.set_locale(preferred_language)
+	else:
+		TranslationServer.set_locale(language)
 	load_config()
 
 func load_config(filepath="user://settings.cfg"):
