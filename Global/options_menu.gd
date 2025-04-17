@@ -7,15 +7,22 @@ const CLICK = preload("res://assets/Sounds/Gameplay/click.wav")
 var audio_player = AudioStreamPlayer.new()
 
 func _ready() -> void:
+	create_dropdowns()
+	audio_player.stream = CLICK
+	add_child(audio_player)
+
+	update_values()
+
+func create_dropdowns():
 	var preview_options: OptionButton = find_child("PreviewSelect")
 	preview_options.clear()
 	for item in Game.Preview.keys():
 		preview_options.add_item(TranslationServer.translate("preview_"+item))
 	
-	audio_player.stream = CLICK
-	add_child(audio_player)
-
-	update_values()
+	var language_options: OptionButton = find_child("LanguageSelect")
+	language_options.clear()
+	for item in Config.SupportedLanguages.keys():
+		language_options.add_item(TranslationServer.translate(item))
 
 func update_values():
 	
@@ -25,6 +32,8 @@ func update_values():
 	find_child("SfxPercentage").text = "%s%%" % [str(int(find_child("SfxSlider").value))]
 	
 	find_child("PreviewSelect").select(Game.preview)
+	
+	find_child("LanguageSelect").select(Config.SupportedLanguages[Config.language])
 	
 	Config.save_config()
 
@@ -52,6 +61,12 @@ func _on_sfx_pressed() -> void:
 
 func _on_preview_item_selected(index: int) -> void:
 	Game.preview = index as Game.Preview
+	update_values()
+	
+func _on_language_item_selected(index: int) -> void:
+	Config.language = Config.SupportedLanguages.keys()[index]
+	TranslationServer.set_locale(Config.language)
+	create_dropdowns()
 	update_values()
 
 func _on_return_pressed() -> void:

@@ -127,6 +127,27 @@ alignment = 1
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
 
+[node name="Language" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="VBoxContainer/Language"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_2gawg")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]language"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="LanguageSelect" type="OptionButton" parent="VBoxContainer/Language"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2gawg")
+alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="Return" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2gawg")
@@ -141,4 +162,5 @@ icon_alignment = 1
 [connection signal="value_changed" from="VBoxContainer/Sfx/SfxSlider" to="." method="_on_sfx_value_changed"]
 [connection signal="pressed" from="VBoxContainer/Sfx/SfxPercentage" to="." method="_on_sfx_pressed"]
 [connection signal="item_selected" from="VBoxContainer/Previews/PreviewSelect" to="." method="_on_preview_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Language/LanguageSelect" to="." method="_on_language_item_selected"]
 [connection signal="pressed" from="VBoxContainer/Return" to="." method="_on_return_pressed"]
