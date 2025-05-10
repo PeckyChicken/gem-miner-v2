@@ -16,7 +16,7 @@ var time = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	setup.call_deferred()
-	await $Fade.fade_out(0.5)
+	await $background/Fade.fade_out(0.5)
 	if Game.current_mode == Game.Mode.survival:
 		if Music.playing not in ["survival1","survival2"]:
 			Music.play(["survival1","survival2"].pick_random())
@@ -151,8 +151,8 @@ func resume():
 		await player.animation_finished
 	
 	get_tree().paused = false
-	
-	player.play("unpause")
+	player.speed_scale = -1
+	player.play("pause",-1,1.0,true)
 	await player.animation_finished
 	pause_menu.queue_free()
 
@@ -169,10 +169,11 @@ func validate_tile_placement(location:Vector2):
 
 func add_bricks(count=null):
 	if count == null:
-		count = 1
-		count += floori(Board.level / 5.0)
-		if randi_range(0,4) < Board.level % 5:
-			count += 1
+		count = 0
+		print(Board.brick_chances)
+		for chance in Board.brick_chances:
+			if randf() <= chance:
+				count += 1
 	
 	for __ in range(count):
 		if 0 not in Board.board:
@@ -219,7 +220,8 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 		assert (tool != 0)
 		for clear in clears:
 			if clear == location:
-				Preview.create_preview(location,tool)
+				Preview.create_preview(location,tool,0.5)
+				
 				continue
 			Preview.create_preview(clear,Board.get_square(clear))
 		return
@@ -538,7 +540,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	if len(clears) == 3:
 		if preview:
 			for clear in clears:
-				Preview.create_preview(clear,Board.get_square(clear))
+				Preview.create_preview(clear,Board.get_square(clear),0.5 if clear == location else 1)
 		else:
 			vanish_gems(location)
 			Board.set_square(location,Game.Item.AIR)
@@ -547,7 +549,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		await create_game_tool(location,clears,horizontal_matches,vertical_matches,preview)
 	else:
 		if preview:
-			Preview.create_preview(location,Board.get_square(location))
+			Preview.create_preview(location,Board.get_square(location),0.5)
 	
 	if preview:
 		return
@@ -859,7 +861,7 @@ func find_best_pit() -> Array[int]:
 		for item in _board:
 			if item in Game.GEMS:
 				colors.append(item)
-			if len(colors) >= $background/Pit.SQUARES:
+			if len(colors) >= $background/Pit.SQUARE_COUNT:
 				break
 	
 	#Step 3: If there's a diamond on the board, give players colors of the diamond.
@@ -869,7 +871,7 @@ func find_best_pit() -> Array[int]:
 		for item in _board:
 			if item in Game.DIAMONDS:
 				colors.append(item-4)
-			if len(colors) >= $background/Pit.SQUARES:
+			if len(colors) >= $background/Pit.SQUARE_COUNT:
 				break
 		
 		# If just 1 color, duplicate it.
@@ -883,15 +885,15 @@ func find_best_pit() -> Array[int]:
 		colors.append(_color)
 	
 	#Step 5: Fill the remainder of the pit with random colors
-	if len(colors) < $background/Pit.SQUARES:
-		for __ in range($background/Pit.SQUARES - len(colors)):
+	if len(colors) < $background/Pit.SQUARE_COUNT:
+		for __ in range($background/Pit.SQUARE_COUNT - len(colors)):
 			colors.append($background/Pit.OPTIONS.pick_random())
 	
 	#Step 6: Trim down the list of colors to the size of the pit and return it.
-	assert (len(colors) >= $background/Pit.SQUARES)
+	assert (len(colors) >= $background/Pit.SQUARE_COUNT)
 	
 	colors.shuffle()
-	return colors.slice(0,$background/Pit.SQUARES)
+	return colors.slice(0,$background/Pit.SQUARE_COUNT)
 
 func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 	if preview:
@@ -1047,6 +1049,15 @@ func tile_clicked(tile):
 			evaluate_external_tool(tile.x,$background/Tools.selected_tool)
 			return
 		select_pit_item(tile.x)
+	
+	if tile.type == Events.Type.selected:
+		if $background/Tools.selected_tool != null:
+			$background/Tools.deselect()
+			Board.select(Game.Item.AIR)
+			
+		else:
+			return_selected_to_pit()
+			Board.select(Game.Item.AIR)
 	
 	if tile.type == Events.Type.tool:
 		select_tool(tile)
