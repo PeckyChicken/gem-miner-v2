@@ -33,16 +33,16 @@ func add_score(score):
 	
 func _update():
 	add_theme_font_size_override("normal_font_size", _calculate_font_size(floori(board.score)))
-	text = "[center]%s" % [floori(board.score)]
+	text = str(floori(board.score))
 	
 	$"../Level".add_theme_font_size_override("normal_font_size", _calculate_font_size(board.level))
-	$"../Level".text = "[center]%s" % [board.level]
+	$"../Level".text = str(board.level)
 	
 	$"../Goal".add_theme_font_size_override("normal_font_size", _calculate_font_size(board.goal))
-	$"../Goal".text = "[center]%s" % [board.goal]
+	$"../Goal".text = str(board.goal)
 	
 	$"../Moves".add_theme_font_size_override("normal_font_size", _calculate_font_size(board.moves))
-	$"../Moves".text = "[center]%s" % [board.moves]
+	$"../Moves".text = str(board.moves)
 	
 	if board.score > Game.high_scores[Game.current_mode]:
 		if not high_score_beaten:

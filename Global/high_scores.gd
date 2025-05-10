@@ -20,7 +20,7 @@ func _ready() -> void:
 		
 		var score: int = Game.high_scores[mode]
 		
-		score_element.text = "[center]%s: %s" % [title,score]
+		score_element.text = "%s: %s" % [title,score]
 		
 		$score_holders.add_child(score_element)
 		score_element.show()

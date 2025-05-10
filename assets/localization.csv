@@ -7,24 +7,27 @@ brick_credits,Bricks created by: ,Los ladrillos fueron creados por:
 gem_credits,Gems and diamonds created by: ,Las gemas y los diamantes por: 
 font_credits,Font and menu icons from: ,Los iconos de menú y la fuente son de: 
 quit,Back,Atrás
-[center]language,[center]Language,[center]Idioma
-[center]music,[center]Music,[center]Música
-[center]sfx,[center]Sound Effects,[center]Efectos de sonido
-[center]previews,[center]Previews,[center]Vistas previas
+language,Language,Idioma
+music,Music,Música
+sfx,Sound Effects,Efectos de sonido
+previews,Previews,Vistas previas
 preview_off,Off,Ninguna
 preview_basic,Basic,Sencillo
 preview_advanced,Advanced,Avanzada
-[center]options,[center]Options,[center]Opciones
-[center]high_scores,[center]High Scores,[center]Récords
-[center]game_paused,[center]Game Paused,[center]Juego en Pausa
+options,Options,Opciones
+high_scores,High Scores,Récords
+game_paused,Game Paused,Juego en Pausa
 main_menu,Main Menu,Menú Principal
 resume,Resume,Continuar
-[center]tools,[center]Tools,[center]Items
-[center]score,[center]Score,[center]Puntos
-[center]goal,[center]Goal,[center]Objetivo
-[center]moves,[center]Moves,[center]Turnos
-[center]level,[center]Level,[center]Nivel
-[center]credits,[center]Credits,[center]Créditos
-options,Options,Opciones
+tools,Tools,Items
+score,Score,Puntos
+goal,Goal,Objetivo
+moves,Moves,Turnos
+level,Level,Nivel
+credits,Credits,Créditos
 en,English,Inglés
 es,Spanish,Español
+restart,Restart,Reinicio
+play_again,Play Again,Jugar de Nuevo
+switch_mode,Switch Mode,Cambiar Modo
+game_over,Game Over,Fin del Juego

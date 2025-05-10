@@ -29,9 +29,10 @@ offset_bottom = 74.0
 grow_horizontal = 2
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]high_scores"
+text = "high_scores"
 scroll_active = false
 shortcut_keys_enabled = false
+horizontal_alignment = 1
 
 [node name="score_element" type="RichTextLabel" parent="."]
 visible = false
@@ -48,8 +49,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "[center]Survival:"
+text = "Survival: 0"
 fit_content = true
+horizontal_alignment = 1
 
 [node name="score_holders" type="VBoxContainer" parent="."]
 anchors_preset = 8

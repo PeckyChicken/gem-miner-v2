@@ -259,8 +259,9 @@ offset_right = -5.0
 offset_bottom = -139.0
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "[center]tools"
+text = "tools"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="selection_tile" parent="background/Tools" instance=ExtResource("11_hjvjr")]
 position = Vector2(-68, -239)
@@ -306,9 +307,10 @@ grow_vertical = 2
 size_flags_vertical = 6
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]0"
+text = "0"
 fit_content = true
 scroll_active = false
+horizontal_alignment = 1
 script = ExtResource("13_ekxpf")
 
 [node name="Score_Label" type="RichTextLabel" parent="background/Hud"]
@@ -317,8 +319,9 @@ offset_top = 3.0
 offset_right = 64.0
 offset_bottom = 26.0
 bbcode_enabled = true
-text = "[center]score"
+text = "score"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Level" type="RichTextLabel" parent="background/Hud"]
 offset_left = -7.0
@@ -327,8 +330,9 @@ offset_right = 78.0
 offset_bottom = 249.0
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]0"
+text = "0"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Level_Label" type="RichTextLabel" parent="background/Hud"]
 offset_left = 9.0
@@ -336,8 +340,9 @@ offset_top = 167.0
 offset_right = 63.0
 offset_bottom = 190.0
 bbcode_enabled = true
-text = "[center]level"
+text = "level"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Goal" type="RichTextLabel" parent="background/Hud"]
 self_modulate = Color(31.429, 27.857, 27.143, 1)
@@ -355,17 +360,19 @@ grow_vertical = 2
 size_flags_vertical = 6
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]0"
+text = "0"
 fit_content = true
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Goal_Label" type="RichTextLabel" parent="background/Hud"]
 offset_top = 85.0
 offset_right = 74.0
 offset_bottom = 108.0
 bbcode_enabled = true
-text = "[center]goal"
+text = "goal"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Moves" type="RichTextLabel" parent="background/Hud"]
 visible = false
@@ -384,9 +391,10 @@ grow_vertical = 2
 size_flags_vertical = 6
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]0"
+text = "0"
 fit_content = true
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Moves_Label" type="RichTextLabel" parent="background/Hud"]
 visible = false
@@ -395,8 +403,9 @@ offset_top = 85.0
 offset_right = 63.0
 offset_bottom = 108.0
 bbcode_enabled = true
-text = "[center]moves"
+text = "moves"
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Pause" type="Button" parent="background/Hud"]
 offset_top = 459.0
@@ -489,9 +498,10 @@ theme_override_constants/margin_top = 5
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "[center]game_over"
+text = "game_over"
 fit_content = true
 scroll_active = false
+horizontal_alignment = 1
 
 [node name="Replay" type="Button" parent="Game over UI/MarginContainer/VBoxContainer"]
 layout_mode = 2

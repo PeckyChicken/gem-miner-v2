@@ -61,10 +61,11 @@ layout_mode = 2
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "[center]music"
+text = "music"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="MusicSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Music"]
 layout_mode = 2
@@ -85,11 +86,11 @@ layout_mode = 2
 [node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Sfx"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "[center]sfx"
+text = "sfx"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="SfxSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Sfx"]
 layout_mode = 2
@@ -110,11 +111,11 @@ layout_mode = 2
 [node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Previews"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "[center]previews"
+text = "previews"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="PreviewSelect" type="OptionButton" parent="ScrollContainer/VBoxContainer/Previews"]
 layout_mode = 2
@@ -129,11 +130,11 @@ layout_mode = 2
 [node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Language"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "[center]language"
+text = "language"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="LanguageSelect" type="OptionButton" parent="ScrollContainer/VBoxContainer/Language"]
 layout_mode = 2
