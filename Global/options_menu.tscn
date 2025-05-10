@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6ekewqsolru7"]
+[gd_scene load_steps=6 format=3 uid="uid://b6ekewqsolru7"]
 
 [ext_resource type="Script" uid="uid://df4ok8ijqlp6j" path="res://Global/options_menu.gd" id="1_nl8va"]
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="2_2gawg"]
-[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_2gawg"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="3_55sjd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2gawg"]
@@ -32,32 +31,34 @@ offset_left = -250.0
 offset_right = 250.0
 offset_bottom = 74.0
 grow_horizontal = 2
-theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 50
-bbcode_enabled = true
-text = "[center]options"
+text = "options"
 scroll_active = false
 shortcut_keys_enabled = false
+horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -173.0
-offset_right = 104.0
-offset_bottom = 173.0
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = 84.0
+offset_right = 70.0
+offset_bottom = -53.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
+scroll_deadzone = 3
 
-[node name="Music" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="VBoxContainer/Music"]
+[node name="Music" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_2gawg")
+
+[node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Music"]
+layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]music"
@@ -65,26 +66,24 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="MusicSlider" type="HSlider" parent="VBoxContainer/Music"]
+[node name="MusicSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Music"]
 layout_mode = 2
 
-[node name="MusicPercentage" type="Button" parent="VBoxContainer/Music"]
+[node name="MusicPercentage" type="Button" parent="ScrollContainer/VBoxContainer/Music"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2gawg")
 text = "100%"
 flat = true
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Sfx" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Sfx" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="VBoxContainer/Sfx"]
+[node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Sfx"]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]sfx"
@@ -92,26 +91,24 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="SfxSlider" type="HSlider" parent="VBoxContainer/Sfx"]
+[node name="SfxSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Sfx"]
 layout_mode = 2
 
-[node name="SfxPercentage" type="Button" parent="VBoxContainer/Sfx"]
+[node name="SfxPercentage" type="Button" parent="ScrollContainer/VBoxContainer/Sfx"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2gawg")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wweyj")
 text = "100%"
 flat = true
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Previews" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Previews" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="VBoxContainer/Previews"]
+[node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Previews"]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]previews"
@@ -119,20 +116,18 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="PreviewSelect" type="OptionButton" parent="VBoxContainer/Previews"]
+[node name="PreviewSelect" type="OptionButton" parent="ScrollContainer/VBoxContainer/Previews"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2gawg")
 alignment = 1
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Language" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Language" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="VBoxContainer/Language"]
+[node name="Label" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Language"]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_2gawg")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]language"
@@ -140,27 +135,34 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="LanguageSelect" type="OptionButton" parent="VBoxContainer/Language"]
+[node name="LanguageSelect" type="OptionButton" parent="ScrollContainer/VBoxContainer/Language"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2gawg")
 alignment = 1
 
-[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator4" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Return" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2gawg")
+[node name="Return" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_top = -58.0
+offset_right = 104.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "quit"
 icon = ExtResource("3_55sjd")
 flat = true
 icon_alignment = 1
 
-[connection signal="value_changed" from="VBoxContainer/Music/MusicSlider" to="." method="_on_music_value_changed"]
-[connection signal="pressed" from="VBoxContainer/Music/MusicPercentage" to="." method="_on_music_pressed"]
-[connection signal="value_changed" from="VBoxContainer/Sfx/SfxSlider" to="." method="_on_sfx_value_changed"]
-[connection signal="pressed" from="VBoxContainer/Sfx/SfxPercentage" to="." method="_on_sfx_pressed"]
-[connection signal="item_selected" from="VBoxContainer/Previews/PreviewSelect" to="." method="_on_preview_item_selected"]
-[connection signal="item_selected" from="VBoxContainer/Language/LanguageSelect" to="." method="_on_language_item_selected"]
-[connection signal="pressed" from="VBoxContainer/Return" to="." method="_on_return_pressed"]
+[connection signal="value_changed" from="ScrollContainer/VBoxContainer/Music/MusicSlider" to="." method="_on_music_value_changed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/Music/MusicPercentage" to="." method="_on_music_pressed"]
+[connection signal="value_changed" from="ScrollContainer/VBoxContainer/Sfx/SfxSlider" to="." method="_on_sfx_value_changed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/Sfx/SfxPercentage" to="." method="_on_sfx_pressed"]
+[connection signal="item_selected" from="ScrollContainer/VBoxContainer/Previews/PreviewSelect" to="." method="_on_preview_item_selected"]
+[connection signal="item_selected" from="ScrollContainer/VBoxContainer/Language/LanguageSelect" to="." method="_on_language_item_selected"]
+[connection signal="pressed" from="Return" to="." method="_on_return_pressed"]

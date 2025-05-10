@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cw2mlrtdpff7j"]
+[gd_scene load_steps=8 format=3 uid="uid://cw2mlrtdpff7j"]
 
 [ext_resource type="Script" uid="uid://bkyyqmbh0oql6" path="res://Global/credits_menu.gd" id="1_bcmwe"]
 [ext_resource type="Texture2D" uid="uid://dx3aw3eu75fkg" path="res://assets/Images/UI/fade.png" id="2_3c3kn"]
-[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="3_elbue"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="4_dq3jc"]
 
 [sub_resource type="Animation" id="Animation_t3jih"]
@@ -82,7 +81,6 @@ offset_left = -250.0
 offset_right = 250.0
 offset_bottom = 74.0
 grow_horizontal = 2
-theme_override_fonts/normal_font = ExtResource("3_elbue")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]credits"
@@ -105,7 +103,6 @@ alignment = 1
 
 [node name="bricks" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "brick_credits"
 flat = true
@@ -113,7 +110,6 @@ icon_alignment = 1
 
 [node name="bricks2" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "           pinjefro
 on: itch.io"
@@ -125,7 +121,6 @@ layout_mode = 2
 
 [node name="gems" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "gem_credits"
 flat = true
@@ -133,7 +128,6 @@ icon_alignment = 1
 
 [node name="gems2" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "  
      gersonmarcel544: Fiverr
@@ -145,7 +139,6 @@ layout_mode = 2
 
 [node name="font" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "font_credits"
 flat = true
@@ -153,7 +146,6 @@ icon_alignment = 1
 
 [node name="font2" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 25
 text = "               Google fonts"
 underline = 2
@@ -164,7 +156,6 @@ layout_mode = 2
 
 [node name="Return" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_elbue")
 theme_override_font_sizes/font_size = 20
 text = "quit"
 icon = ExtResource("4_dq3jc")
@@ -176,7 +167,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_2jucq")
 }
 
-[connection signal="pressed" from="VBoxContainer/bricks" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="VBoxContainer/bricks2" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="VBoxContainer/gems" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="VBoxContainer/gems2" to="." method="_on_options_pressed"]

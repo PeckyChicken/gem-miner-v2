@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=35 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_4yil1"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://Game/Scenes/tool_background_tile.tscn" id="10_8srii"]
 [ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://Game/Scenes/selection_tile.tscn" id="11_hjvjr"]
 [ext_resource type="Texture2D" uid="uid://bikexw8nixrnq" path="res://assets/Images/Particles/vanish.png" id="12_t1k1h"]
-[ext_resource type="FontFile" uid="uid://bgm05gc7gacrl" path="res://UI font.tres" id="13_4yil1"]
 [ext_resource type="Script" uid="uid://bsc4scarallbq" path="res://Game/Scripts/score.gd" id="13_ekxpf"]
 [ext_resource type="Script" uid="uid://bgosl2q3qmw3l" path="res://Game/Scripts/TOOLS.gd" id="13_tyrie"]
 [ext_resource type="Texture2D" uid="uid://b21tn7x5xlxo4" path="res://assets/Images/Particles/ascension.png" id="14_gsb0v"]
@@ -198,10 +197,26 @@ stretch_mode = 1
 script = ExtResource("3_tyrie")
 metadata/_edit_lock_ = true
 
-[node name="Board" type="Node2D" parent="background"]
+[node name="Board" type="Control" parent="background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("4_ofkml")
 
-[node name="Pit" type="Node2D" parent="background"]
+[node name="Pit" type="Control" parent="background"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("5_opxns")
 
 [node name="Line" type="Node2D" parent="background"]
@@ -217,39 +232,45 @@ script = ExtResource("8_opxns")
 [node name="Upgrade" type="Node" parent="background"]
 script = ExtResource("9_wwslj")
 
-[node name="Tools" type="Node2D" parent="background"]
+[node name="Tools" type="Control" parent="background"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 2
 script = ExtResource("13_tyrie")
 
 [node name="Tool" parent="background/Tools" instance=ExtResource("15_ofkml")]
 z_index = 2
-position = Vector2(436, 112)
+position = Vector2(-69, -134)
 
 [node name="background_tile" parent="background/Tools" instance=ExtResource("10_8srii")]
-visible = false
-position = Vector2(437, 113)
+position = Vector2(-68, -132)
 type = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="background/Tools"]
-offset_left = 424.0
-offset_top = 81.0
-offset_right = 500.0
-offset_bottom = 107.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
+layout_mode = 0
+offset_left = -81.0
+offset_top = -165.0
+offset_right = -5.0
+offset_bottom = -139.0
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "[center]tools"
 scroll_active = false
+
+[node name="selection_tile" parent="background/Tools" instance=ExtResource("11_hjvjr")]
+position = Vector2(-68, -239)
+type = 3
 
 [node name="tile" parent="background" instance=ExtResource("8_4yil1")]
 visible = false
 z_index = 5
 
 [node name="background_tile" parent="background" instance=ExtResource("9_572oi")]
-visible = true
-
-[node name="selection_tile" parent="background" instance=ExtResource("11_hjvjr")]
-position = Vector2(437, 22)
-type = 3
 
 [node name="pit_background_tile" parent="background" instance=ExtResource("10_8srii")]
 visible = false
@@ -283,7 +304,6 @@ offset_bottom = 88.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]0"
@@ -296,7 +316,6 @@ offset_left = 10.0
 offset_top = 3.0
 offset_right = 64.0
 offset_bottom = 26.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
 text = "[center]score"
 scroll_active = false
@@ -306,7 +325,6 @@ offset_left = -7.0
 offset_top = 178.0
 offset_right = 78.0
 offset_bottom = 249.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]0"
@@ -317,7 +335,6 @@ offset_left = 9.0
 offset_top = 167.0
 offset_right = 63.0
 offset_bottom = 190.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
 text = "[center]level"
 scroll_active = false
@@ -336,7 +353,6 @@ offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]0"
@@ -347,7 +363,6 @@ scroll_active = false
 offset_top = 85.0
 offset_right = 74.0
 offset_bottom = 108.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
 text = "[center]goal"
 scroll_active = false
@@ -367,7 +382,6 @@ offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "[center]0"
@@ -380,7 +394,6 @@ offset_left = 9.0
 offset_top = 85.0
 offset_right = 63.0
 offset_bottom = 108.0
-theme_override_fonts/normal_font = ExtResource("13_4yil1")
 bbcode_enabled = true
 text = "[center]moves"
 scroll_active = false
@@ -389,11 +402,16 @@ scroll_active = false
 offset_top = 459.0
 offset_right = 40.0
 offset_bottom = 499.0
-theme_override_fonts/font = ExtResource("13_4yil1")
 icon = ExtResource("17_he1k8")
 flat = true
 icon_alignment = 1
 expand_icon = true
+
+[node name="Fade" parent="background" instance=ExtResource("20_gdmh2")]
+visible = false
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
 
 [node name="ascension_particles" type="CPUParticles2D" parent="."]
 visible = false
@@ -423,6 +441,7 @@ hue_variation_min = -1.0
 hue_variation_max = 1.0
 
 [node name="Audio" parent="." instance=ExtResource("14_j7yts")]
+position = Vector2(12, -6)
 
 [node name="Lightning" parent="." instance=ExtResource("15_p6li4")]
 visible = false
@@ -431,8 +450,17 @@ position = Vector2(0, 2)
 script = ExtResource("16_t4ufd")
 
 [node name="Game over UI" type="CenterContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 use_top_left = true
 script = ExtResource("18_ofkml")
 metadata/_edit_lock_ = true
@@ -461,14 +489,14 @@ theme_override_constants/margin_top = 5
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "[center]Game Over"
+text = "[center]game_over"
 fit_content = true
 scroll_active = false
 
 [node name="Replay" type="Button" parent="Game over UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Play again"
+text = "play_again"
 icon = ExtResource("18_j81tf")
 flat = true
 icon_alignment = 1
@@ -480,7 +508,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Switch" type="Button" parent="Game over UI/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Switch mode"
+text = "switch_mode"
 icon = ExtResource("18_j81tf")
 flat = true
 icon_alignment = 1
@@ -489,9 +517,6 @@ icon_alignment = 1
 libraries = {
 &"": SubResource("AnimationLibrary_b0tnt")
 }
-
-[node name="Fade" parent="." instance=ExtResource("20_gdmh2")]
-visible = false
 
 [connection signal="pressed" from="background/Hud/Pause" to="." method="pause"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
