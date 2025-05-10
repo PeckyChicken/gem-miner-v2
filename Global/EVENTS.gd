@@ -22,6 +22,7 @@ signal UpdateHover()
 signal Pause()
 signal Resume()
 signal Quit()
+signal Restart()
 
 enum Type {
 	board,
