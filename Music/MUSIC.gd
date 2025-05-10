@@ -22,7 +22,6 @@ var volume_tween: Tween
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for player in players:
-		player.volume_db = linear_to_db(volume)
 		player.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(player)
 
