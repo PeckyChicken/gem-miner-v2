@@ -1,4 +1,4 @@
-extends Node
+extends Control
 class_name brd
 
 const ROWS = 7
@@ -9,6 +9,8 @@ const SCALE = 1
 
 const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
 const ASCENSION_SCALING = [2,2,2.5]
+const BRICK_LEVEL_SCALING = 0.2
+var brick_chances := [1.0]
 
 var background_tiles: Array[Sprite2D] = []
 var foreground_tiles = []
@@ -51,7 +53,7 @@ func get_square(location:Vector2) -> Game.Item:
 	return board[location.x*COLUMNS+location.y]
 
 func get_absolute_coords(location:Vector2):
-	return _get_background_square(location).position
+	return _get_background_square(location).position + self.position
 
 func _get_foreground_square(location:Vector2) -> GameTile:
 	return foreground_tiles[location.x*COLUMNS+location.y]
@@ -99,9 +101,9 @@ func draw_background():
 	@warning_ignore("unused_variable")
 	height = square_height*ROWS
 	
-	start_x = Config.WINDOW_WIDTH*REL_X - (width/2.0)
+	start_x = REL_X - (width/2.0)
 	var cur_x = start_x
-	start_y = Config.WINDOW_HEIGHT*REL_Y
+	start_y = REL_Y - (height/2.0)
 	var cur_y = start_y
 	
 	for x in range(COLUMNS):
@@ -131,7 +133,7 @@ func select(value,type=Events.Type.pit):
 		printerr('"type" parameter set to an unsupported value (%s)' % [type])
 		assert(false)
 	
-	var selection_object = $"../selection_tile"
+	var selection_object = $"../Tools/selection_tile"
 	
 	if selected_tile:
 		selected_tile.queue_free()
@@ -177,6 +179,14 @@ func next_level():
 		Config.first_time = false
 	
 	goal = calculate_goal(level)
+	var new_chances: Array[float] = []
+	for chance in brick_chances:
+		chance += BRICK_LEVEL_SCALING
+		chance = min(chance,1.0)
+		new_chances.append(chance)
+	new_chances.append(BRICK_LEVEL_SCALING)
+	
+	brick_chances = new_chances.duplicate()
 	
 	if Game.current_mode == Game.Mode.time_rush:
 		remove_brick_ratio(0.5)
