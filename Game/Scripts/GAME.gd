@@ -485,6 +485,12 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 			
 		clear_blast(location,2,preview)
 	
+	elif top_two[0] in Game.DRILLS and top_two[1] in Game.DRILLS:
+		if !preview:
+			Events.PlaySound.emit("Drill/use")
+		clear_line(location,"V",true,Color.WHITE,preview)
+		clear_line(location,"H",true,Color.WHITE,preview)
+	
 	elif top_two.any(func(x): return x in Game.DRILLS):
 		if Game.Item.BOMB in top_two:
 			if !preview:
@@ -499,12 +505,6 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 			clear_line(location-V_SHIFT,"H",true,Color.WHITE,preview)
 			clear_line(location,"H",true,Color.WHITE,preview)
 			clear_line(location+V_SHIFT,"H",true,Color.WHITE,preview)
-	
-	elif top_two[0] in Game.DRILLS and top_two[1] in Game.DRILLS:
-		if !preview:
-			Events.PlaySound.emit("Drill/use")
-		clear_line(location,"V",true,Color.WHITE,preview)
-		clear_line(location,"H",true,Color.WHITE,preview)
 	
 
 func handle_lines(location:Vector2,lines:Array[Array],preview=false):
