@@ -540,7 +540,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	if len(clears) == 3:
 		if preview:
 			for clear in clears:
-				Preview.create_preview(clear,Board.get_square(clear),0.5 if clear == location else 1)
+				Preview.create_preview(clear,Board.get_square(clear),0.5 if clear == location else 1.0)
 		else:
 			vanish_gems(location)
 			Board.set_square(location,Game.Item.AIR)

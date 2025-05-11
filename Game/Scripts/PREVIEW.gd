@@ -15,7 +15,7 @@ func delete_all_previews():
 		preview.queue_free()
 	previews.clear()
 
-func create_preview(location: Vector2,image: int,alpha=1) -> Preview:
+func create_preview(location: Vector2,image: int,alpha:=1.0) -> Preview:
 	var preview = Preview.new()
 	
 	var background_tile: BackgroundTile = $"../background_tile".duplicate()
