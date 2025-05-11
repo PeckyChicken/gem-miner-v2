@@ -6,9 +6,10 @@ var sound_cache = {}
 func _ready() -> void:
 	Events.PlaySound.connect(play_sound)
 
-func play_sound(path):
+func play_sound(path,pitch_variation=0,starting_pitch=1):
 	var temp_player: AudioStreamPlayer = $AudioStreamPlayer.duplicate()
-	var sound
+	temp_player.pitch_scale = randf_range(starting_pitch-pitch_variation,starting_pitch+pitch_variation)
+	var sound: Resource
 	if path in sound_cache:
 		sound = sound_cache[path]
 	else:
