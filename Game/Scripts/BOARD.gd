@@ -160,8 +160,8 @@ func product(nums:Array,start=1):
 		start *= num
 	return start
 
-func calculate_goal(_level):
-	var _goal := goal
+func calculate_goal(_level:int):
+	var _goal: int = 500
 
 	if Game.current_mode in [Game.Mode.survival,Game.Mode.time_rush]:
 		_goal = (_goal*_level**2) - (1000*_level) + 1000
