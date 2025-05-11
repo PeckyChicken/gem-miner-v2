@@ -167,6 +167,7 @@ func calculate_goal(_level:int):
 		_goal = (_goal*_level**2) - (1000*_level) + 1000
 	elif Game.current_mode == Game.Mode.ascension:
 		_level -= 1
+		@warning_ignore("integer_division")
 		_goal = _goal * (product(ASCENSION_SCALING) ** (floori(_level/len(ASCENSION_SCALING)))) * product(ASCENSION_SCALING.slice(0,_level%len(ASCENSION_SCALING)))
 	
 	return _goal
