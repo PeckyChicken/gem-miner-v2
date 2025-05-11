@@ -38,7 +38,6 @@ func _process(delta: float) -> void:
 
 func setup():
 	set_background(Game.current_mode)
-
 	Events.TileClicked.connect(tile_clicked)
 	Events.TileHovered.connect(tile_hovered)
 	Events.Pause.connect(pause)
@@ -68,7 +67,7 @@ func setup():
 			random_place([Game.Item.BRICK])
 			random_place([Game.Item.BRICK])
 			random_place([Game.Item.BRICK])
-		
+
 	Board.draw()
 	$background/Pit.draw()
 	
@@ -170,7 +169,6 @@ func validate_tile_placement(location:Vector2):
 func add_bricks(count=null):
 	if count == null:
 		count = 0
-		print(Board.brick_chances)
 		for chance in Board.brick_chances:
 			if randf() <= chance:
 				count += 1
@@ -236,7 +234,7 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 
 func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vector2.ZERO,Vector2.ZERO]) -> Lightning:
 	#MOBILE PATCH
-	var mobile = OS.get_name() == "Android"
+	var mobile: bool = OS.get_name() == "Android"
 
 	var lightning = $Lightning.duplicate()
 	var lightning_line: Line2D = lightning.get_node("Line")
@@ -460,7 +458,7 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 		if preview:
 			return
 	
-	if top_two.any(func(n):return n in Game.DIAMONDS):
+	elif top_two.any(func(n):return n in Game.DIAMONDS):
 		var color
 		for item in top_two:
 			if item in Game.DIAMONDS:
@@ -479,14 +477,14 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 				continue
 			await evaluate_game_tool(replacement,false)
 	
-	if top_two == [Game.Item.BOMB,Game.Item.BOMB]:
+	elif top_two == [Game.Item.BOMB,Game.Item.BOMB]:
 		if !preview:
 			Events.PlaySound.emit("Bomb/use")
 			Board._get_foreground_square(location).explode(2)
 			
 		clear_blast(location,2,preview)
 	
-	if top_two.any(func(x): return x in Game.DRILLS):
+	elif top_two.any(func(x): return x in Game.DRILLS):
 		if Game.Item.BOMB in top_two:
 			if !preview:
 				Events.PlaySound.emit("Drill/use")
@@ -501,7 +499,7 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 			clear_line(location,"H",true,Color.WHITE,preview)
 			clear_line(location+V_SHIFT,"H",true,Color.WHITE,preview)
 	
-	if top_two[0] in Game.DRILLS and top_two[1] in Game.DRILLS:
+	elif top_two[0] in Game.DRILLS and top_two[1] in Game.DRILLS:
 		if !preview:
 			Events.PlaySound.emit("Drill/use")
 		clear_line(location,"V",true,Color.WHITE,preview)
