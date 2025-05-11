@@ -573,7 +573,7 @@ func _place(location,value,preview=false):
 		Preview.create_preview(location,value)
 		return
 	Board.set_square(location,value)
-	Events.PlaySound.emit("Gameplay/place")
+	Events.PlaySound.emit("Gameplay/place",0.05)
 	
 	Board.draw(location)
 	Board.select(Game.Item.AIR)
