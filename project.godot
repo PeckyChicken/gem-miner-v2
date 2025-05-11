@@ -43,6 +43,7 @@ window/handheld/orientation=6
 
 [editor]
 
+movie_writer/movie_file="C:/Users/Benjy/OneDrive/Documents/gem-miner-v2/video.avi"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
