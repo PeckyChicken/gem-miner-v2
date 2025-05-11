@@ -548,7 +548,6 @@ hue_variation_max = 1.0
 
 [node name="ExplosionParticles" type="CPUParticles2D" parent="."]
 z_index = 5
-position = Vector2(25, 25)
 emitting = false
 amount = 200
 texture = ExtResource("3_61y4n")

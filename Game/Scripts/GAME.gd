@@ -377,6 +377,7 @@ func double_diamond(location:Vector2,preview:bool=false):
 	var square = Board._get_foreground_square(location)
 	var lights = []
 	if !preview:
+		Board.set_square(location,Game.Item.AIR)
 		Events.PlaySound.emit("Diamond/double_diamond")
 		square.double_diamond_spin(3)
 	
