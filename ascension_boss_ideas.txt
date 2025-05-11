@@ -1,2 +1,3 @@
 No tools.
 Colored bricks.
+IDEA: You know where bricks are a turn in advance.
