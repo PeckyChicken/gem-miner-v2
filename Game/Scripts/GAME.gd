@@ -235,6 +235,9 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 	await Board.pop_in(location)
 
 func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vector2.ZERO,Vector2.ZERO]) -> Lightning:
+	#MOBILE PATCH
+	var mobile = OS.get_name() == "Android"
+
 	var lightning = $Lightning.duplicate()
 	var lightning_line: Line2D = lightning.get_node("Line")
 	lightning_line.position = Vector2(Board.width/Board.ROWS / 2,Board.height/Board.COLUMNS / 2)
@@ -252,7 +255,8 @@ func create_lightning(point_a:Vector2,point_b:Vector2,color: Color,offsets=[Vect
 	lightning_line.points = [offsets[0]/lightning_line.scale, (delta+offsets[1])/lightning_line.scale]
 	lightning.modulate = color
 	
-	lightning.show()
+	if not mobile:
+		lightning.show()
 	point_a_node.add_child(lightning)
 	
 	return lightning
