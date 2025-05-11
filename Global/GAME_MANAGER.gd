@@ -53,3 +53,5 @@ var preview: Preview
 var current_mode: Mode
 
 var high_scores: Dictionary
+
+var speed: float = 1.0 #Time Rush only

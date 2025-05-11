@@ -25,14 +25,15 @@ func _ready() -> void:
 			Music.play(Game.Mode.keys()[Game.current_mode])
 
 func _process(delta: float) -> void:
-
+	
 	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
+		var brick_time = 1.0/Game.speed
 		time += delta
-		if time >= 1:
+		if time >= brick_time:
 			if not get_tree().paused:
-				add_bricks()
-			while time >= 1:
-				time -= 1
+				add_bricks(1)
+			while time >= brick_time:
+				time -= brick_time
 			if Board.evaluate_game_over():
 				Events.GameOver.emit()
 

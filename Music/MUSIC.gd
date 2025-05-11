@@ -53,6 +53,10 @@ func play(track:String,fade_in:int=0):
 		await _tween_players(fade_in,0,volume)
 	playing = track
 
+func change_pitch(new_pitch:float):
+	for player in players:
+		player.pitch_scale = new_pitch
+
 func _tween_players(time,start,end):
 	playing = null
 	volume_tween = get_tree().create_tween()
@@ -77,6 +81,8 @@ func stop(fade_out=0):
 		volume_tween.stop()
 	
 func _process(_delta: float) -> void:
+	if players[0].pitch_scale != Game.speed:
+		change_pitch(Game.speed)
 	if playing:
 		players[current_player].volume_db = linear_to_db(volume)
 		if players[current_player].get_playback_position() >= loop_end:
