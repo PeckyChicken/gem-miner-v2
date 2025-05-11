@@ -407,10 +407,14 @@ text = "moves"
 scroll_active = false
 horizontal_alignment = 1
 
-[node name="Pause" type="Button" parent="background/Hud"]
-offset_top = 459.0
+[node name="Pause" type="Button" parent="background"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
 offset_right = 40.0
-offset_bottom = 499.0
+grow_vertical = 0
 icon = ExtResource("17_he1k8")
 flat = true
 icon_alignment = 1
@@ -528,6 +532,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_b0tnt")
 }
 
-[connection signal="pressed" from="background/Hud/Pause" to="." method="pause"]
+[connection signal="pressed" from="background/Pause" to="." method="pause"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI" method="_on_switch_pressed"]
