@@ -177,7 +177,7 @@ func next_level():
 	Events.PlaySound.emit("Gameplay/next_level")
 	
 	if Game.current_mode == Game.Mode.time_rush:
-		Game.speed = 1.0 + (level-1)/50.0
+		Game.speed = 1.0 + (level-1)/25.0
 	
 	if Config.first_time:
 		Config.first_time = false
