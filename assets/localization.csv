@@ -31,3 +31,5 @@ restart,Restart,Reinicio
 play_again,Play Again,Jugar de Nuevo
 switch_mode,Switch Mode,Cambiar Modo
 game_over,Game Over,Fin del Juego
+ore_sapphire,Sapphire Ore,Mena de Zafiro
+ore_sapphire_desc,+10 points for every $SAPPHIRE destroyed.,+10 puntos por cada $SAPPHIRE destruido.

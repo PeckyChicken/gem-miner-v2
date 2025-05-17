@@ -1,0 +1,9 @@
+{
+	"name":"ore_sapphire",
+	"description":"ore_sapphire_desc",
+	"ability":"extra_points_for_gem",
+	"extra":{
+		"bonus":10,
+		"gem_type":3
+	}
+}
