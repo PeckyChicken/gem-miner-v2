@@ -1,3 +1,5 @@
 No tools.
 Colored bricks.
 IDEA: You know where bricks are a turn in advance.
+Any words starting with `+` turn gold
+Any words starting with $ are inserted as images
