@@ -532,6 +532,22 @@ libraries = {
 &"": SubResource("AnimationLibrary_b0tnt")
 }
 
+[node name="Ores" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Ores"]
+offset_left = 46.0
+offset_top = 17.0
+offset_right = 391.0
+offset_bottom = 94.0
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "ore_sapphire_desc"
+horizontal_alignment = 1
+
 [connection signal="pressed" from="background/Pause" to="." method="pause"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/Replay" to="Game over UI" method="_on_replay_pressed"]
 [connection signal="pressed" from="Game over UI/MarginContainer/VBoxContainer/MarginContainer/Switch" to="Game over UI" method="_on_switch_pressed"]
