@@ -15,7 +15,7 @@ config/name_localized={
 "es": "Minería de Gemas 2"
 }
 config/description="Gem Miner is an endless puzzle game which never fails to keep you entertained."
-config/version="2.0"
+config/version="2.0.2"
 run/main_scene="uid://btywqi1kth5wl"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/show_image=false
