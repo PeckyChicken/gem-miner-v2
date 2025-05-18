@@ -6,7 +6,7 @@ var PRESSED_KEYS = []
 
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
-@onready var Upgrade: upgrade_class = $background/Upgrade
+@onready var Upgrades: upgrade_class = $background/Ores
 
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
@@ -531,7 +531,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		Events.PlaySound.emit("Gameplay/break")
 		
 		if Game.current_mode == Game.Mode.ascension:
-			for item in Upgrade.upgraded_gems:
+			for item in Upgrades.upgraded_gems:
 				if Board.get_square(location) == item:
 					mult *= 2
 		Events.AddScore.emit(10*(len(horizontal_matches+vertical_matches)) * mult)
