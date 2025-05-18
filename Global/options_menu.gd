@@ -66,6 +66,7 @@ func _on_preview_item_selected(index: int) -> void:
 func _on_language_item_selected(index: int) -> void:
 	Config.language = Config.SupportedLanguages.keys()[index]
 	TranslationServer.set_locale(Config.language)
+	Events.LanguageChanged.emit(Config.language)
 	create_dropdowns()
 	update_values()
 
