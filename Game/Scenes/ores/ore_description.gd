@@ -11,7 +11,7 @@ func _ready() -> void:
 	$title/text.text = title
 	$description/text.text = format_description(TranslationServer.translate(description))
 
-func language_changed(locale):
+func language_changed(_locale):
 	$description/text.text = format_description(TranslationServer.translate(description_tag))
 
 func format_description(text: String) -> String:
