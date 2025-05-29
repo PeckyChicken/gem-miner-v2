@@ -431,7 +431,6 @@ offset_right = 0.0
 offset_bottom = 0.0
 
 [node name="ascension_particles" type="CPUParticles2D" parent="."]
-visible = false
 self_modulate = Color(1.2, 1.2, 1.2, 1)
 z_index = -19
 position = Vector2(250, 250)

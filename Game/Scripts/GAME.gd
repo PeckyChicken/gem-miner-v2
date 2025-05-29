@@ -12,9 +12,11 @@ const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
 
 var time = 0
+const ASCENSION_PARTICLE_DENSITY = 17
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_viewport().size_changed.connect(screen_size_changed)
 	setup.call_deferred()
 	await $background/Fade.fade_out(0.5)
 	if Game.current_mode == Game.Mode.survival:
@@ -71,7 +73,12 @@ func setup():
 
 	Board.draw()
 	$background/Pit.draw()
-	
+
+func screen_size_changed():
+	if Game.current_mode == Game.Mode.ascension:
+		$ascension_particles.position = get_viewport().size / 2.0
+		$ascension_particles.emission_rect_extents = get_viewport().size / 2
+		$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().size.x*get_viewport().size.y))
 
 func set_background(mode):
 
