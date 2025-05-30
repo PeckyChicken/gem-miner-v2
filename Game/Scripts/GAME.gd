@@ -11,7 +11,7 @@ var PRESSED_KEYS = []
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
 
-var time = 0
+var last_second: int = -1
 const ASCENSION_PARTICLE_DENSITY = 17
 
 # Called when the node enters the scene tree for the first time.
@@ -26,16 +26,19 @@ func _ready() -> void:
 		if Game.Mode.keys()[Game.current_mode] != Music.playing:
 			Music.play(Game.Mode.keys()[Game.current_mode])
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	
-	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
-		var brick_time = 1.0/Game.speed
-		time += delta
-		if time >= brick_time:
+	if Game.current_mode == Game.Mode.time_rush and not Board.game_over and Music.playing:
+		var music_player: AudioStreamPlayer = Music.players[Music.current_player]
+		
+		if music_player.get_playback_position() < last_second:
+			last_second = floori(Music.loop_start) - 1
+		
+		while floori(music_player.get_playback_position()) - last_second >= 1:
 			if not get_tree().paused:
 				add_bricks(1)
-			while time >= brick_time:
-				time -= brick_time
+			last_second += 1
+
 			if Board.evaluate_game_over():
 				Events.GameOver.emit()
 
@@ -981,6 +984,9 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 			assert (false)
 		
 		Tools.dice:
+			#if Game.current_mode == Game.Mode.time_rush:
+				#Events.PlaySound.emit("Tools/clock")
+				#return
 			Events.PlaySound.emit("Tools/dice")
 			var last_tile
 			for tile in $background/Pit.foreground_tiles:
