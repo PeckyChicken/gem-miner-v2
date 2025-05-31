@@ -983,10 +983,19 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 			printerr("Bucket tool is not yet implemented")
 			assert (false)
 		
+		Tools.clock:
+			if not preview and Game.current_mode == Game.Mode.time_rush:
+				Events.PlaySound.emit("Tools/clock")
+				var tween = get_tree().create_tween()
+				tween.tween_property(Game,"speed",Game.speed / 2.0,0.25)
+				await tween.finished
+				
+				var tween2 = get_tree().create_tween()
+				tween2.tween_property(Game,"speed",Game.speed * 2.0,10)
+				
+				return
+		
 		Tools.dice:
-			#if Game.current_mode == Game.Mode.time_rush:
-				#Events.PlaySound.emit("Tools/clock")
-				#return
 			Events.PlaySound.emit("Tools/dice")
 			var last_tile
 			for tile in $background/Pit.foreground_tiles:

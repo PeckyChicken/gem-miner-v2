@@ -9,7 +9,7 @@ script = ExtResource("1_2wvcp")
 [node name="Image" type="Sprite2D" parent="."]
 position = Vector2(25, 25)
 texture = ExtResource("1_xshek")
-vframes = 6
+vframes = 7
 
 [node name="Value" type="RichTextLabel" parent="."]
 offset_left = 46.0
