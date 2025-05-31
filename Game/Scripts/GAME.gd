@@ -986,12 +986,19 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 		Tools.clock:
 			if not preview and Game.current_mode == Game.Mode.time_rush:
 				Events.PlaySound.emit("Tools/clock")
+				
+				$background/Clock.show()
+				$background/Clock/Image/AnimationPlayer.play("Countdown")
+				
 				var tween = get_tree().create_tween()
 				tween.tween_property(Game,"speed",Game.speed / 2.0,0.25)
 				await tween.finished
 				
 				var tween2 = get_tree().create_tween()
-				tween2.tween_property(Game,"speed",Game.speed * 2.0,10)
+				tween2.tween_property(Game,"speed",Game.speed * 2.0,9.75)
+				
+				await tween2.finished
+				$background/Clock.hide()
 				
 				return
 		
