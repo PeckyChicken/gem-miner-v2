@@ -178,7 +178,7 @@ func next_level():
 	
 	if Game.current_mode == Game.Mode.time_rush:
 		var tween = get_tree().create_tween()
-		tween.tween_property(Game,"speed",1.0 + (level-1)/25.0,0.25)
+		tween.tween_property(Game,"speed",1.0 + (level-1)/10.0,0.25)
 	
 	if Config.first_time:
 		Config.first_time = false
