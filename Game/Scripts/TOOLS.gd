@@ -6,7 +6,8 @@ enum Tools {
 	jackhammer,
 	star,
 	bucket,
-	dice
+	dice,
+	clock
 }
 
 var background_tiles: Array[Node2D] = []
@@ -24,6 +25,8 @@ func _ready() -> void:
 	Events.DeselectTools.connect(deselect)
 	if Game.current_mode == Game.Mode.obstacles:
 		tool_counts = [0,0,0,0,0]
+	if Game.current_mode == Game.Mode.time_rush:
+		active_tools = [Tools.pickaxe,Tools.axe,Tools.jackhammer,Tools.star,Tools.clock]
 	draw_background()
 	draw()
 

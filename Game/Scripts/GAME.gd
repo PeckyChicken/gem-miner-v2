@@ -1,20 +1,25 @@
 extends CanvasLayer
 
-const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacles:3,Game.Mode.ascension:7}
+const BACKGROUND_HSV = {Game.Mode.survival:Vector3(100,100,85),Game.Mode.time_rush:Vector3(-10,100,100),Game.Mode.obstacles:Vector3(-65,150,110),Game.Mode.ascension: Vector3(0,0,60)}
 
 var PRESSED_KEYS = []
 
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
-@onready var Upgrade: upgrade_class = $background/Upgrade
+@onready var Upgrades: upgrade_class = $background/Ores
 
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
 
-var time = 0
+var last_second: int = -1
+const ASCENSION_PARTICLE_DENSITY = 0.07
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_viewport().size_changed.connect(screen_size_changed)
+	screen_size_changed()
+	if Music.playing == "time_rush":
+		last_second = floori(Music.players[Music.current_player].get_playback_position())
 	setup.call_deferred()
 	await $background/Fade.fade_out(0.5)
 	if Game.current_mode == Game.Mode.survival:
@@ -24,16 +29,19 @@ func _ready() -> void:
 		if Game.Mode.keys()[Game.current_mode] != Music.playing:
 			Music.play(Game.Mode.keys()[Game.current_mode])
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	
-	if Game.current_mode == Game.Mode.time_rush and not Board.game_over:
-		var brick_time = 1.0/Game.speed
-		time += delta
-		if time >= brick_time:
+	if Game.current_mode == Game.Mode.time_rush and not Board.game_over and Music.playing:
+		var music_player: AudioStreamPlayer = Music.players[Music.current_player]
+		
+		if music_player.get_playback_position() < last_second:
+			last_second = floori(Music.loop_start) - 1
+		
+		while floori(music_player.get_playback_position()) - last_second >= 1:
 			if not get_tree().paused:
-				add_bricks(1)
-			while time >= brick_time:
-				time -= brick_time
+				add_bricks()
+			last_second += 1
+
 			if Board.evaluate_game_over():
 				Events.GameOver.emit()
 
@@ -71,7 +79,13 @@ func setup():
 
 	Board.draw()
 	$background/Pit.draw()
-	
+
+func screen_size_changed():
+	pass
+	if Game.current_mode == Game.Mode.ascension:
+		$ascension_particles.position = get_viewport().get_visible_rect().size / 2.0
+		$ascension_particles.emission_rect_extents = get_viewport().get_visible_rect().size / 2
+		$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().get_visible_rect().size.x*get_viewport().get_visible_rect().size.y))
 
 func set_background(mode):
 
@@ -86,7 +100,12 @@ func set_background(mode):
 		$background/Hud/Moves.show()
 		$background/Hud/Moves_Label.show()
 	
-	#$background.frame = BACKGROUNDS[mode]
+	var hsv: Vector3 = BACKGROUND_HSV[mode]
+	var shader: ShaderMaterial = $background.material
+	shader.set_shader_parameter("Hue",hsv.x)
+	shader.set_shader_parameter("Saturation",hsv.y)
+	shader.set_shader_parameter("Value",hsv.z)
+	
 
 func random_place(items:Array):
 	assert (0 in Board.board)
@@ -177,7 +196,7 @@ func add_bricks(count=null):
 	for __ in range(count):
 		if 0 not in Board.board:
 			break
-		random_place([13])
+		random_place([Game.Item.BRICK])
 		Events.PlaySound.emit("Gameplay/brick_placed")
 
 func vanish_gems(location:Vector2):
@@ -531,7 +550,7 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		Events.PlaySound.emit("Gameplay/break")
 		
 		if Game.current_mode == Game.Mode.ascension:
-			for item in Upgrade.upgraded_gems:
+			for item in Upgrades.upgraded_gems:
 				if Board.get_square(location) == item:
 					mult *= 2
 		Events.AddScore.emit(10*(len(horizontal_matches+vertical_matches)) * mult)
@@ -972,6 +991,25 @@ func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 		Tools.bucket:
 			printerr("Bucket tool is not yet implemented")
 			assert (false)
+		
+		Tools.clock:
+			if not preview and Game.current_mode == Game.Mode.time_rush:
+				Events.PlaySound.emit("Tools/clock")
+				
+				$background/Clock.show()
+				$background/Clock/Image/AnimationPlayer.play("Countdown")
+				
+				var tween = get_tree().create_tween()
+				tween.tween_property(Game,"speed",Game.speed / 2.0,0.25)
+				await tween.finished
+				
+				var tween2 = get_tree().create_tween()
+				tween2.tween_property(Game,"speed",Game.speed * 2.0,9.75)
+				
+				await tween2.finished
+				$background/Clock.hide()
+				
+				return
 		
 		Tools.dice:
 			Events.PlaySound.emit("Tools/dice")

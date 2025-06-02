@@ -1,8 +1,10 @@
-[gd_scene load_steps=35 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=41 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_4yil1"]
+[ext_resource type="Shader" uid="uid://tw1ncj5tfdyl" path="res://Game/Shaders/hsv_shift.gdshader" id="2_572oi"]
 [ext_resource type="Script" uid="uid://b2h5qpr6nowww" path="res://Game/Scripts/background.gd" id="3_tyrie"]
+[ext_resource type="Texture2D" uid="uid://c0jpdib4qaxf2" path="res://assets/Images/Tools/clock_animated.png" id="4_4yil1"]
 [ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_ofkml"]
 [ext_resource type="Script" uid="uid://cvi1wou23m4f4" path="res://Game/Scripts/PIT.gd" id="5_opxns"]
 [ext_resource type="Script" uid="uid://qunfa3c4235h" path="res://Game/Scripts/LINE.gd" id="6_he1k8"]
@@ -26,6 +28,73 @@
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
 [ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8srii"]
+shader = ExtResource("2_572oi")
+shader_parameter/Hue = 0
+shader_parameter/Saturation = 100
+shader_parameter/Value = 100
+
+[sub_resource type="Animation" id="Animation_572oi"]
+resource_name = "Countdown"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 9.85, 9.9, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="Animation" id="Animation_8srii"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hjvjr"]
+_data = {
+&"Countdown": SubResource("Animation_572oi"),
+&"RESET": SubResource("Animation_8srii")
+}
 
 [sub_resource type="Animation" id="Animation_jt4qq"]
 length = 0.001
@@ -187,6 +256,7 @@ script = ExtResource("1_seuk0")
 [node name="background" type="TextureRect" parent="."]
 process_mode = 1
 z_index = -20
+material = SubResource("ShaderMaterial_8srii")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -229,9 +299,6 @@ script = ExtResource("7_wwslj")
 z_index = 10
 script = ExtResource("8_opxns")
 
-[node name="Upgrade" type="Node" parent="background"]
-script = ExtResource("9_wwslj")
-
 [node name="Tools" type="Control" parent="background"]
 layout_mode = 1
 anchors_preset = 6
@@ -266,6 +333,39 @@ horizontal_alignment = 1
 [node name="selection_tile" parent="background/Tools" instance=ExtResource("11_hjvjr")]
 position = Vector2(-68, -239)
 type = 3
+
+[node name="Clock" type="Control" parent="background"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -500.0
+offset_bottom = -450.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Image" type="Sprite2D" parent="background/Clock"]
+position = Vector2(7, 35)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("4_4yil1")
+hframes = 5
+vframes = 2
+frame = 9
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="background/Clock/Image"]
+libraries = {
+&"": SubResource("AnimationLibrary_hjvjr")
+}
+
+[node name="Ores" type="Control" parent="background"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_wwslj")
 
 [node name="tile" parent="background" instance=ExtResource("8_4yil1")]
 visible = false
@@ -427,7 +527,6 @@ offset_right = 0.0
 offset_bottom = 0.0
 
 [node name="ascension_particles" type="CPUParticles2D" parent="."]
-visible = false
 self_modulate = Color(1.2, 1.2, 1.2, 1)
 z_index = -19
 position = Vector2(250, 250)

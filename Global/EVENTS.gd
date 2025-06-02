@@ -24,6 +24,8 @@ signal Resume()
 signal Quit()
 signal Restart()
 
+signal LanguageChanged(locale)
+
 enum Type {
 	board,
 	pit,
