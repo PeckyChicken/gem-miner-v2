@@ -12,11 +12,13 @@ const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
 
 var last_second: int = -1
-const ASCENSION_PARTICLE_DENSITY = 17
+const ASCENSION_PARTICLE_DENSITY = 0.17
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	get_viewport().size_changed.connect(screen_size_changed)
+	if Music.playing == "time_rush":
+		last_second = floori(Music.players[Music.current_player].get_playback_position())
 	setup.call_deferred()
 	await $background/Fade.fade_out(0.5)
 	if Game.current_mode == Game.Mode.survival:
@@ -79,10 +81,10 @@ func setup():
 
 func screen_size_changed():
 	pass
-	#if Game.current_mode == Game.Mode.ascension:
-		#$ascension_particles.position = get_viewport().size / 2.0
-		#$ascension_particles.emission_rect_extents = get_viewport().size / 2
-		#$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().size.x*get_viewport().size.y))
+	if Game.current_mode == Game.Mode.ascension:
+		$ascension_particles.position = get_viewport().get_visible_rect().size / 2.0
+		$ascension_particles.emission_rect_extents = get_viewport().get_visible_rect().size / 2
+		$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().get_visible_rect().size.x*get_viewport().get_visible_rect().size.y))
 
 func set_background(mode):
 
