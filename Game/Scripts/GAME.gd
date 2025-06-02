@@ -78,10 +78,11 @@ func setup():
 	$background/Pit.draw()
 
 func screen_size_changed():
-	if Game.current_mode == Game.Mode.ascension:
-		$ascension_particles.position = get_viewport().size / 2.0
-		$ascension_particles.emission_rect_extents = get_viewport().size / 2
-		$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().size.x*get_viewport().size.y))
+	pass
+	#if Game.current_mode == Game.Mode.ascension:
+		#$ascension_particles.position = get_viewport().size / 2.0
+		#$ascension_particles.emission_rect_extents = get_viewport().size / 2
+		#$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().size.x*get_viewport().size.y))
 
 func set_background(mode):
 
