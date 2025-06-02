@@ -31,9 +31,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8srii"]
 shader = ExtResource("2_572oi")
-shader_parameter/Hue = 100
+shader_parameter/Hue = 0
 shader_parameter/Saturation = 100
-shader_parameter/Value = 85
+shader_parameter/Value = 100
 
 [sub_resource type="Animation" id="Animation_572oi"]
 resource_name = "Countdown"
