@@ -1,7 +1,8 @@
-[gd_scene load_steps=39 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=41 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_4yil1"]
+[ext_resource type="Shader" uid="uid://tw1ncj5tfdyl" path="res://Game/Shaders/hsv_shift.gdshader" id="2_572oi"]
 [ext_resource type="Script" uid="uid://b2h5qpr6nowww" path="res://Game/Scripts/background.gd" id="3_tyrie"]
 [ext_resource type="Texture2D" uid="uid://c0jpdib4qaxf2" path="res://assets/Images/Tools/clock_animated.png" id="4_4yil1"]
 [ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_ofkml"]
@@ -27,6 +28,12 @@
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
 [ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8srii"]
+shader = ExtResource("2_572oi")
+shader_parameter/Hue = 100
+shader_parameter/Saturation = 100
+shader_parameter/Value = 85
 
 [sub_resource type="Animation" id="Animation_572oi"]
 resource_name = "Countdown"
@@ -249,6 +256,7 @@ script = ExtResource("1_seuk0")
 [node name="background" type="TextureRect" parent="."]
 process_mode = 1
 z_index = -20
+material = SubResource("ShaderMaterial_8srii")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

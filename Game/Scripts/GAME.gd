@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const BACKGROUNDS = {Game.Mode.survival:1,Game.Mode.time_rush:2,Game.Mode.obstacles:3,Game.Mode.ascension:7}
+const BACKGROUND_HSV = {Game.Mode.survival:Vector3(100,100,85),Game.Mode.time_rush:Vector3(-10,100,100),Game.Mode.obstacles:Vector3(-65,150,110),Game.Mode.ascension: Vector3(0,0,60)}
 
 var PRESSED_KEYS = []
 
@@ -12,11 +12,12 @@ const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
 
 var last_second: int = -1
-const ASCENSION_PARTICLE_DENSITY = 0.17
+const ASCENSION_PARTICLE_DENSITY = 0.07
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	get_viewport().size_changed.connect(screen_size_changed)
+	screen_size_changed()
 	if Music.playing == "time_rush":
 		last_second = floori(Music.players[Music.current_player].get_playback_position())
 	setup.call_deferred()
@@ -99,7 +100,12 @@ func set_background(mode):
 		$background/Hud/Moves.show()
 		$background/Hud/Moves_Label.show()
 	
-	#$background.frame = BACKGROUNDS[mode]
+	var hsv: Vector3 = BACKGROUND_HSV[mode]
+	var shader: ShaderMaterial = $background.material
+	shader.set_shader_parameter("Hue",hsv.x)
+	shader.set_shader_parameter("Saturation",hsv.y)
+	shader.set_shader_parameter("Value",hsv.z)
+	
 
 func random_place(items:Array):
 	assert (0 in Board.board)
