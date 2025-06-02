@@ -36,7 +36,7 @@ func _process(_delta: float) -> void:
 		
 		while floori(music_player.get_playback_position()) - last_second >= 1:
 			if not get_tree().paused:
-				add_bricks(1)
+				add_bricks()
 			last_second += 1
 
 			if Board.evaluate_game_over():
@@ -188,7 +188,7 @@ func add_bricks(count=null):
 	for __ in range(count):
 		if 0 not in Board.board:
 			break
-		random_place([13])
+		random_place([Game.Item.BRICK])
 		Events.PlaySound.emit("Gameplay/brick_placed")
 
 func vanish_gems(location:Vector2):
