@@ -266,7 +266,6 @@ texture = ExtResource("2_4yil1")
 expand_mode = 1
 stretch_mode = 1
 script = ExtResource("3_tyrie")
-metadata/_edit_lock_ = true
 
 [node name="Board" type="Control" parent="background"]
 layout_mode = 1
