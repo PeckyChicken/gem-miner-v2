@@ -31,7 +31,12 @@ restart,Restart,Reinicio
 play_again,Play Again,Jugar de Nuevo
 switch_mode,Switch Mode,Cambiar Modo
 game_over,Game Over,Fin del Juego
-
+,,
+common,Common,Común
+uncommon,Uncommon,Inusual
+rare,Rare,Rara
+legendary,Legendary,Legendaria
+,,
 ore_ruby,Ruby Ore,Mena de Rubí
 ore_ruby_desc,+10 points for every $RUBY destroyed.,+10 puntos por cada $RUBY destruido.
 ore_topaz,Topaz Ore,Mena de Topacio
@@ -40,3 +45,5 @@ ore_emerald,Emerald Ore,Mena de Esmeralda
 ore_emerald_desc,+10 points for every $EMERALD destroyed.,+10 puntos por cada $EMERALD destruido.
 ore_sapphire,Sapphire Ore,Mena de Zafiro
 ore_sapphire_desc,+10 points for every $SAPPHIRE destroyed.,+10 puntos por cada $SAPPHIRE destruido.
+ore_diamond,Diamond Ore,Mena de Diamante
+ore_diamond_desc,Every $DIAMOND created has a 50% to become a $RAINBOW_DIAMOND,Cada $DIAMOND creado tiene un 50% de probabilidad de convertirse en un $RAINBOW_DIAMOND

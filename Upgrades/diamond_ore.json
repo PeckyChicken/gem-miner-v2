@@ -1,0 +1,9 @@
+{
+	"name":"ore_diamond",
+	"description":"ore_diamond_desc",
+	"ability":"chance_diamond_to_rainbow_diamond",
+	"rarity":0,
+	"extra":{
+		"chance":0.5
+	}
+}

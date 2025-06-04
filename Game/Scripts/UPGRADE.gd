@@ -15,4 +15,4 @@ func create_description(title,desc):
 
 func _ready() -> void:
 	pass
-	#create_description("ore_ruby","ore_ruby_desc")
+	#create_description("ore_diamond","ore_diamond_desc")
