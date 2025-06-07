@@ -112,12 +112,19 @@ icon_alignment = 1
 [node name="bricks2" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "           pinjefro
-on: itch.io"
+text = "                 Piiixl: itch.io"
 underline = 2
-uri = "https://pinjefro.itch.io/red-bricks"
+uri = "https://piiixl.itch.io/textures"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="ore_modification" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "ores_modified
+"
+flat = true
+icon_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
 
 [node name="gems" type="Button" parent="VBoxContainer"]
