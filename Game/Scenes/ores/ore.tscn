@@ -171,8 +171,8 @@ hframes = 4
 [node name="Image" type="Sprite2D" parent="Frame"]
 scale = Vector2(1, 1)
 texture = ExtResource("2_wla0v")
-hframes = 5
-vframes = 5
+hframes = 10
+vframes = 10
 
 [node name="Area2D" type="Area2D" parent="."]
 
