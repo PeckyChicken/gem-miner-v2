@@ -2,6 +2,7 @@ extends Node
 class_name event_class
 
 signal MouseClicked(button,position)
+signal MouseReleased(button,position)
 
 signal TileClicked(tile)
 signal TilePlaced(x,y,type)

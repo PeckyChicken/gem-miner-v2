@@ -139,8 +139,11 @@ func _input(event):
 	if get_tree().paused:
 		return
 	
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		Events.MouseClicked.emit(event.button_index,event.position)
+	if event is InputEventMouseButton and event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		if event.is_pressed():
+			Events.MouseClicked.emit(event.button_index,event.position)
+		else:
+			Events.MouseReleased.emit(event.button_index,event.position)
 	
 	if event is InputEventKey and event.is_pressed():
 		var character = char(event.unicode)
