@@ -6,15 +6,19 @@
 
 [node name="OreDescription" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchor_right = 0.478
+anchor_bottom = 0.346
+offset_left = 2.0
+offset_right = -303.92
+offset_bottom = -166.08
 script = ExtResource("1_3jin2")
 
 [node name="title" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 48.0
-offset_top = 6.0
-offset_right = 248.0
-offset_bottom = 56.0
+offset_left = -71.0
+offset_top = 40.0
+offset_right = 129.0
+offset_bottom = 90.0
 texture = ExtResource("1_kwua1")
 
 [node name="text" type="RichTextLabel" parent="title"]
@@ -32,9 +36,10 @@ vertical_alignment = 1
 
 [node name="description" type="TextureRect" parent="."]
 layout_mode = 1
-offset_top = 59.0
-offset_right = 300.0
-offset_bottom = 159.0
+offset_left = -119.0
+offset_top = 93.0
+offset_right = 181.0
+offset_bottom = 193.0
 texture = ExtResource("1_gfjp1")
 expand_mode = 1
 
