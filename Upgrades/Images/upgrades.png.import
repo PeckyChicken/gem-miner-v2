@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x4jcerk6qr4n"
-path="res://.godot/imported/uncommon_upgrade.png-b965447b345ef4cff183ab1b1dfffcfd.ctex"
+uid="uid://buxgwo1qgugnw"
+path="res://.godot/imported/upgrades.png-e6ef0f2bd3164c446944aa2da781321f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Upgrades/Images/uncommon_upgrade.png"
-dest_files=["res://.godot/imported/uncommon_upgrade.png-b965447b345ef4cff183ab1b1dfffcfd.ctex"]
+source_file="res://Upgrades/Images/upgrades.png"
+dest_files=["res://.godot/imported/upgrades.png-e6ef0f2bd3164c446944aa2da781321f.ctex"]
 
 [params]
 
