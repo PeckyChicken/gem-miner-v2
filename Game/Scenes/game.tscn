@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://Game/Scenes/game_tile.tscn" id="8_4yil1"]
 [ext_resource type="Script" uid="uid://cqojhpc4vxilt" path="res://Game/Scripts/PREVIEW.gd" id="8_opxns"]
 [ext_resource type="PackedScene" uid="uid://crs80oppmnox6" path="res://Game/Scenes/background_tile.tscn" id="9_572oi"]
-[ext_resource type="Script" uid="uid://cm53uwmcj7a2c" path="res://Game/Scripts/UPGRADE.gd" id="9_wwslj"]
+[ext_resource type="Script" uid="uid://cm53uwmcj7a2c" path="res://Game/Scripts/Ores/UPGRADE.gd" id="9_wwslj"]
 [ext_resource type="PackedScene" uid="uid://8y3t7elpug68" path="res://Game/Scenes/tool_background_tile.tscn" id="10_8srii"]
 [ext_resource type="PackedScene" uid="uid://b8a8bfgs7mrvs" path="res://Game/Scenes/selection_tile.tscn" id="11_hjvjr"]
 [ext_resource type="Texture2D" uid="uid://bikexw8nixrnq" path="res://assets/Images/Particles/vanish.png" id="12_t1k1h"]
@@ -28,6 +28,14 @@
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="18_j81tf"]
 [ext_resource type="Script" uid="uid://d0c7t8jlk4g5q" path="res://Game/Scripts/game_over.gd" id="18_ofkml"]
 [ext_resource type="PackedScene" uid="uid://dap1kb7ujraeq" path="res://Game/Scenes/fade.tscn" id="20_gdmh2"]
+
+[sub_resource type="Gradient" id="Gradient_tyrie"]
+offsets = PackedFloat32Array(0.713333, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_ofkml"]
+offsets = PackedFloat32Array(0, 0.36)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8srii"]
 shader = ExtResource("2_572oi")
@@ -181,14 +189,6 @@ _data = {
 &"vanish": SubResource("Animation_2vajw")
 }
 
-[sub_resource type="Gradient" id="Gradient_tyrie"]
-offsets = PackedFloat32Array(0.713333, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
-
-[sub_resource type="Gradient" id="Gradient_ofkml"]
-offsets = PackedFloat32Array(0, 0.36)
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
-
 [sub_resource type="Animation" id="Animation_tyrie"]
 length = 0.001
 tracks/0/type = "value"
@@ -253,6 +253,32 @@ _data = {
 process_mode = 3
 script = ExtResource("1_seuk0")
 
+[node name="ascension_particles" type="CPUParticles2D" parent="."]
+self_modulate = Color(1.2, 1.2, 1.2, 1)
+z_index = -19
+position = Vector2(250, 250)
+amount = 30
+texture = ExtResource("14_gsb0v")
+speed_scale = 0.5
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(250, 250)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 20.0
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.01
+orbit_velocity_max = 0.01
+linear_accel_min = -10.0
+linear_accel_max = 10.0
+angle_max = 720.0
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_tyrie")
+color_initial_ramp = SubResource("Gradient_ofkml")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
 [node name="background" type="TextureRect" parent="."]
 process_mode = 1
 z_index = -20
@@ -266,6 +292,18 @@ texture = ExtResource("2_4yil1")
 expand_mode = 1
 stretch_mode = 1
 script = ExtResource("3_tyrie")
+
+[node name="Ores" type="Control" parent="background"]
+z_index = 15
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+script = ExtResource("9_wwslj")
 
 [node name="Board" type="Control" parent="background"]
 layout_mode = 1
@@ -359,13 +397,6 @@ frame = 9
 libraries = {
 &"": SubResource("AnimationLibrary_hjvjr")
 }
-
-[node name="Ores" type="Control" parent="background"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("9_wwslj")
 
 [node name="tile" parent="background" instance=ExtResource("8_4yil1")]
 visible = false
@@ -525,32 +556,6 @@ visible = false
 layout_mode = 1
 offset_right = 0.0
 offset_bottom = 0.0
-
-[node name="ascension_particles" type="CPUParticles2D" parent="."]
-self_modulate = Color(1.2, 1.2, 1.2, 1)
-z_index = -19
-position = Vector2(250, 250)
-amount = 30
-texture = ExtResource("14_gsb0v")
-speed_scale = 0.5
-randomness = 1.0
-emission_shape = 3
-emission_rect_extents = Vector2(250, 250)
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_max = 20.0
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.01
-orbit_velocity_max = 0.01
-linear_accel_min = -10.0
-linear_accel_max = 10.0
-angle_max = 720.0
-scale_amount_max = 3.0
-color_ramp = SubResource("Gradient_tyrie")
-color_initial_ramp = SubResource("Gradient_ofkml")
-hue_variation_min = -1.0
-hue_variation_max = 1.0
 
 [node name="Audio" parent="." instance=ExtResource("14_j7yts")]
 position = Vector2(12, -6)
