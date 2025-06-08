@@ -26,9 +26,14 @@ func create_description():
 	description.position = Vector2.ZERO
 	add_child(description)
 
+func trigger():
+	Events.PlaySound.emit("Upgrades/activate")
+	$AnimationPlayer.play("activate_%s" % randi_range(0,3))
+
 func _on_mouse_clicked(__,___):
 	await get_tree().process_frame
 	if hovered:
+		trigger()
 		clicked = true
 
 func _on_mouse_released(__,___):
