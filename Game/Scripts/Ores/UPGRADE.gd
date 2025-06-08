@@ -8,7 +8,6 @@ var upgraded_gems: Array[Game.Item] = [Game.Item.TOPAZ]
 var ore_cache: Dictionary = {}
 
 func create_ore(data):
-	print("Ore data: ",data)
 	var ore: Ore = ORE.instantiate()
 	ore.data = data
 	ore.position = Vector2(-125,25)
@@ -27,4 +26,4 @@ func load_ore_data(file_name) -> Dictionary:
 func _ready() -> void:
 	pass
 
-	create_ore(load_ore_data("diamond_ore"))
+	create_ore(load_ore_data("ruby_ore"))
