@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d02iwlp3pt3jg"]
 
-[ext_resource type="Script" uid="uid://dfejice6hile4" path="res://Game/Scenes/ores/ore_description.gd" id="1_3jin2"]
+[ext_resource type="Script" uid="uid://dfejice6hile4" path="res://Game/Scripts/Ores/ore_description.gd" id="1_3jin2"]
 [ext_resource type="Texture2D" uid="uid://b7ithvq7uagdu" path="res://assets/Images/UI/game_over.png" id="1_gfjp1"]
 [ext_resource type="Texture2D" uid="uid://d03wv2wyhb70c" path="res://assets/Images/UI/button.png" id="1_kwua1"]
 
