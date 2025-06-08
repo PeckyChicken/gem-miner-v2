@@ -16,15 +16,14 @@ func _ready() -> void:
 	$Frame/Image.frame_coords = Vector2(data["x"],data["y"])
 
 func create_description():
-	
-	if description:
-		description.queue_free()
-	description = ORE_DESCRIPTION.instantiate()
-	description.title_tag = data["name"]
-	description.description_tag = data["description"]
-	description.ore_data = data["extra"]
-	description.position = Vector2.ZERO
-	add_child(description)
+	var _desc: OreDescription
+	_desc = ORE_DESCRIPTION.instantiate()
+	_desc.title_tag = data["name"]
+	_desc.description_tag = data["description"]
+	_desc.ore_data = data["extra"]
+	_desc.position = Vector2.ZERO
+	add_child(_desc)
+	return _desc
 
 func trigger(status=false):
 	Events.PlaySound.emit("Upgrades/activate")
@@ -46,7 +45,9 @@ func _on_mouse_released(__,___):
 
 func _on_mouse_entered() -> void:
 	hovered = true
-	create_description()
+	if description:
+		description.queue_free()
+	description = create_description()
 
 func _on_mouse_exited() -> void:
 	hovered = false
