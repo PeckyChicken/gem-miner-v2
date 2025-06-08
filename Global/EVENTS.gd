@@ -8,7 +8,7 @@ signal TileClicked(tile)
 signal TilePlaced(x,y,type)
 signal TileHovered(tile)
 
-signal PlaySound(path)
+signal PlaySound(path,variance,pitch)
 signal DeleteTiles(tiles)
 signal AddScore(score)
 signal DestroyBricks(gems)
