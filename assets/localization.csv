@@ -47,4 +47,4 @@ ore_emerald_desc,+10 points for every $EMERALD destroyed.,+10 puntos por cada $E
 ore_sapphire,Sapphire Ore,Mena de Zafiro
 ore_sapphire_desc,+10 points for every $SAPPHIRE destroyed.,+10 puntos por cada $SAPPHIRE destruido.
 ore_diamond,Diamond Ore,Mena de Diamante
-ore_diamond_desc,Every $DIAMOND created has a 50% to become a $RAINBOW_DIAMOND,Cada $DIAMOND creado tiene un 50% de probabilidad de convertirse en un $RAINBOW_DIAMOND
+ore_diamond_desc,Every $DIAMOND created has a #chance;% to become a $RAINBOW_DIAMOND,Cada $DIAMOND creado tiene un #chance;% de probabilidad de convertirse en un $RAINBOW_DIAMOND
