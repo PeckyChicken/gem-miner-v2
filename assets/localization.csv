@@ -39,12 +39,12 @@ rare,Rare,Rara
 legendary,Legendary,Legendaria
 ,,
 ore_ruby,Ruby Ore,Mena de Rubí
-ore_ruby_desc,+10 points for every $RUBY destroyed.,+10 puntos por cada $RUBY destruido.
+ore_ruby_desc,+#bonus; points for every $RUBY destroyed.,+#bonus; puntos por cada $RUBY destruido.
 ore_topaz,Topaz Ore,Mena de Topacio
-ore_topaz_desc,+10 points for every $TOPAZ destroyed.,+10 puntos por cada $TOPAZ destruido.
+ore_topaz_desc,+#bonus; points for every $TOPAZ destroyed.,+#bonus; puntos por cada $TOPAZ destruido.
 ore_emerald,Emerald Ore,Mena de Esmeralda
-ore_emerald_desc,+10 points for every $EMERALD destroyed.,+10 puntos por cada $EMERALD destruido.
+ore_emerald_desc,+#bonus; points for every $EMERALD destroyed.,+#bonus; puntos por cada $EMERALD destruido.
 ore_sapphire,Sapphire Ore,Mena de Zafiro
-ore_sapphire_desc,+10 points for every $SAPPHIRE destroyed.,+10 puntos por cada $SAPPHIRE destruido.
+ore_sapphire_desc,+#bonus; points for every $SAPPHIRE destroyed.,+#bonus; puntos por cada $SAPPHIRE destruido.
 ore_diamond,Diamond Ore,Mena de Diamante
 ore_diamond_desc,Every $DIAMOND created has a #chance;% to become a $RAINBOW_DIAMOND,Cada $DIAMOND creado tiene un #chance;% de probabilidad de convertirse en un $RAINBOW_DIAMOND
