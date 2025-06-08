@@ -28,13 +28,11 @@ func create_description():
 
 func _on_mouse_clicked(__,___):
 	await get_tree().process_frame
-	print("Clicked ore")
 	if hovered:
 		clicked = true
 
 func _on_mouse_released(__,___):
 	await get_tree().process_frame
-	print("Released")
 	
 	clicked = false
 
