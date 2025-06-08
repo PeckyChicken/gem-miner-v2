@@ -26,4 +26,4 @@ func load_ore_data(file_name) -> Dictionary:
 func _ready() -> void:
 	pass
 
-	create_ore(load_ore_data("diamond_ore"))
+	create_ore(load_ore_data("sapphire_ore"))
