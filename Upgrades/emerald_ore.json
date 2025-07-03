@@ -1,6 +1,6 @@
 {
-	"name":"ore_ruby",
-	"description":"ore_ruby_desc",
+	"name":"ore_emerald",
+	"description":"ore_emerald_desc",
 	"ability":"extra_points_for_gem",
 	"rarity":0,
 	"x":2,
