@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bo82chpiopg54"]
+[gd_scene load_steps=42 format=3 uid="uid://bo82chpiopg54"]
 
 [ext_resource type="Script" uid="uid://cojlgbkmcaj8v" path="res://Game/Scripts/GAME.gd" id="1_seuk0"]
 [ext_resource type="Texture2D" uid="uid://3nwnbxbm5qcr" path="res://assets/Images/new_background.png" id="2_4yil1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dpuw3ydb8r63r" path="res://Game/Scripts/BOARD.gd" id="4_ofkml"]
 [ext_resource type="Script" uid="uid://cvi1wou23m4f4" path="res://Game/Scripts/PIT.gd" id="5_opxns"]
 [ext_resource type="Script" uid="uid://qunfa3c4235h" path="res://Game/Scripts/LINE.gd" id="6_he1k8"]
+[ext_resource type="Texture2D" uid="uid://26dnnedi7y1p" path="res://Upgrades/Images/upgrade_holder.png" id="7_8srii"]
 [ext_resource type="Script" uid="uid://duh208w7g8iw3" path="res://Game/Scripts/BRICK.gd" id="7_wwslj"]
 [ext_resource type="PackedScene" uid="uid://qwaq8gaisp6c" path="res://Game/Scenes/game_tile.tscn" id="8_4yil1"]
 [ext_resource type="Script" uid="uid://cqojhpc4vxilt" path="res://Game/Scripts/PREVIEW.gd" id="8_opxns"]
@@ -304,6 +305,30 @@ offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
 script = ExtResource("9_wwslj")
+
+[node name="HolderImage" type="TextureRect" parent="background/Ores"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+offset_left = -127.5
+offset_right = 127.5
+offset_bottom = 55.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("7_8srii")
+expand_mode = 1
+
+[node name="Holder" type="HBoxContainer" parent="background/Ores/HolderImage"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 253.0
+offset_bottom = 52.0
+mouse_filter = 2
+alignment = 1
 
 [node name="Board" type="Control" parent="background"]
 layout_mode = 1
