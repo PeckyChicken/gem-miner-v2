@@ -4,6 +4,8 @@ class_name Ore
 const ORE_DESCRIPTION = preload("res://Game/Scenes/ores/ore_description.tscn")
 
 var data: Dictionary
+var extra: Dictionary
+
 var hovered: bool = false
 var clicked: bool = false
 var description: OreDescription
@@ -14,6 +16,8 @@ func _ready() -> void:
 	
 	$Frame.frame = data["rarity"]
 	$Frame/Image.frame_coords = Vector2(data["x"],data["y"])
+	
+	extra = data.get("extra",{})
 
 func create_description():
 	var _desc: OreDescription
@@ -25,17 +29,17 @@ func create_description():
 	add_child(_desc)
 	return _desc
 
-func trigger(status=false):
+func trigger(status=false,message=""):
 	Events.PlaySound.emit("Upgrades/activate")
 	$AnimationPlayer.play("activate_%s" % randi_range(0,3))
 	if status:
+		$Status.text=OreDescription.new().format_description(message)
 		$StatusPlayer.play("status_activate")
 		
 
 func _on_mouse_clicked(__,___):
 	await get_tree().process_frame
 	if hovered:
-		trigger(true)
 		clicked = true
 
 func _on_mouse_released(__,___):
