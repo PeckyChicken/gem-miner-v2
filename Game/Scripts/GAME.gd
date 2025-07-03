@@ -6,7 +6,7 @@ var PRESSED_KEYS = []
 
 @onready var Board: brd = $background/Board
 @onready var Preview: previewer = $background/Preview
-@onready var Upgrades: upgrade_class = $background/Ores
+@onready var OreManager: Ores = $background/Ores
 
 const PAUSE_MENU_SCENE = preload("res://Global/pause_menu.tscn")
 var pause_menu: PauseMenu
@@ -533,6 +533,8 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	var horizontal_matches = lines[0]
 	var vertical_matches = lines[1]
+	
+	
 	var clears = []
 	if len(horizontal_matches) >= 3:
 		clears += horizontal_matches
@@ -540,12 +542,14 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 	if len(vertical_matches) >= 3:
 		clears += vertical_matches
 	
+	
+	
 	if !preview:
 		if len(clears) == 0:
 			if Game.current_mode not in [Game.Mode.obstacles,Game.Mode.time_rush]:
 				add_bricks()
 			return
-		var mult = 1
+		var bonus = 0
 		var type = Board.get_square(location)
 		Board.clear_gems(clears)
 		Board.set_square(location,type)
@@ -553,10 +557,10 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		Events.PlaySound.emit("Gameplay/break")
 		
 		if Game.current_mode == Game.Mode.ascension:
-			for item in Upgrades.upgraded_gems:
-				if Board.get_square(location) == item:
-					mult *= 2
-		Events.AddScore.emit(10*(len(horizontal_matches+vertical_matches)) * mult)
+			var ore_out = OreManager.evaluate_ores({Ores.In.event:Ores.Event.gem_line,Ores.In.tile:type,Ores.In.count:len(clears),Ores.In.tile_pos:location})
+			bonus += ore_out[Ores.Out.score]
+		
+		Events.AddScore.emit(10*(len(clears)) + bonus)
 		
 		Events.DestroyBricks.emit(clears)
 
