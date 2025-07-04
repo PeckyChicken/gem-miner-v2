@@ -29,14 +29,15 @@ var ore_cache: Dictionary = {}
 func evaluate_ores(context):
 	var return_data = {Out.score:0}
 	for ore in ores:
-		if context[In.event] == Event.gem_line:
+		if context[In.event] in [Event.gem_line,Event.gem_break]:
 			if ore.data["ability"] == "extra_points_for_gem" and ore.extra["gem_type"] == context[In.tile]:
 				var bonus = ore.extra["bonus"] * context[In.count]
-				return_data[Out.score] += bonus
+				#return_data[Out.score] += bonus
+				Events.AddScore.emit(bonus)
 				ore.trigger(true,"+"+str(bonus))
 	
 	return return_data
-				
+
 func create_ore(data):
 	var ore: Ore = ORE.instantiate()
 	ores.append(ore)
