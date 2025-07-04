@@ -41,7 +41,7 @@ func evaluate_ores(context: Dictionary):
 				if ore.data["ability"] == "double_diamond_chance":
 					if context[In.tile] in Game.DIAMONDS and randi_range(1,100) <= ore.extra["chance"]:
 						return_data[Out.tile] = Game.Item.RAINBOW_DIAMOND
-						ore.trigger(true,"[color=red]R[color=orange]a[color=yellow]i[color=green]n[color=aqua]b[color=blue]o[color=purple]w[color=red]!")
+						ore.trigger(true,"[rainbow freq=8.0 sat=1 val=1 speed=0.05]Rainbow![/rainbow]")
 						Events.PlaySound.emit("Diamond/double_create")
 						$"../Board".set_square(context[In.tile_pos],Game.Item.RAINBOW_DIAMOND)
 			
