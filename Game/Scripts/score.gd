@@ -4,28 +4,23 @@ extends RichTextLabel
 
 var high_score_beaten: bool = false
 
+
+var current_score: float
+var starting_score: float
+
+const SCORE_TIME = 0.5
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Events.AddScore.connect(add_score)
 	_update()
 
 func add_score(score):
-	var mult = 1 + (board.level - 1) / 5.0
-	var score_to_add = score*mult
+	board.score += score
+	starting_score = float(text)
+	current_score = float(text)
 	
-	var final_score = score_to_add + board.score
-	const SCORE_TIME = 0.5
-	var STEP = max(3,board.level)
-	var sleep_time = SCORE_TIME/(float(score_to_add)/STEP)
-	
-	self_modulate = Color(300,300,300)
-	while board.score < final_score:
-		board.score += STEP
-		board.score = min(board.score,final_score)
-		_update()
-		await get_tree().create_timer(sleep_time).timeout
-	_update()
-	self_modulate = Color(1,1,1)
 	
 	if Game.current_mode != Game.Mode.obstacles:
 		board.evaluate_next_level()
@@ -63,5 +58,14 @@ func _calculate_font_size(score) -> int:
 	return font_size
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+func _process(delta: float) -> void:
+	
+	var distance = floorf(board.score) - starting_score
+	current_score += distance * delta / SCORE_TIME
+	text = str(ceili(current_score))
+	
+	if floorf(current_score) >= floorf(board.score):
+		starting_score = floorf(board.score)
+		_update()
+	
+	add_theme_font_size_override("normal_font_size", _calculate_font_size(floori(current_score)))
