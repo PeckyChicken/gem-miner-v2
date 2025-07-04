@@ -249,6 +249,7 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 	
 	Events.PlaySound.emit(sound)
 	Board.set_square(location,tool)
+	OreManager.evaluate_ores({Ores.In.event:Ores.Event.tool_create,Ores.In.tile:tool,Ores.In.tile_pos:location,Ores.In.count:1})
 	
 	for l in [location] + clears:
 		Board.draw(l)
@@ -387,7 +388,7 @@ func calculate_tool_combo(location):
 	return combo
 
 func _get_priority(item_type):
-	var PRIORITIES = [Game.DIAMONDS,[Game.Item.BOMB],Game.DRILLS,[Game.Item.AIR]]
+	var PRIORITIES = [[Game.Item.RAINBOW_DIAMOND],Game.DIAMONDS,[Game.Item.BOMB],Game.DRILLS,[Game.Item.AIR]]
 	var priority = 0
 	for p in PRIORITIES:
 		if item_type in p:

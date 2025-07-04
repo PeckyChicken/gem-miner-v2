@@ -21,21 +21,30 @@ enum In {
 }
 
 enum Out {
-	score
+	score,
+	tile
 }
 
 var ore_cache: Dictionary = {}
 
-func evaluate_ores(context):
-	var return_data = {Out.score:0}
+func evaluate_ores(context: Dictionary):
+	var return_data = {Out.score:0,Out.tile:null}
 	for ore in ores:
-		if context[In.event] in [Event.gem_line,Event.gem_break]:
-			if ore.data["ability"] == "extra_points_for_gem" and ore.extra["gem_type"] == context[In.tile]:
-				var bonus = ore.extra["bonus"] * context[In.count]
-				#return_data[Out.score] += bonus
-				Events.AddScore.emit(bonus)
-				ore.trigger(true,"+"+str(bonus))
-	
+		match context[In.event]:
+			Event.gem_line,Event.gem_break:
+				if ore.data["ability"] == "extra_points_for_gem" and ore.extra["gem_type"] == context[In.tile]:
+					var bonus = ore.extra["bonus"] * context[In.count]
+					Events.AddScore.emit(bonus)
+					ore.trigger(true,"+"+str(bonus))
+			
+			Event.tool_create:
+				if ore.data["ability"] == "double_diamond_chance":
+					if context[In.tile] in Game.DIAMONDS and randi_range(1,100) <= ore.extra["chance"]:
+						return_data[Out.tile] = Game.Item.RAINBOW_DIAMOND
+						ore.trigger(true,"[color=red]R[color=orange]a[color=yellow]i[color=green]n[color=aqua]b[color=blue]o[color=purple]w[color=red]!")
+						Events.PlaySound.emit("Diamond/double_create")
+						$"../Board".set_square(context[In.tile_pos],Game.Item.RAINBOW_DIAMOND)
+			
 	return return_data
 
 func create_ore(data):
@@ -75,4 +84,4 @@ func load_ore_data(file_name) -> Dictionary:
 func _ready() -> void:
 	pass
 
-	create_ore(load_ore_data("sapphire_ore"))
+	create_ore(load_ore_data("diamond_ore"))
