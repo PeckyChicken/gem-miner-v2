@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 class_name Ore
 
 const ORE_DESCRIPTION = preload("res://Game/Scenes/ores/ore_description.tscn")

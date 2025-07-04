@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ds6k2qf2sum2a"]
+[gd_scene load_steps=11 format=3 uid="uid://ds6k2qf2sum2a"]
 
 [ext_resource type="Texture2D" uid="uid://cupmymobw5vxi" path="res://Upgrades/Images/upgrade_frames.png" id="1_q6auh"]
 [ext_resource type="Script" uid="uid://1umkfts3upqk" path="res://Game/Scripts/Ores/ore.gd" id="1_wla0v"]
@@ -180,10 +180,10 @@ _data = {
 &"status_activate": SubResource("Animation_rvsgq")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6auh"]
-size = Vector2(50, 50)
-
-[node name="Ore" type="Node2D"]
+[node name="Ore" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
 script = ExtResource("1_wla0v")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -200,12 +200,6 @@ hframes = 4
 texture = ExtResource("2_wla0v")
 hframes = 10
 vframes = 10
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(25, 25)
-shape = SubResource("RectangleShape2D_q6auh")
 
 [node name="Status" type="RichTextLabel" parent="."]
 offset_left = -50.0
@@ -226,5 +220,5 @@ libraries = {
 &"": SubResource("AnimationLibrary_rvsgq")
 }
 
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
