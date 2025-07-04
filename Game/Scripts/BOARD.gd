@@ -6,6 +6,7 @@ const COLUMNS = 7
 const REL_Y= 0.1
 const REL_X = 0.5
 const SCALE = 1
+@onready var OreManager: Ores = $"../Ores"
 
 const COLORS = [Color(1,0,0),Color(1,1,0),Color(0,1,0),Color(0,0,1)]
 const ASCENSION_SCALING = [2,2,2.5]
@@ -217,7 +218,12 @@ func remove_square(location:Vector2,trigger_tools=true):
 		$"../..".evaluate_game_tool(location,false)
 		return
 	tile.animation_player.play("vanish")
+	if Game.current_mode == Game.Mode.ascension:
+		OreManager.evaluate_ores({Ores.In.event:Ores.Event.gem_break,Ores.In.tile:get_square(location),Ores.In.tile_pos:location,Ores.In.count:1})
+		
+		
 	set_square(location,Game.Item.AIR)
+
 	await tile.animation_player.animation_finished
 
 func evaluate_next_level():
