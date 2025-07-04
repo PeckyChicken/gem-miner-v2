@@ -476,6 +476,9 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 		
 	assert (0 not in top_two)
 	
+	if Game.Item.RAINBOW_DIAMOND in top_two:
+		await double_diamond(location,preview)
+	
 	if top_two[0] in Game.DIAMONDS and top_two[1] in Game.DIAMONDS:
 		if !preview:
 			Board.set_square(location,Game.Item.RAINBOW_DIAMOND)
