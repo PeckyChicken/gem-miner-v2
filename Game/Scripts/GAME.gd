@@ -57,6 +57,9 @@ func setup():
 	$background/Pit.draw_background()
 	$background/Pit.fill()
 	
+	if Game.current_mode != Game.Mode.ascension:
+		$background/Ores.hide()
+	
 	if Config.first_time:
 		var tutorial_color = Game.GEMS.pick_random()
 		var mid = Vector2(floori(Board.COLUMNS/2.0),floori(Board.ROWS/2.0))
@@ -249,7 +252,8 @@ func create_game_tool(location:Vector2,clears,horizontal_matches,vertical_matche
 	
 	Events.PlaySound.emit(sound)
 	Board.set_square(location,tool)
-	OreManager.evaluate_ores({Ores.In.event:Ores.Event.tool_create,Ores.In.tile:tool,Ores.In.tile_pos:location,Ores.In.count:1})
+	if Game.current_mode == Game.Mode.ascension:
+		OreManager.evaluate_ores({Ores.In.event:Ores.Event.tool_create,Ores.In.tile:tool,Ores.In.tile_pos:location,Ores.In.count:1})
 	
 	for l in [location] + clears:
 		Board.draw(l)
@@ -477,7 +481,11 @@ func evaluate_tool_combo(location:Vector2,combo:Array,preview=false):
 	assert (0 not in top_two)
 	
 	if Game.Item.RAINBOW_DIAMOND in top_two:
+		if !preview:
+			Board.set_square(location,Game.Item.RAINBOW_DIAMOND)
 		await double_diamond(location,preview)
+		if preview:
+			return
 	
 	if top_two[0] in Game.DIAMONDS and top_two[1] in Game.DIAMONDS:
 		if !preview:
@@ -561,10 +569,9 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 		Events.PlaySound.emit("Gameplay/break")
 		
 		if Game.current_mode == Game.Mode.ascension:
-			var ore_out = OreManager.evaluate_ores({Ores.In.event:Ores.Event.gem_line,Ores.In.tile:type,Ores.In.count:len(clears),Ores.In.tile_pos:location})
-			bonus += ore_out[Ores.Out.score]
+			OreManager.evaluate_ores({Ores.In.event:Ores.Event.gem_line,Ores.In.tile:type,Ores.In.count:len(clears),Ores.In.tile_pos:location})
 		
-		Events.AddScore.emit(10*(len(clears)) + bonus)
+		Events.AddScore.emit(10*(len(clears)))
 		
 		Events.DestroyBricks.emit(clears)
 
