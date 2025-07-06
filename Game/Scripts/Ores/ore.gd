@@ -33,7 +33,7 @@ func trigger(status=false,message=""):
 	Events.PlaySound.emit("Upgrades/activate")
 	$AnimationPlayer.play("activate_%s" % randi_range(0,3))
 	if status:
-		$Status.text=OreDescription.new().format_description(message)
+		$Status.text="[wave]"+OreDescription.new().format_description(message)
 		$StatusPlayer.play("status_activate")
 		
 
