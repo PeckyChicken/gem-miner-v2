@@ -561,7 +561,6 @@ func handle_lines(location:Vector2,lines:Array[Array],preview=false):
 			if Game.current_mode not in [Game.Mode.obstacles,Game.Mode.time_rush]:
 				add_bricks()
 			return
-		var bonus = 0
 		var type = Board.get_square(location)
 		Board.clear_gems(clears)
 		Board.set_square(location,type)
