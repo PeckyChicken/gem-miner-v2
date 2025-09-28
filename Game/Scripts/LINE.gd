@@ -1,5 +1,6 @@
 extends Node
 
+@onready var root: MainGame = $"../.."
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -8,7 +9,7 @@ func _ready() -> void:
 func _get_directional_line(location:Vector2,delta:Vector2,color):
 	var line = []
 	var cur_location = location
-	while $"../Board".within_board(cur_location) and $"../Board".get_square(cur_location) == color:
+	while $"../Board".within_board(cur_location) and root.items_match( $"../Board".get_square(cur_location),color):
 		if cur_location not in line:
 			line.append(cur_location)
 		cur_location += delta

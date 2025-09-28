@@ -5,12 +5,15 @@ const UPGRADE_COUNT = 5
 const ORE = preload("res://Game/Scenes/ores/ore.tscn")
 
 var ores: Array[Ore] = []
+@onready var pit: Pit = $"../Pit"
+@onready var root: MainGame = $"../.."
 
 enum Event {
 	gem_line,
 	gem_break,
 	gem_place,
 	tool_create,
+	ore_added
 }
 
 enum In {
@@ -32,7 +35,7 @@ func evaluate_ores(context: Dictionary):
 	for ore in ores:
 		match context[In.event]:
 			Event.gem_line,Event.gem_break:
-				if ore.data["ability"] == "extra_points_for_gem" and ore.extra["gem_type"] == context[In.tile]:
+				if ore.data["ability"] == "extra_points_for_gem" and root.items_match(ore.extra["gem_type"],context[In.tile]):
 					var bonus = ore.extra["bonus"] * context[In.count]
 					Events.AddScore.emit(bonus)
 					ore.trigger(true,"+"+str(bonus))
@@ -45,13 +48,28 @@ func evaluate_ores(context: Dictionary):
 						Events.PlaySound.emit("Diamond/double_create")
 						$"../Board".set_square(context[In.tile_pos],Game.Item.RAINBOW_DIAMOND)
 			
+			Event.ore_added:
+				if ore == context[In.tile] and ore.data["ability"] == "increase_pit_size":
+					pit.pit_size += ore.extra["increase"]
+					pit.refresh()
+					ore.trigger(true,"+%s pit size" % [ore.extra["increase"]])
+			
 	return return_data
+
+func items_match(item1:Game.Item,item2:Game.Item) -> bool:
+	for ore in ores:
+		if ore.data["ability"] == "merge_colors":
+			for merge in ore.extra["merges"]:
+				if float(item1) in merge and float(item2) in merge:
+					return true
+	return false
 
 func create_ore(data):
 	var ore: Ore = ORE.instantiate()
 	ores.append(ore)
 	ore.data = data
 	$HolderImage/Holder.add_child(ore)
+	evaluate_ores({In.event:Event.ore_added,In.tile:ore,In.count:1})
 
 func load_ore_data(file_name) -> Dictionary:
 	if file_name in ore_cache:
@@ -82,6 +100,7 @@ func load_ore_data(file_name) -> Dictionary:
 	return data
 
 func _ready() -> void:
-	pass
 
-	create_ore(load_ore_data("diamond_ore"))
+	create_ore(load_ore_data("dichroic_ore"))
+	create_ore(load_ore_data("ruby_ore"))
+	

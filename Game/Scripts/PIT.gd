@@ -1,9 +1,10 @@
+class_name Pit
 extends Control
 
-const SQUARE_COUNT = 3
+var pit_size = 3
 const OPTIONS = Game.GEMS
-var TOOLS = range(5,13)
-var pit: Array[int] = []
+var TOOLS = Game.GAME_TOOLS
+var pit: Array[Game.Item] = []
 @onready var Board: brd = $"../Board"
 
 var background_tiles = []
@@ -20,7 +21,7 @@ func draw_background():
 	var start_pos = -Vector2(Board.width / 2.0,square_size.y*(screen_padding+1))
 	
 	
-	if SQUARE_COUNT == 1:
+	if pit_size == 1:
 		var new_tile = background_tile.duplicate()
 		new_tile.position = start_pos*Vector2(0,1)
 
@@ -29,22 +30,33 @@ func draw_background():
 		add_child(new_tile)
 		background_tiles.append(new_tile)
 		return
-	elif SQUARE_COUNT == 0:
+	
+	elif pit_size == 0:
 		return
-	elif SQUARE_COUNT < 0:
+	
+	elif pit_size < 0:
 		printerr("Must have a positive or zero number of pit squares.")
 		assert (false)
 	
 	
-	for x in range(SQUARE_COUNT):
+	for x in range(pit_size):
 		var new_tile = background_tile.duplicate()
-		var rel_pos = Vector2((x/float(SQUARE_COUNT-1))*(Board.width-square_size.x),0)
+		var rel_pos = Vector2((x/float(pit_size-1))*(Board.width-square_size.x),0)
 		new_tile.x = x
 		new_tile.position = start_pos + rel_pos
 		new_tile.type = Events.Type.pit
 		new_tile.show()
 		add_child(new_tile)
 		background_tiles.append(new_tile)
+
+func refresh():
+	draw_background()
+	while pit_size < len(pit):
+		pit.pop_back()
+	while pit_size > len(pit):
+		pit.append(Game.Item.AIR)
+	fill()
+	draw()
 
 func draw():
 	var tile_sprite = $"../tile"
@@ -79,13 +91,13 @@ func get_item(index):
 
 func empty():
 	pit.clear()
-	for __ in range(SQUARE_COUNT):
+	for __ in range(pit_size):
 		pit.append(0)
 
 func fill(color = null):
 	var index = 0
 	for item in pit:
-		if item == 0:
+		if item == Game.Item.AIR:
 			var temp_color
 			if color == null:
 				temp_color = OPTIONS.pick_random()

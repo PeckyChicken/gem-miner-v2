@@ -1,0 +1,11 @@
+{
+	"name":"ore_dichroic",
+	"description":"ore_dichroic_desc",
+	"ability":"merge_colors",
+	"rarity":0,
+	"x":0,
+	"y":4,
+	"extra":{
+		"merges":[[1,2],[3,4]]
+	}
+}

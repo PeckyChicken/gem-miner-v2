@@ -1,3 +1,4 @@
+class_name MainGame
 extends CanvasLayer
 
 const BACKGROUND_HSV = {Game.Mode.survival:Vector3(100,100,85),Game.Mode.time_rush:Vector3(-10,100,100),Game.Mode.obstacles:Vector3(-65,150,110),Game.Mode.ascension: Vector3(0,0,60)}
@@ -90,6 +91,13 @@ func screen_size_changed():
 		$ascension_particles.emission_rect_extents = get_viewport().get_visible_rect().size / 2
 		$ascension_particles.amount = ASCENSION_PARTICLE_DENSITY * floor(sqrt(get_viewport().get_visible_rect().size.x*get_viewport().get_visible_rect().size.y))
 
+func items_match(item1:Game.Item,item2:Game.Item) -> bool:
+	if item1 == item2:
+		return true
+	if Game.current_mode == Game.Mode.ascension:
+		return OreManager.items_match(item1,item2)
+	return false
+
 func set_background(mode):
 
 	if mode == Game.Mode.ascension:
@@ -108,7 +116,6 @@ func set_background(mode):
 	shader.set_shader_parameter("Hue",hsv.x)
 	shader.set_shader_parameter("Saturation",hsv.y)
 	shader.set_shader_parameter("Value",hsv.z)
-	
 
 func random_place(items:Array):
 	assert (0 in Board.board)
@@ -293,7 +300,7 @@ func diamond(location:Vector2,type,replacements:Array=[Game.Item.AIR],preview=fa
 	for square_x in Board.COLUMNS:
 		for square_y in Board.ROWS:
 			var square_location = Vector2(square_x,square_y)
-			if Board.get_square(square_location) == type-4:
+			if items_match(Board.get_square(square_location),type-4):
 				squares.append(square_location)
 				if preview:
 					continue
@@ -787,7 +794,7 @@ func replace_squares(type,replacements:Array,preview):
 	var index = 0
 	var replaced_squares = []
 	for item in Board.board:
-		if item == type:
+		if items_match(item,type):
 			# Rotating through replacements
 			var replace = replacements[len(replaced_squares) % len(replacements)]
 			
@@ -901,7 +908,7 @@ func find_best_pit() -> Array[int]:
 		for item in _board:
 			if item in Game.GEMS:
 				colors.append(item)
-			if len(colors) >= $background/Pit.SQUARE_COUNT:
+			if len(colors) >= $background/Pit.pit_size:
 				break
 	
 	#Step 3: If there's a diamond on the board, give players colors of the diamond.
@@ -911,7 +918,7 @@ func find_best_pit() -> Array[int]:
 		for item in _board:
 			if item in Game.DIAMONDS:
 				colors.append(item-4)
-			if len(colors) >= $background/Pit.SQUARE_COUNT:
+			if len(colors) >= $background/Pit.pit_size:
 				break
 		
 		# If just 1 color, duplicate it.
@@ -925,15 +932,15 @@ func find_best_pit() -> Array[int]:
 		colors.append(_color)
 	
 	#Step 5: Fill the remainder of the pit with random colors
-	if len(colors) < $background/Pit.SQUARE_COUNT:
-		for __ in range($background/Pit.SQUARE_COUNT - len(colors)):
+	if len(colors) < $background/Pit.pit_size:
+		for __ in range($background/Pit.pit_size - len(colors)):
 			colors.append($background/Pit.OPTIONS.pick_random())
 	
 	#Step 6: Trim down the list of colors to the size of the pit and return it.
-	assert (len(colors) >= $background/Pit.SQUARE_COUNT)
+	assert (len(colors) >= $background/Pit.pit_size)
 	
 	colors.shuffle()
-	return colors.slice(0,$background/Pit.SQUARE_COUNT)
+	return colors.slice(0,$background/Pit.pit_size)
 
 func evaluate_external_tool(location,tool,use_tool=true,preview=false):
 	if preview:
